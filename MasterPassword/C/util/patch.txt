@@ -1,0 +1,16 @@
+diff --git a/MasterPassword/C/src/scrypt/sysendian.h b/MasterPassword/C/src/scrypt/sysendian.h
+index a4821a6..92f9bdb 100644
+--- a/MasterPassword/C/src/scrypt/sysendian.h
++++ b/MasterPassword/C/src/scrypt/sysendian.h
+@@ -3,6 +3,11 @@
+ 
+ #include <stdint.h>
+ 
++//Visual Studio doesn't line inline for some reason and wants __inline
++#ifdef _MSC_VER
++#define inline __inline
++#endif
++
+ /* Avoid namespace collisions with BSD <sys/endian.h>. */
+ #define be16dec libcperciva_be16dec
+ #define be16enc libcperciva_be16enc
