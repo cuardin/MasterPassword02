@@ -17,4 +17,13 @@ public abstract class Components {
 
         return container;
     }
+    
+    public static JComponent flowLayout(Component... components) {
+        JPanel container = new JPanel();
+        container.setLayout( new FlowLayout( FlowLayout.CENTER ) );
+        for (Component component : components)
+            container.add( component );
+
+        return container;
+    }
 }

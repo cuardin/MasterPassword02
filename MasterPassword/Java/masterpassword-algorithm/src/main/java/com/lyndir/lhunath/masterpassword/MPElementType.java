@@ -2,6 +2,8 @@ package com.lyndir.lhunath.masterpassword;
 
 import com.google.common.collect.ImmutableSet;
 import com.lyndir.lhunath.opal.system.logging.Logger;
+
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -19,21 +21,18 @@ public enum MPElementType {
     GeneratedShort( "Short Password", "Short", "Copy-friendly, 4 characters, no symbols.", MPElementTypeClass.Generated ),
     GeneratedPIN( "PIN", "PIN", "4 numbers.", MPElementTypeClass.Generated ),
 
-    StoredPersonal( "Personal Password", "Personal", "AES-encrypted, exportable.", MPElementTypeClass.Stored,
-                    MPElementFeature.ExportContent ),
-    StoredDevicePrivate( "Device Private Password", "Private", "AES-encrypted, not exported.", MPElementTypeClass.Stored,
-                         MPElementFeature.DevicePrivate );
+    StoredPersonal( "Personal Password", "Personal", "AES-encrypted, exportable.", MPElementTypeClass.Stored, MPElementFeature.ExportContent ),
+    StoredDevicePrivate( "Device Private Password", "Private", "AES-encrypted, not exported.", MPElementTypeClass.Stored, MPElementFeature.DevicePrivate );
 
     static final Logger logger = Logger.get( MPElementType.class );
 
-    private final MPElementTypeClass    typeClass;
-    private final Set<MPElementFeature> typeFeatures;
-    private final String                name;
-    private final String                shortName;
+    private final   MPElementTypeClass    typeClass;
+    private final   Set<MPElementFeature> typeFeatures;
+    private final   String                name;
+    private final   String                shortName;
     private final String                description;
 
-    MPElementType(final String name, final String shortName, final String description, final MPElementTypeClass typeClass,
-                  final MPElementFeature... typeFeatures) {
+    MPElementType(final String name, final String shortName, final String description, final MPElementTypeClass typeClass, final MPElementFeature... typeFeatures) {
 
         this.name = name;
         this.shortName = shortName;
@@ -41,9 +40,8 @@ public enum MPElementType {
         this.description = description;
 
         ImmutableSet.Builder<MPElementFeature> typeFeaturesBuilder = ImmutableSet.builder();
-        for (final MPElementFeature typeFeature : typeFeatures) {
+        for (final MPElementFeature typeFeature : typeFeatures)
             typeFeaturesBuilder.add( typeFeature );
-        }
         this.typeFeatures = typeFeaturesBuilder.build();
     }
 
@@ -72,37 +70,37 @@ public enum MPElementType {
         return description;
     }
 
-    /**
-     * @param name The full or short name of the type we want to look up.  It is matched case insensitively.
-     *
-     * @return The type with the given name.
-     */
+    //When using these in a combo box, we want the names to appear.
+    @Override
+    public String toString()
+    {
+    	return this.getName();
+    }
+    
     public static MPElementType forName(final String name) {
 
-        for (final MPElementType type : values()) {
-            if (type.getName().equalsIgnoreCase( name ) || type.getShortName().equalsIgnoreCase( name )) {
-                return type;
-            }
-        }
+        for (final MPElementType type : values())
+            if (type.getName().equals( name ) || type.getShortName().equals( name ))
+                return type;        
 
         throw logger.bug( "Element type not known: %s", name );
     }
 
     /**
-     * @param typeClass The class for which we look up types.
-     *
-     * @return All types that support the given class.
+     * Returns all members of the Enum that have at least one of the classes provided.
      */
-    public static ImmutableSet<MPElementType> forClass(final MPElementTypeClass typeClass) {
+    public static MPElementType[] valuesOfType(final MPElementTypeClass... typeClass) {
 
-        ImmutableSet.Builder<MPElementType> types = ImmutableSet.builder();
-        for (final MPElementType type : values()) {
-            if (type.getTypeClass() == typeClass) {
-                types.add( type );
-            }
+        Set<MPElementType> rValue = new HashSet<MPElementType>();
+    	for (final MPElementType type : values())  {
+        	for ( final MPElementTypeClass feature : typeClass ) {
+        		if (type.typeClass.equals(feature)) {
+        			rValue.add(type);
+        		}                	
+        	}
         }
 
-        return types.build();
+        return rValue.toArray(new MPElementType[rValue.size()]);
     }
 
 }

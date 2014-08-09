@@ -34,13 +34,13 @@ public class GUI implements UnlockFrame.SignInCallback {
     public static void main(final String[] args)
             throws IOException {
 
-        // Apple
-        Optional<? extends GUI> appleGUI = TypeUtils.newInstance( AppleGUI.class );
-        if (appleGUI.isPresent()) {
-            appleGUI.get().open();
-            return;
-        }
-
+    	//Make sure to use the OS Look-and-feel    	
+    	try { 
+    	    UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	}
+    	
         // All others
         new GUI().open();
     }

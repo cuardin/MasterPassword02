@@ -85,6 +85,11 @@ public class ConfigAuthenticationPanel extends AuthenticationPanel implements It
     @Override
     protected User getUser() {
         User selectedUser = (User) userField.getSelectedItem();
+        
+        if ( selectedUser == null ) {
+        	return null;
+        }
+        
         if (selectedUser.hasKey()) {
             return selectedUser;
         }
