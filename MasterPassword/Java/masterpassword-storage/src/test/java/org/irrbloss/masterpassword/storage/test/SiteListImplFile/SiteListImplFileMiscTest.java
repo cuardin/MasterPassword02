@@ -16,6 +16,7 @@ import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
 import org.irrbloss.masterpassword.storage.SiteListImpl.SiteListFile;
 import org.junit.Test;
 
+@SuppressWarnings("deprecation")
 public class SiteListImplFileMiscTest {
 
 	private String siteName = "Hello World";

@@ -28,6 +28,11 @@ Press/MasterPassword_PressKit/MasterPassword_pressrelease_*.pdf
 # Java
 MasterPassword/Java/**/target
 
+#Eclipse
+.project
+.classpath
+.settings/
+
 # C
 MasterPassword/C/*.o
 MasterPassword/C/mpw
