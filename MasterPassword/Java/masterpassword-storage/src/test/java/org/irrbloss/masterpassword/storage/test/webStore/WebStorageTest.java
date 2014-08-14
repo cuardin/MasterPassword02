@@ -83,12 +83,4 @@ public class WebStorageTest {
 		helper.setPassword( "newPass" );
 		org.junit.Assert.assertFalse( helper.testAuthentication() );
 	}
-
-	@Test
-	public void testResetPassword() throws BadWebResponse {				
-		helper.createUser();	
-		helper.resetPassword(helper.getPassword());
-		org.junit.Assert.assertFalse( helper.testAuthentication() );
-	}
-
 }

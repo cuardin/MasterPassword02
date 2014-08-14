@@ -12,7 +12,6 @@ import org.irrbloss.masterpassword.storage.SiteDescriptor;
 import org.irrbloss.masterpassword.storage.Exceptions.PermanentSyncException;
 import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
 import org.irrbloss.masterpassword.storage.SiteListImpl.SiteListFile;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SiteListImplFileReadFromFileTest {

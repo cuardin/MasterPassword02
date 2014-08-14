@@ -46,7 +46,7 @@ public class FileListEntry implements Comparable<FileListEntry> {
 
 	@Override
 	public int compareTo(FileListEntry o) {
-		return this.creationDate.compareTo(o.creationDate);
+		return this.fileName.compareTo(o.fileName);
 	}
 	
 	

@@ -114,32 +114,11 @@ public class WebStorageClass {
 		
 		this.assertReturnValue(rValue);
 		
-		return QueryBuilderClass.convertFromBase64(rValue);
+		//Drop the first 4 characters that are header "OK: ".		
+		return QueryBuilderClass.convertFromBase64(rValue.substring(4));
 	
 	}
-	
-	public void resetPassword ( String username )
-	{
-		this.setUserAndPass(username, "n/a");
 		
-		HashMap<String,String> map = this.buildBasicHashMap();
-		if ( map == null ) //In case no username has been supplied, there is no point in checking.
-			return;
-		
-		map.put("privateKey", "OPIERKLMNCGAEIFKAJSDANSD" );
-		
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "resetPassword.php", map);		
-		
-		try {
-			this.assertReturnValue(rValue);
-			return;
-		} catch (BadWebResponse e) {			
-			e.printStackTrace();
-			return;
-		}	
-	}
-	
 	protected void assertReturnValue( String str ) throws BadWebResponse 
 	{
 		if ( !(str.startsWith("OK") || str.startsWith("<?xml" ) ) ) {

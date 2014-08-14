@@ -1,17 +1,14 @@
 package org.irrbloss.masterpassword.storage.webStore;
 
 import java.io.ByteArrayInputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -23,7 +20,7 @@ public class FileListParser {
 		
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			org.w3c.dom.Document dom = db.parse( new ByteArrayInputStream(xmlString.getBytes("UTF-8")) );
+			Document dom = db.parse( new ByteArrayInputStream(xmlString.getBytes("UTF-8")) );
 			
 			//Get root element
 			Element docEle = dom.getDocumentElement();
@@ -34,10 +31,9 @@ public class FileListParser {
 				for ( int i = 0; i < nl.getLength(); i++ ) {
 					Element el = (Element)nl.item(i);
 					
-					int fileID = FileListParser.getIntValue(el, "fileID");
-					Date creationDate = FileListParser.getDateValue( el, "creationDate" );					
+					int fileID = FileListParser.getIntValue(el, "fileID");									
 					String fileName = FileListParser.getTextValue(el, "fileName");
-					rValue.add(new FileListEntry(fileID, creationDate, fileName ));
+					rValue.add(new FileListEntry(fileID, null, fileName ));
 				}
 			}
 			
@@ -45,7 +41,7 @@ public class FileListParser {
 			e.printStackTrace();
 		}
 		
-		//Finally sort the saved files by date.
+		//Finally sort the saved files by name.
 		Collections.sort(rValue);
 		
 		return rValue;
@@ -76,16 +72,5 @@ public class FileListParser {
 	private static int getIntValue(Element ele, String tagName) {
 		//in production application you would catch the exception
 		return Integer.parseInt(getTextValue(ele,tagName));
-	}
-	
-	private static Date getDateValue( Element ele, String tagName ) {
-		String str = FileListParser.getTextValue(ele, tagName);		
-		DateFormat df = new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-		try {
-			return df.parse(str);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 }
