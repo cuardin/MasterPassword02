@@ -38,3 +38,5 @@ MasterPassword/C/*.o
 MasterPassword/C/mpw
 MasterPassword/C/lib/*/*
 !MasterPassword/C/lib/*/.source
+
+MasterPassword/Java/masterpassword-storage/src/test/java/org/irrbloss/masterpassword/storage/test/webStore/NetworkSecrets.java
