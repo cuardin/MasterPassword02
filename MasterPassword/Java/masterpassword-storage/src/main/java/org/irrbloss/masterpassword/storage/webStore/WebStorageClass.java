@@ -128,10 +128,8 @@ public class WebStorageClass {
 	
 	public void createUser() throws BadWebResponse {		
 		HashMap<String,String> map = this.buildBasicHashMap();			
-		map.put("privateKey", this.userCreationKey  );
-		map.put("email", "test@armyr.se");
-		map.put("password1", this.password );
-		map.put("password2", this.password );
+		map.put("userCreationKey", this.userCreationKey  );
+		map.put("email", "test@armyr.se");		
 		
 		String rValue = QueryBuilderClass.httpPost(
 				this.rootAddres + "createUser.php", map);
