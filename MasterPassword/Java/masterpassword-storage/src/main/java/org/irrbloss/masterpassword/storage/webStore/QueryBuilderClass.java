@@ -104,7 +104,7 @@ public class QueryBuilderClass {
 	}
 
 	
-	public static Object convertFromBase64 ( String data ) {		
+	public static String convertFromBase64 ( String data ) {		
 		try {			
 			
 			//Convert from base64
@@ -115,7 +115,7 @@ public class QueryBuilderClass {
 			ObjectInputStream in = new ObjectInputStream(bin);			
 			Object copy = in.readObject();
 			in.close();
-			return copy;
+			return (String)copy;
 									
 		} catch ( Exception e) {
 			e.printStackTrace();

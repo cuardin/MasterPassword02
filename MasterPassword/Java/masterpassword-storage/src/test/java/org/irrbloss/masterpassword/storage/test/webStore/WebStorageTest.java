@@ -40,7 +40,7 @@ public class WebStorageTest {
 		org.junit.Assert.assertEquals(list.size(), 1);
 		org.junit.Assert.assertEquals(list.get(0).getFileName(), "testFile");
 				
-		String data = (String)helper.getFile(list.get(0));
+		String data = helper.getFile(list.get(0).getFileName());
 		org.junit.Assert.assertEquals("testData", data);		
 	}
 	
@@ -58,7 +58,7 @@ public class WebStorageTest {
 		List<FileListEntry> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
-		helper.deleteFile(list.get(0));
+		helper.deleteFile(list.get(0).getFileName());
 		list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 0);				
 	}
@@ -70,9 +70,9 @@ public class WebStorageTest {
 		List<FileListEntry> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
-		helper.uploadFileAndOverwrite(list.get(0), "testData2");
+		helper.uploadFileAndOverwrite(list.get(0).getFileName(), "testData2");
 						
-		String data = (String)helper.getFile(list.get(0));
+		String data = helper.getFile(list.get(0).getFileName());
 		org.junit.Assert.assertEquals("testData2", data);
 	}
 

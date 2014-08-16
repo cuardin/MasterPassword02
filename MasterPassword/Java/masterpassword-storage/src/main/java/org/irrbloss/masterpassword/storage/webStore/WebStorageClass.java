@@ -64,10 +64,10 @@ public class WebStorageClass {
 		this.assertReturnValue(rValue);
 	}
 	
-	public void uploadFileAndOverwrite ( FileListEntry fileID, Serializable data ) throws BadWebResponse 
+	public void uploadFileAndOverwrite ( String fileName, Serializable data ) throws BadWebResponse 
 	{
 		HashMap<String,String> map = this.buildBasicHashMap();	
-		map.put("fileID", Integer.toString(fileID.getFileID()) );
+		map.put("fileName", fileName );
 		map.put("fileContents", QueryBuilderClass.convertToBase64(data) );
 		
 		String rValue = QueryBuilderClass.httpPost(
@@ -77,10 +77,10 @@ public class WebStorageClass {
 
 	}
 	
-	public void deleteFile ( FileListEntry fileID ) throws BadWebResponse 
+	public void deleteFile ( String fileName ) throws BadWebResponse 
 	{
 		HashMap<String,String> map = this.buildBasicHashMap();	
-		map.put("fileID", Integer.toString(fileID.getFileID()) );
+		map.put("fileName", fileName );
 				
 		String rValue = QueryBuilderClass.httpPost(
 				this.rootAddres + "deleteFile.php", map);
@@ -103,11 +103,10 @@ public class WebStorageClass {
 		return FileListParser.parseFileList(rValue);
 		
 	}
-	
-	public Object getFile ( FileListEntry fileID ) throws BadWebResponse 
-	{
+			
+	public String getFile(String fileName) throws BadWebResponse {
 		HashMap<String,String> map = this.buildBasicHashMap();	
-		map.put("fileID", Integer.toString(fileID.getFileID()) );
+		map.put("fileName", fileName);
 				
 		String rValue = QueryBuilderClass.httpPost(
 				this.rootAddres + "getFile.php", map);
@@ -116,9 +115,9 @@ public class WebStorageClass {
 		
 		//Drop the first 4 characters that are header "OK: ".		
 		return QueryBuilderClass.convertFromBase64(rValue.substring(4));
-	
+
 	}
-		
+
 	protected void assertReturnValue( String str ) throws BadWebResponse 
 	{
 		if ( !(str.startsWith("OK") || str.startsWith("<?xml" ) ) ) {
