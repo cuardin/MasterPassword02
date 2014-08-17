@@ -35,7 +35,7 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		}				
 	}
 	
-	public Collection<Path> listFiles() throws IOException  {
+	public Collection<String> listFiles() throws IOException  {
 		for ( int i = 0; i <= n; i++ ) {			
 			try {	
 				return this.fs.listFiles();

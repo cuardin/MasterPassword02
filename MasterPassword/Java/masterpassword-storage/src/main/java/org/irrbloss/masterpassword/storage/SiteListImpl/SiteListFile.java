@@ -132,7 +132,7 @@ public class SiteListFile implements ISiteListImpl {
 	public SortedSet<String> keySet() throws PermanentSyncException {
 		//Return the number of files in the root folder.		
 		SortedSet<String> rValue = new TreeSet<String>();
-		Collection<Path> files = null;
+		Collection<String> files = null;
 		try {
 			this.lock.lock();
 			files = fs.listFiles();
@@ -142,8 +142,8 @@ public class SiteListFile implements ISiteListImpl {
 			this.lock.unlock();
 		}
 
-		for ( Path p : files ) {
-			SiteDescriptor site = this.readFromFile(p.getFileName().toString());			
+		for ( String p : files ) {
+			SiteDescriptor site = this.readFromFile(p);			
 			rValue.add( site.getSiteName() );
 		}			
 		return rValue;

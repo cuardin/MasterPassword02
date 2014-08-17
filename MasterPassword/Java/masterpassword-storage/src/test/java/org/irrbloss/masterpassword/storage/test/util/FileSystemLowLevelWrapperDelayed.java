@@ -44,7 +44,7 @@ public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper
 	}
 
 	@Override
-	public Collection<Path> listFiles() throws IOException {
+	public Collection<String> listFiles() throws IOException {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {

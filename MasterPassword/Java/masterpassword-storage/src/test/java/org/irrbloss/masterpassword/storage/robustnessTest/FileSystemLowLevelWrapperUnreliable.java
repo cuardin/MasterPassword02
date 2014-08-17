@@ -50,7 +50,7 @@ public class FileSystemLowLevelWrapperUnreliable extends FileSystemLowLevelWrapp
 	}
 
 	@Override
-	public Collection<Path> listFiles() throws IOException {
+	public Collection<String> listFiles() throws IOException {
 		this.mightFail();
 		return super.listFiles();
 	}

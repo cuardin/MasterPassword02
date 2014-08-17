@@ -67,11 +67,11 @@ public class FileSystemLowLevelWrapperTest {
 		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);
 		
 		//Act
-		Collection<Path> fileList = fs.listFiles();
+		Collection<String> fileList = fs.listFiles();
 		
 		//Assert
 		org.junit.Assert.assertEquals( 2, fileList.size() );
-		org.junit.Assert.assertEquals(this.tempDir.resolve(".mpw").resolve(this.fileName01), 
+		org.junit.Assert.assertEquals(this.fileName01, 
 				fileList.iterator().next() );		
 	}
 	

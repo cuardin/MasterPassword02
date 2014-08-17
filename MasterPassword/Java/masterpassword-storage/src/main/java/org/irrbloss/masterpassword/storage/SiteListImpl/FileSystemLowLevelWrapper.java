@@ -27,13 +27,13 @@ public class FileSystemLowLevelWrapper implements IFileSystemWrapper {
 		this.rootFolder = rootFolder.resolve(".mpw");
 	}
 	
-	public Collection<Path> listFiles() throws IOException {
-		Vector<Path> rValue = new Vector<Path>();
+	public Collection<String> listFiles() throws IOException {
+		Vector<String> rValue = new Vector<String>();
 		DirectoryStream<Path> stream = null;
 
 		stream = Files.newDirectoryStream(this.rootFolder);			
 		for (Path entry: stream) {
-			rValue.add(entry);
+			rValue.add(entry.getFileName().toString());
 		}			
 		return rValue;
 	}

@@ -1,8 +1,6 @@
 package org.irrbloss.masterpassword.storage.test.SiteListImplFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -207,9 +205,9 @@ public class SiteListImplFileMiscTest {
 				.addMockedMethod("readFromFile").createMock();		
 		
 		//Set expectations
-		SortedSet<Path> expectedAnswer01 = new TreeSet<Path>();
-		expectedAnswer01.add(Paths.get("site01encoded"));
-		expectedAnswer01.add(Paths.get("site02encoded"));
+		SortedSet<String> expectedAnswer01 = new TreeSet<String>();
+		expectedAnswer01.add("site01encoded");
+		expectedAnswer01.add("site02encoded");
 		
 		SiteDescriptor expectedAnswer02 = new SiteDescriptor("site01");
 		SiteDescriptor expectedAnswer03 = new SiteDescriptor("site02");

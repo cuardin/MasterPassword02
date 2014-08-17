@@ -1,9 +1,9 @@
 package org.irrbloss.masterpassword.storage.test.webStore;
 
+import java.net.URL;
 import java.util.List;
 
 import org.irrbloss.masterpassword.storage.webStore.BadWebResponse;
-import org.irrbloss.masterpassword.storage.webStore.FileListEntry;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,10 +11,12 @@ import org.junit.Test;
 public class WebStorageTest {
 	
 	WebStorageTestHelper helper = null;
+	URL baseURL;
 	
 	@Before
 	public void setUp() throws Exception {
-		helper = new WebStorageTestHelper();				
+		helper = new WebStorageTestHelper();
+		baseURL = new URL("http://masterpassword.armyr.se/php_scripts/");
 		try {
 			helper.eradicateTestUser();
 		} catch ( Exception e ) {
@@ -36,11 +38,11 @@ public class WebStorageTest {
 	public void testUploadAndDownloadNewFile() throws BadWebResponse {				
 		helper.createUser();	
 		helper.uploadNewFile( "testFile", "testData" );
-		List<FileListEntry> list = helper.listFiles();
+		List<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);
-		org.junit.Assert.assertEquals(list.get(0).getFileName(), "testFile");
+		org.junit.Assert.assertEquals(list.get(0), "testFile");
 				
-		String data = helper.getFile(list.get(0).getFileName());
+		String data = helper.getFile(list.get(0));
 		org.junit.Assert.assertEquals("testData", data);		
 	}
 	
@@ -55,10 +57,10 @@ public class WebStorageTest {
 	public void testDeleteFile() throws BadWebResponse {				
 		helper.createUser();	
 		helper.uploadNewFile( "testFile", "testData" );
-		List<FileListEntry> list = helper.listFiles();
+		List<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
-		helper.deleteFile(list.get(0).getFileName());
+		helper.deleteFile(list.get(0));
 		list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 0);				
 	}
@@ -67,12 +69,12 @@ public class WebStorageTest {
 	public void testOvrerwriteFile() throws BadWebResponse {				
 		helper.createUser();	
 		helper.uploadNewFile( "testFile", "testData" );
-		List<FileListEntry> list = helper.listFiles();
+		List<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
-		helper.uploadFileAndOverwrite(list.get(0).getFileName(), "testData2");
+		helper.uploadFileAndOverwrite(list.get(0), "testData2");
 						
-		String data = helper.getFile(list.get(0).getFileName());
+		String data = helper.getFile(list.get(0));
 		org.junit.Assert.assertEquals("testData2", data);
 	}
 

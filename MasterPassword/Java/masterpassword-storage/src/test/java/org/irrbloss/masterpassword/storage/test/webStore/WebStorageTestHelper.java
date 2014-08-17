@@ -11,11 +11,15 @@ public class WebStorageTestHelper extends WebStorageClass {
 	
 	public WebStorageTestHelper() {
 		this.username = "testUserJava";
-		this.password = "testPass";
+		this.password = "testPass";		
 	}
 	
 	public String getPassword() {
 		return password;
+	}
+	
+	public String getUsername() {
+		return this.username;
 	}
 
 	public void setPassword(String password) {

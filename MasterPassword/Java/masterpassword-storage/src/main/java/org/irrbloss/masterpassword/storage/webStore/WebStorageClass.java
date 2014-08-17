@@ -2,6 +2,7 @@ package org.irrbloss.masterpassword.storage.webStore;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.irrbloss.masterpassword.storage.test.webStore.NetworkSecrets;
@@ -89,7 +90,7 @@ public class WebStorageClass {
 	
 	}
 	
-	public List<FileListEntry> listFiles( ) throws BadWebResponse 
+	public List<String> listFiles( ) throws BadWebResponse 
 	{
 		HashMap<String,String> map = this.buildBasicHashMap();	
 		
@@ -99,8 +100,13 @@ public class WebStorageClass {
 		
 		this.assertReturnValue(rValue);
 		
-		
-		return FileListParser.parseFileList(rValue);
+		//TODO: Considder if the list of strings should be generated directly.
+		List<FileListEntry> fileList = FileListParser.parseFileList(rValue);
+		List<String> rList = new LinkedList<String>();
+		for ( FileListEntry e : fileList ) {
+			rList.add(e.getFileName());
+		}
+		return rList;
 		
 	}
 			

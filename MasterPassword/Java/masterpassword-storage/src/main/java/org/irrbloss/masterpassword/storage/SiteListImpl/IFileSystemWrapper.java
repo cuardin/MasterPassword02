@@ -1,12 +1,11 @@
 package org.irrbloss.masterpassword.storage.SiteListImpl;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Collection;
 
 public interface IFileSystemWrapper {
 
-	public abstract Collection<Path> listFiles() throws IOException;
+	public abstract Collection<String> listFiles() throws IOException;
 
 	public abstract String readFile(String fileName) throws IOException;
 

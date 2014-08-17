@@ -1,22 +1,31 @@
 package org.irrbloss.masterpassword.storage.test.SiteListImplWeb;
 
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.util.Collection;
+
+import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
+import org.irrbloss.masterpassword.storage.SiteListImpl.WebFileSystemLowLevelWrapper;
 import org.irrbloss.masterpassword.storage.test.webStore.WebStorageTestHelper;
+import org.irrbloss.masterpassword.storage.webStore.BadWebResponse;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
-public class WebFileSystemLowLevelWrapperTest {
+public class WebFileSystemLowLevelWrapperIntegrationTest {
 
 	WebStorageTestHelper helper = null;
 	
 	@Before
 	public void setUp() throws Exception {
-		helper = new WebStorageTestHelper();				
+		helper = new WebStorageTestHelper();		
 		try {
 			helper.eradicateTestUser();
 		} catch ( Exception e ) {
 			//Do nothing.
-		}
-		
+		}					
+		helper.createUser();
 	}
 
 	@After
@@ -26,8 +35,8 @@ public class WebFileSystemLowLevelWrapperTest {
 		} catch ( Exception e ) {
 			//Do nothing.
 		}		
-	}
-
+	}	
+	
 	String fileContent01 = "736974652E636F6D\n1\nlong";
 	String fileName01 = "7AEF11B08719DFB3B922E89EAC4B8D78";
 
@@ -36,31 +45,37 @@ public class WebFileSystemLowLevelWrapperTest {
 	String fileName02 = "8AEF11B08719DFB3B922E89EAC4B8D78";
 
 	
-	/*private void writeTestFile() throws BadWebResponse {		
-		this.helper.uploadNewFile(fileName01, fileContent01);
-	}*/
+	private void writeTestFile() throws IOException  {		
+		try {
+			this.helper.uploadNewFile(fileName02, fileContent02);
+			this.helper.uploadNewFile(fileName01, fileContent01);
+		} catch (BadWebResponse e) {
+			throw new IOException(e);
+		}
+		
+	}
 
 	/*private String readTestFile(String fileName) throws BadWebResponse {		
 		return helper.getFile(fileName);		
 	}*/
 	
-	/*
+	
 
 	@Test
-	public void testListFiles() throws IOException {			
+	public void testListFiles() throws BadWebResponse, IOException {			
 		//Arrange
 		this.writeTestFile();
-		
+		IFileSystemWrapper fs = new WebFileSystemLowLevelWrapper(helper);		
 		
 		//Act
-		Collection<Path> fileList = fs.listFiles();
+		Collection<String> fileList = fs.listFiles();
 		
 		//Assert
 		org.junit.Assert.assertEquals( 2, fileList.size() );
-		org.junit.Assert.assertEquals(this.tempDir.resolve(this.fileName01), 
+		org.junit.Assert.assertEquals(this.fileName01, 
 				fileList.iterator().next() );		
 	}
-	*/
+	
 	/*
 	@Test @Ignore
 	public void testReadFile() throws IOException
