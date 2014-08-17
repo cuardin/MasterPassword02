@@ -56,10 +56,9 @@ public class WebFileSystemMiscTest {
 		EasyMock.expect(web.listFiles()).andThrow(new BadWebResponse("Web b0rked"));
 		EasyMock.replay(web);
 		
-		//Act		
-		Collection<String> fileList;
+		//Act				
 		try {
-			fileList = fs.listFiles();
+			fs.listFiles();
 			Assert.fail("An exception should have been thrown");
 		} catch (IOException e) {
 		}

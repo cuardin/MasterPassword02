@@ -1,8 +1,6 @@
 package org.irrbloss.masterpassword.storage.test.SiteListImplWeb;
 
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
 import java.util.Collection;
 
 import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
