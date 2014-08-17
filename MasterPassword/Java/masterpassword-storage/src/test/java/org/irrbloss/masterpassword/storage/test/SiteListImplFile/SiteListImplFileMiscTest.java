@@ -23,8 +23,8 @@ public class SiteListImplFileMiscTest {
 	private String siteNameHash = "B10A8DB164E0754105B7A99BE72E3FE5";
 	//private String fileContent = "736974652E636F6D\n1\nlong\n1000000";
 	
-	private Path testPath = Paths.get("/tmp/");
-	private Path rootPath = testPath.resolve(".mpw");
+	//private Path testPath = Paths.get("/tmp/");
+	//private Path rootPath = testPath.resolve(".mpw");
 
 	
 	@Test

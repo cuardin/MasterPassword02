@@ -1,8 +1,6 @@
 package org.irrbloss.masterpassword.storage.test.SiteListImplFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Date;
 
 import junit.framework.Assert;
@@ -17,8 +15,8 @@ import org.junit.Test;
 @SuppressWarnings("deprecation")
 public class SiteListImplFilePutTest {
 	
-	private Path testPath = Paths.get("/tmp/");
-	private Path rootPath = testPath.resolve(".mpw");
+	//private Path testPath = Paths.get("/tmp/");
+	//private Path rootPath = testPath.resolve(".mpw");
 
 	@Test(expected=NullPointerException.class)
 	public void putTestNull() throws PermanentSyncException 

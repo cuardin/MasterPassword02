@@ -5,8 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.verify;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.irrbloss.masterpassword.storage.SiteDescriptor;
 import org.irrbloss.masterpassword.storage.Exceptions.PermanentSyncException;
@@ -27,7 +25,7 @@ public class SiteListImplFileReadFromFileTest {
 		//*********************
 		//Arrange
 		IFileSystemWrapper fs = createMock(IFileSystemWrapper.class);
-		Path testPath = Paths.get("/tmp/");
+		//Path testPath = Paths.get("/tmp/");
 		//Path rootPath = testPath.resolve(".mpw");
 		SiteListFile file = new SiteListFile(fs);
 
@@ -115,8 +113,8 @@ public class SiteListImplFileReadFromFileTest {
 		//*********************
 		//Arrange
 		FileSystemLowLevelWrapper fs = createMock(FileSystemLowLevelWrapper.class);
-		Path testPath = Paths.get("/tmp/");
-		Path rootPath = testPath.resolve(".mpw");
+		//Path testPath = Paths.get("/tmp/");
+		//Path rootPath = testPath.resolve(".mpw");
 		SiteListFile file = new SiteListFile(fs);
 
 		//********************

@@ -1,26 +1,8 @@
 package org.irrbloss.masterpassword.storage.test.SiteListImplWeb;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collection;
-import java.util.List;
-
-import org.irrbloss.masterpassword.storage.SiteListImpl.FileSystemLowLevelWrapper;
-import org.irrbloss.masterpassword.storage.test.util.TempFileManager;
 import org.irrbloss.masterpassword.storage.test.webStore.WebStorageTestHelper;
-import org.irrbloss.masterpassword.storage.webStore.BadWebResponse;
-import org.irrbloss.masterpassword.storage.webStore.FileListEntry;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.Ignore;
 
 public class WebFileSystemLowLevelWrapperTest {
 
@@ -54,13 +36,13 @@ public class WebFileSystemLowLevelWrapperTest {
 	String fileName02 = "8AEF11B08719DFB3B922E89EAC4B8D78";
 
 	
-	private void writeTestFile() throws BadWebResponse {		
+	/*private void writeTestFile() throws BadWebResponse {		
 		this.helper.uploadNewFile(fileName01, fileContent01);
-	}
+	}*/
 
-	private String readTestFile(String fileName) throws BadWebResponse {		
+	/*private String readTestFile(String fileName) throws BadWebResponse {		
 		return helper.getFile(fileName);		
-	}
+	}*/
 	
 	/*
 
