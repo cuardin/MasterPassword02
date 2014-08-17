@@ -34,49 +34,49 @@ public class FileSystemLowLevelWrapperUnreliable extends FileSystemLowLevelWrapp
 		this.reliability = reliability;
 	}
 
-	public FileSystemLowLevelWrapperUnreliable(int sleepTime, double reliability) {
-		this(new FileSystemLowLevelWrapper(), sleepTime, reliability );		
+	public FileSystemLowLevelWrapperUnreliable(Path rootPath, int sleepTime, double reliability) {
+		this(new FileSystemLowLevelWrapper(rootPath), sleepTime, reliability );		
 	}
 
 	@Override
-	public void clearFolder(Path rootFolder) throws IOException {
-		super.clearFolder(rootFolder);
+	public void clearFolder() throws IOException {
+		super.clearFolder();
 	}
 
 	@Override
-	public boolean fileExists(Path filePath) throws IOException {
+	public boolean fileExists(String fileName) throws IOException {
 		this.mightFail();
-		return super.fileExists(filePath);
+		return super.fileExists(fileName);
 	}
 
 	@Override
-	public Collection<Path> listFiles(Path folder) throws IOException {
+	public Collection<Path> listFiles() throws IOException {
 		this.mightFail();
-		return super.listFiles(folder);
+		return super.listFiles();
 	}
 
 	@Override
-	public String readFile(Path entry) throws IOException {
+	public String readFile(String fileName) throws IOException {
 		this.mightFail();
-		return super.readFile(entry);
+		return super.readFile(fileName);
 	}
 
 	@Override
-	public void writeFile(Path entry, String content) throws IOException {
+	public void writeFile(String fileName, String content) throws IOException {
 		this.mightFail();
-		super.writeFile(entry, content);
+		super.writeFile(fileName, content);
 	}
 
 	@Override
-	public void remove(Path fileName) throws IOException {
+	public void remove(String fileName) throws IOException {
 		this.mightFail();
 		super.remove(fileName);
 	}
 
 	@Override
-	public void createFolder(Path rootFolder) throws IOException {
+	public void createFolder() throws IOException {
 		this.mightFail();
-		super.createFolder(rootFolder);
+		super.createFolder();
 	}
 
 }

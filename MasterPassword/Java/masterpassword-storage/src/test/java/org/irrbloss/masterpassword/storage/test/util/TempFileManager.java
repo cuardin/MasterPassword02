@@ -11,7 +11,9 @@ import java.nio.file.attribute.BasicFileAttributes;
 public class TempFileManager {
 	
 	public static Path setup() throws IOException {
-		return Files.createTempDirectory("mpw");
+		Path rootFolder = Files.createTempDirectory("mpw");
+		Files.createDirectories(rootFolder.resolve(".mpw") );
+		return rootFolder;
 	}
 	
 	public static void cleanup(Path tempDir) throws IOException

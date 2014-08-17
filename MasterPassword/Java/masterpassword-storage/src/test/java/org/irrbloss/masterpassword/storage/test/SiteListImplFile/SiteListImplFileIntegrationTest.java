@@ -34,9 +34,9 @@ public class SiteListImplFileIntegrationTest {
 	@Test
 	public void testCreate() throws PermanentSyncException {
 		//Check that creation does not take time. The init function should do anything that takes time.
-		FileSystemHighLevelWrapper fs = new FileSystemLowLevelWrapperDelayed(200);
+		FileSystemHighLevelWrapper fs = new FileSystemLowLevelWrapperDelayed(tempDir,200);
 		long startTime = System.currentTimeMillis();
-		ISiteListImpl file = new SiteListFile( tempDir, new FileSystemHighLevelWrapper(fs) );
+		ISiteListImpl file = new SiteListFile( new FileSystemHighLevelWrapper(fs) );
 		long runTime = System.currentTimeMillis() - startTime;
 		org.junit.Assert.assertTrue( runTime < 100 );
 		
@@ -52,7 +52,7 @@ public class SiteListImplFileIntegrationTest {
 	
 	@Test
 	public void testStoreSiteDescNormal() throws IOException, PermanentSyncException {
-		SiteListFile list = new SiteListFile(tempDir, new FileSystemHighLevelWrapper() );
+		SiteListFile list = new SiteListFile(new FileSystemHighLevelWrapper(tempDir) );
 		list.init();
 
 		SiteDescriptor s1 = new SiteDescriptor("site.com");
@@ -76,7 +76,7 @@ public class SiteListImplFileIntegrationTest {
 
 	@Test
 	public void testGetNonexistentDesc() throws IOException, PermanentSyncException {
-		ISiteListImpl list = new SiteListFile(tempDir, new FileSystemHighLevelWrapper() );
+		ISiteListImpl list = new SiteListFile( new FileSystemHighLevelWrapper(tempDir) );
 		list.init();
 
 		//Make sure we can read a single value as well.
@@ -86,7 +86,7 @@ public class SiteListImplFileIntegrationTest {
 
 	@Test 
 	public void testStoreSiteDescOverWrite() throws IOException, PermanentSyncException {
-		ISiteListImpl list = new SiteListFile(this.tempDir, new FileSystemHighLevelWrapper());
+		ISiteListImpl list = new SiteListFile( new FileSystemHighLevelWrapper(this.tempDir));
 		list.init();
 		
 		SiteDescriptor s1 = new SiteDescriptor("site.com",1,"pin", new Date((long) 2e6) );
@@ -105,7 +105,7 @@ public class SiteListImplFileIntegrationTest {
 
 		SiteDescriptor s1 = new SiteDescriptor("site01.com",1,"pin", new Date(200) );		
 		SiteDescriptor s2 = new SiteDescriptor("site02.com",3,"long", new Date(100) );
-		SiteListFile list01 = new SiteListFile(tempDir, new FileSystemHighLevelWrapper());
+		SiteListFile list01 = new SiteListFile( new FileSystemHighLevelWrapper(tempDir));
 		list01.init();
 		
 		list01.add(s1);
@@ -136,7 +136,7 @@ public class SiteListImplFileIntegrationTest {
 	
 	@Test
 	public void testRemoveSiteDescNormal() throws IOException, PermanentSyncException {
-		ISiteListImpl list = new SiteListFile( tempDir, new FileSystemHighLevelWrapper() );
+		ISiteListImpl list = new SiteListFile( new FileSystemHighLevelWrapper(tempDir) );
 		list.init();
 		
 		SiteDescriptor s1 = new SiteDescriptor("site.com");
@@ -151,7 +151,7 @@ public class SiteListImplFileIntegrationTest {
 
 	@Test
 	public void testClearSiteDescNormal() throws IOException, PermanentSyncException {
-		ISiteListImpl list = new SiteListFile( tempDir, new FileSystemHighLevelWrapper() );
+		ISiteListImpl list = new SiteListFile( new FileSystemHighLevelWrapper(tempDir) );
 		list.init();
 
 		SiteDescriptor s1 = new SiteDescriptor("site01.com");
@@ -168,7 +168,7 @@ public class SiteListImplFileIntegrationTest {
 
 	@Test(expected=NullPointerException.class)
 	public void testAddNull() throws PermanentSyncException {
-		ISiteListImpl file = new SiteListFile(this.tempDir, new FileSystemHighLevelWrapper());
+		ISiteListImpl file = new SiteListFile(new FileSystemHighLevelWrapper(this.tempDir));
 				
 		file.put( "string", null );
 				

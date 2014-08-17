@@ -22,8 +22,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Ignore;
 
-public class FileSystemLowLevelWrapperTest {
-	/*
+public class WebFileSystemLowLevelWrapperTest {
+
 	WebStorageTestHelper helper = null;
 	
 	@Before
@@ -58,25 +58,28 @@ public class FileSystemLowLevelWrapperTest {
 		this.helper.uploadNewFile(fileName01, fileContent01);
 	}
 
-	private String readTestFile(String testFileName) throws IOException {		
-		List<FileListEntry> files = this.helper.listFiles();		
+	private String readTestFile(String fileName) throws BadWebResponse {		
+		return helper.getFile(fileName);		
 	}
+	
+	/*
 
-	@Test @Ignore
+	@Test
 	public void testListFiles() throws IOException {			
 		//Arrange
 		this.writeTestFile();
-		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper();
+		
 		
 		//Act
-		Collection<Path> fileList = fs.listFiles(this.tempDir);
+		Collection<Path> fileList = fs.listFiles();
 		
 		//Assert
 		org.junit.Assert.assertEquals( 2, fileList.size() );
 		org.junit.Assert.assertEquals(this.tempDir.resolve(this.fileName01), 
 				fileList.iterator().next() );		
 	}
-	
+	*/
+	/*
 	@Test @Ignore
 	public void testReadFile() throws IOException
 	{

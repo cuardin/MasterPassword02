@@ -6,19 +6,19 @@ import java.util.Collection;
 
 public interface IFileSystemWrapper {
 
-	public abstract Collection<Path> listFiles(Path folder) throws IOException;
+	public abstract Collection<Path> listFiles() throws IOException;
 
-	public abstract String readFile(Path entry) throws IOException;
+	public abstract String readFile(String fileName) throws IOException;
 
-	public abstract void writeFile(Path entry, String content)
+	public abstract void writeFile(String fileName, String content)
 			throws IOException;
 
-	public abstract void remove(Path fileName) throws IOException;
+	public abstract void remove(String fileName) throws IOException;
 
-	public abstract void createFolder(Path rootFolder) throws IOException;
+	public abstract void createFolder() throws IOException;
 
-	public abstract void clearFolder(Path rootFolder) throws IOException;
+	public abstract void clearFolder() throws IOException;
 
-	public abstract boolean fileExists(Path filePath) throws IOException;
+	public abstract boolean fileExists(String fileName) throws IOException;
 
 }

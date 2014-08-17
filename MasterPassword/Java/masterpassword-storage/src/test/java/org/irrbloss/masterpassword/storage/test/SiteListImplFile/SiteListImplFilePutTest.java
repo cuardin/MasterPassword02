@@ -23,7 +23,7 @@ public class SiteListImplFilePutTest {
 	@Test(expected=NullPointerException.class)
 	public void putTestNull() throws PermanentSyncException 
 	{
-		SiteListFile file = new SiteListFile(testPath, null);
+		SiteListFile file = new SiteListFile(null);
 		
 		file.put("key", null);		
 	}
@@ -36,7 +36,7 @@ public class SiteListImplFilePutTest {
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
 
 		SiteListFile file = EasyMock.createMockBuilder(SiteListFile.class)
-				.withConstructor(testPath,fs)
+				.withConstructor(fs)
 				.addMockedMethod("get").createMock();
 		
 		String siteName = "site01";
@@ -45,7 +45,7 @@ public class SiteListImplFilePutTest {
 		
 		//Anticipate
 		EasyMock.expect(file.get(siteName)).andReturn(null);	
-		fs.writeFile(this.rootPath.resolve(siteNameEncoded),newEntry.toFormatedText());
+		fs.writeFile(siteNameEncoded,newEntry.toFormatedText());
 		
 		//Act
 		EasyMock.replay(file,fs);
@@ -62,7 +62,7 @@ public class SiteListImplFilePutTest {
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
 
 		SiteListFile file = EasyMock.createMockBuilder(SiteListFile.class)
-				.withConstructor(testPath,fs)
+				.withConstructor(fs)
 				.addMockedMethod("get").createMock();
 		
 		String siteName = "site01";
@@ -72,7 +72,7 @@ public class SiteListImplFilePutTest {
 		
 		//Anticipate
 		EasyMock.expect(file.get(siteName)).andReturn(oldEntry);	
-		fs.writeFile(this.rootPath.resolve(siteNameEncoded),newEntry.toFormatedText());
+		fs.writeFile(siteNameEncoded,newEntry.toFormatedText());
 		
 		//Act
 		EasyMock.replay(file,fs);
@@ -89,7 +89,7 @@ public class SiteListImplFilePutTest {
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
 
 		SiteListFile file = EasyMock.createMockBuilder(SiteListFile.class)
-				.withConstructor(testPath,fs)
+				.withConstructor(fs)
 				.addMockedMethod("get").createMock();
 		
 		String siteName = "site01";
@@ -117,7 +117,7 @@ public class SiteListImplFilePutTest {
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
 
 		SiteListFile file = EasyMock.createMockBuilder(SiteListFile.class)
-				.withConstructor(testPath,fs)
+				.withConstructor(fs)
 				.addMockedMethod("get").createMock();
 		
 		String siteName = "site01";
@@ -126,7 +126,7 @@ public class SiteListImplFilePutTest {
 		
 		//Anticipate
 		EasyMock.expect(file.get(siteName)).andReturn(null);	
-		fs.writeFile(this.rootPath.resolve(siteNameEncoded),newEntry.toFormatedText());
+		fs.writeFile(siteNameEncoded,newEntry.toFormatedText());
 		EasyMock.expectLastCall().andThrow(new IOException());
 		
 		//Act

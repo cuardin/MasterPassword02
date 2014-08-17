@@ -14,9 +14,9 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 	private int t;
 	private IFileSystemWrapper fs;
 	
-	public FileSystemHighLevelWrapper( )
+	public FileSystemHighLevelWrapper( Path rootFolder )
 	{
-		this(new FileSystemLowLevelWrapper());
+		this(new FileSystemLowLevelWrapper(rootFolder));
 	}
 
 	public FileSystemHighLevelWrapper( IFileSystemWrapper fs )
@@ -35,10 +35,10 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		}				
 	}
 	
-	public Collection<Path> listFiles(Path folder) throws IOException  {
+	public Collection<Path> listFiles() throws IOException  {
 		for ( int i = 0; i <= n; i++ ) {			
 			try {	
-				return this.fs.listFiles(folder);
+				return this.fs.listFiles();
 			} catch (IOException e) {
 				if ( i == n ) {
 					throw e;
@@ -49,11 +49,11 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		throw new Error("This should never happen");
 	}
 
-	public String readFile(Path entry) throws IOException
+	public String readFile(String fileName) throws IOException
 	{
 		for ( int i = 0; i <= n; i++ ) {			
 			try {
-				return this.fs.readFile(entry);
+				return this.fs.readFile(fileName);
 			} catch (IOException e) {
 				if ( i == n ) {
 					throw e;
@@ -64,11 +64,11 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		throw new Error("This should never happen");
 	}
 	
-	public void writeFile(Path entry, String content) throws IOException 
+	public void writeFile(String fileName, String content) throws IOException 
 	{
 		for ( int i = 0; i <= n; i++ ) {						
 			try {
-				this.fs.writeFile(entry, content);
+				this.fs.writeFile(fileName, content);
 				return;
 			} catch (IOException e) {
 				if ( i == n ) {
@@ -80,7 +80,7 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		throw new Error("This should never happen");
 	}
 	
-	public void remove(Path fileName) throws IOException 
+	public void remove(String fileName) throws IOException 
 	{		
 		for ( int i = 0; i <= n; i++ ) {						
 			try {
@@ -97,11 +97,11 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 	}
 
 
-	public void createFolder(Path rootFolder) throws IOException
+	public void createFolder() throws IOException
 	{
 		for ( int i = 0; i <= n; i++ ) {						
 			try {
-				this.fs.createFolder(rootFolder);
+				this.fs.createFolder();
 				return;
 			} catch (IOException e) {
 				if ( i == n ) {
@@ -113,11 +113,11 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		throw new Error("This should never happen");
 	}
 
-	public void clearFolder(final Path rootFolder) throws IOException
+	public void clearFolder() throws IOException
 	{
 		for ( int i = 0; i <= n; i++ ) {						
 			try {
-				this.fs.clearFolder(rootFolder);
+				this.fs.clearFolder();
 				return;
 			} catch (IOException e) {
 				if ( i == n ) {
@@ -129,11 +129,11 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		throw new Error("This should never happen");
 	}
 
-	public boolean fileExists(Path filePath) throws IOException 
+	public boolean fileExists(String fileName) throws IOException 
 	{
 		for ( int i = 0; i <= n; i++ ) {						
 			try {
-				return this.fs.fileExists(filePath);
+				return this.fs.fileExists(fileName);
 			} catch (IOException e) {
 				if ( i == n ) {
 					throw e;

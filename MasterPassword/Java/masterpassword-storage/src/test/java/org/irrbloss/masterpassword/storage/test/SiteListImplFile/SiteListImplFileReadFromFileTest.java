@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 
 import org.irrbloss.masterpassword.storage.SiteDescriptor;
 import org.irrbloss.masterpassword.storage.Exceptions.PermanentSyncException;
+import org.irrbloss.masterpassword.storage.SiteListImpl.FileSystemLowLevelWrapper;
 import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
 import org.irrbloss.masterpassword.storage.SiteListImpl.SiteListFile;
 import org.junit.Test;
@@ -27,18 +28,18 @@ public class SiteListImplFileReadFromFileTest {
 		//Arrange
 		IFileSystemWrapper fs = createMock(IFileSystemWrapper.class);
 		Path testPath = Paths.get("/tmp/");
-		Path rootPath = testPath.resolve(".mpw");
-		SiteListFile file = new SiteListFile( testPath, fs);
+		//Path rootPath = testPath.resolve(".mpw");
+		SiteListFile file = new SiteListFile(fs);
 
 		//********************
 		//Anticipate
 
 		//Check that the folder exists
-		expect(fs.fileExists(rootPath)).andReturn(true);
+		expect(fs.fileExists(".")).andReturn(true);
 		//Check that the file exists
-		expect(fs.fileExists(rootPath.resolve(this.fileName01))).andReturn(true);
+		expect(fs.fileExists(this.fileName01)).andReturn(true);
 		//Read the file
-		expect(fs.readFile(rootPath.resolve(this.fileName01))).andReturn(this.fileContent01);		
+		expect(fs.readFile(this.fileName01)).andReturn(this.fileContent01);		
 
 		//Act
 		org.easymock.EasyMock.replay(fs);
@@ -55,16 +56,16 @@ public class SiteListImplFileReadFromFileTest {
 	{
 		//*********************
 		//Arrange
-		IFileSystemWrapper fs = createMock(IFileSystemWrapper.class);
-		Path testPath = Paths.get("/tmp/");
-		Path rootPath = testPath.resolve(".mpw");
-		SiteListFile file = new SiteListFile( testPath, fs);
+		FileSystemLowLevelWrapper fs = createMock(FileSystemLowLevelWrapper.class);
+		//Path testPath = Paths.get("/tmp/");
+		//Path rootPath = testPath.resolve(".mpw");
+		SiteListFile file = new SiteListFile(fs);
 
 		//********************
 		//Anticipate
 
 		//Check that the folder does not exist
-		expect(fs.fileExists(rootPath)).andReturn(false);
+		expect(fs.fileExists(".")).andReturn(false);
 		//Don't need to check anything more because we should exit now.		
 
 		//Act
@@ -84,18 +85,18 @@ public class SiteListImplFileReadFromFileTest {
 	{
 		//*********************
 		//Arrange
-		IFileSystemWrapper fs = createMock(IFileSystemWrapper.class);
-		Path testPath = Paths.get("/tmp/");
-		Path rootPath = testPath.resolve(".mpw");
-		SiteListFile file = new SiteListFile( testPath, fs);
+		FileSystemLowLevelWrapper fs = createMock(FileSystemLowLevelWrapper.class);
+		//Path testPath = Paths.get("/tmp/");
+		//Path rootPath = testPath.resolve(".mpw");
+		SiteListFile file = new SiteListFile(fs);
 
 		//********************
 		//Anticipate
 
 		//Check that the folder exists
-		expect(fs.fileExists(rootPath)).andReturn(true);
+		expect(fs.fileExists(".")).andReturn(true);
 		//Check that the file exists
-		expect(fs.fileExists(rootPath.resolve(this.fileName01))).andReturn(false);
+		expect(fs.fileExists(this.fileName01)).andReturn(false);
 		//And now we should return false.		
 
 		//Act
@@ -113,18 +114,18 @@ public class SiteListImplFileReadFromFileTest {
 	{
 		//*********************
 		//Arrange
-		IFileSystemWrapper fs = createMock(IFileSystemWrapper.class);
+		FileSystemLowLevelWrapper fs = createMock(FileSystemLowLevelWrapper.class);
 		Path testPath = Paths.get("/tmp/");
 		Path rootPath = testPath.resolve(".mpw");
-		SiteListFile file = new SiteListFile( testPath, fs);
+		SiteListFile file = new SiteListFile(fs);
 
 		//********************
 		//Anticipate
 
 		//Check that the folder exists
-		expect(fs.fileExists(rootPath)).andReturn(true);
+		expect(fs.fileExists(".")).andReturn(true);
 		//Check that there is an error determining the files existence.
-		expect(fs.fileExists(rootPath.resolve(this.fileName01))).andThrow(new IOException());
+		expect(fs.fileExists(this.fileName01)).andThrow(new IOException());
 
 		//Act
 		org.easymock.EasyMock.replay(fs);
@@ -144,20 +145,20 @@ public class SiteListImplFileReadFromFileTest {
 	{
 		//*********************
 		//Arrange
-		IFileSystemWrapper fs = createMock(IFileSystemWrapper.class);
-		Path testPath = Paths.get("/tmp/");
-		Path rootPath = testPath.resolve(".mpw");
-		SiteListFile file = new SiteListFile( testPath, fs);
+		FileSystemLowLevelWrapper fs = createMock(FileSystemLowLevelWrapper.class);
+		//Path testPath = Paths.get("/tmp/");
+		//Path rootPath = testPath.resolve(".mpw");
+		SiteListFile file = new SiteListFile( fs);
 
 		//********************
 		//Anticipate
 
 		//Check that the folder exists
-		expect(fs.fileExists(rootPath)).andReturn(true);
+		expect(fs.fileExists(".")).andReturn(true);
 		//Check that the file exists
-		expect(fs.fileExists(rootPath.resolve(this.fileName01))).andReturn(true);
+		expect(fs.fileExists(this.fileName01)).andReturn(true);
 		//Read the file
-		expect(fs.readFile(rootPath.resolve(this.fileName01))).andThrow(new IOException());		
+		expect(fs.readFile(this.fileName01)).andThrow(new IOException());		
 
 		//Act
 		org.easymock.EasyMock.replay(fs);				

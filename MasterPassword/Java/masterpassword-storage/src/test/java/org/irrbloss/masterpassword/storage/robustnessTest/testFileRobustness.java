@@ -35,9 +35,9 @@ public class testFileRobustness {
 	public void testWriteSynchronous() throws NoSuchAlgorithmException, PermanentSyncException {
 		//Generate 1000 text strings		
 		
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperUnreliable(0,0.95);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperUnreliable(this.tempDir,0,0.95);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
-		SiteListFile siteList = new SiteListFile(this.tempDir, high);
+		SiteListFile siteList = new SiteListFile(high);
 		siteList.init();
 		
 		MessageDigest md = MessageDigest.getInstance("MD5");

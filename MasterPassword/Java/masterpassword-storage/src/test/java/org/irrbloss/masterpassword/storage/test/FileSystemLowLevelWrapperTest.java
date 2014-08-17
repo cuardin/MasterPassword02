@@ -39,12 +39,12 @@ public class FileSystemLowLevelWrapperTest {
 	
 	private void writeTestFile() throws IOException {		
 		
-		File f = this.tempDir.resolve(fileName01).toFile();	
+		File f = this.tempDir.resolve(".mpw").resolve(fileName01).toFile();	
 		try ( BufferedWriter w = new BufferedWriter(new FileWriter(f)) ) {
 			w.write(fileContent01);
 		}
 		
-		f = this.tempDir.resolve(fileName02).toFile();	
+		f = this.tempDir.resolve(".mpw").resolve(fileName02).toFile();	
 		try ( BufferedWriter w = new BufferedWriter(new FileWriter(f)) ) {
 			w.write(fileContent02);
 		}
@@ -64,14 +64,14 @@ public class FileSystemLowLevelWrapperTest {
 	public void testListFiles() throws IOException {			
 		//Arrange
 		this.writeTestFile();
-		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper();
+		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);
 		
 		//Act
-		Collection<Path> fileList = fs.listFiles(this.tempDir);
+		Collection<Path> fileList = fs.listFiles();
 		
 		//Assert
 		org.junit.Assert.assertEquals( 2, fileList.size() );
-		org.junit.Assert.assertEquals(this.tempDir.resolve(this.fileName01), 
+		org.junit.Assert.assertEquals(this.tempDir.resolve(".mpw").resolve(this.fileName01), 
 				fileList.iterator().next() );		
 	}
 	
@@ -80,10 +80,10 @@ public class FileSystemLowLevelWrapperTest {
 	{
 		//Arrange
 		this.writeTestFile();
-		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper();
+		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);
 		
 		//Act 
-		String content = fs.readFile(this.tempDir.resolve(this.fileName01) );
+		String content = fs.readFile(this.fileName01);
 		
 		//Assert
 		org.junit.Assert.assertEquals(this.fileContent01, content);
@@ -93,13 +93,13 @@ public class FileSystemLowLevelWrapperTest {
 	public void testWriteFile() throws IOException
 	{
 		//Arrange
-		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper();
-		Path testFile = this.tempDir.resolve(this.fileName01);
+		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);
 		
 		//Act
-		fs.writeFile(testFile, this.fileContent01);
+		fs.writeFile(this.fileName01, this.fileContent01);
 		
 		//Assert
+		Path testFile = this.tempDir.resolve(".mpw").resolve(this.fileName01);
 		String readContent = this.readTestFile(testFile);
 		org.junit.Assert.assertEquals(this.fileContent01, readContent );
 	}
@@ -109,14 +109,14 @@ public class FileSystemLowLevelWrapperTest {
 	{
 		//Arrange
 		this.writeTestFile();
-		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper();
-		Path testFile = this.tempDir.resolve(this.fileName01);
+		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);		
 		
 		//Act
-		fs.remove(testFile);
+		fs.remove(this.fileName01);
 		
 		//Assert
 		//We have to test both for existence and nonexistens.
+		Path testFile = this.tempDir.resolve(this.fileName01);
 		org.junit.Assert.assertTrue(Files.notExists(testFile));
 		org.junit.Assert.assertFalse(Files.exists(testFile));
 	
@@ -125,13 +125,12 @@ public class FileSystemLowLevelWrapperTest {
 	@Test
 	public void testCreateFolder() throws IOException
 	{
-		//Arrange
-		String folderName = "testFolder"; 
-		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper();
-		Path testFolder = this.tempDir.resolve(folderName);
+		//Arrange		
+		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);
+		Path testFolder = this.tempDir.resolve(".mpw");
 		
 		//Act
-		fs.createFolder(testFolder);
+		fs.createFolder();
 		
 		//Assert
 		org.junit.Assert.assertTrue(Files.exists(testFolder));
@@ -144,14 +143,14 @@ public class FileSystemLowLevelWrapperTest {
 	{
 		//Arrange
 		this.writeTestFile();
-		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper();		
+		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);		
 		
 		//Act
-		fs.clearFolder(this.tempDir);
+		fs.clearFolder();
 		
 		//Assert
 		//Check that our directory is now empty
-		DirectoryStream<Path> stream = Files.newDirectoryStream(this.tempDir);
+		DirectoryStream<Path> stream = Files.newDirectoryStream(this.tempDir.resolve(".mpw"));
 		org.junit.Assert.assertFalse( stream.iterator().hasNext() );
 
 	}

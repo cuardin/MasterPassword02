@@ -32,7 +32,7 @@ public class SiteListImplFileMiscTest {
 		//Test that we encode the string to the same thing every time;
 
 		//Arrange		
-		SiteListFile list = new SiteListFile(null, null);
+		SiteListFile list = new SiteListFile( null);
 
 		//Act
 		org.junit.Assert.assertEquals( list.encodeString(this.siteName), list.encodeString(this.siteName));
@@ -48,10 +48,10 @@ public class SiteListImplFileMiscTest {
 		//Arrange
 		//Create an FS mock
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
-		ISiteListImpl file = new SiteListFile( testPath, fs);
+		ISiteListImpl file = new SiteListFile(fs);
 
 		//Set expectations
-		fs.createFolder(testPath.resolve(".mpw"));
+		fs.createFolder();
 
 		//Act
 		EasyMock.replay(fs);						
@@ -70,7 +70,7 @@ public class SiteListImplFileMiscTest {
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
 
 		SiteListFile file = EasyMock.createMockBuilder(SiteListFile.class)
-				.withConstructor(testPath,fs)
+				.withConstructor(fs)
 				.addMockedMethod("readFromFile").createMock();		
 		
 		//Set expectations
@@ -97,13 +97,13 @@ public class SiteListImplFileMiscTest {
 		//*********************
 		//Arrange
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);
-		SiteListFile file = new SiteListFile( testPath, fs);
+		SiteListFile file = new SiteListFile(fs);
 
 		//********************
 		//Anticipate
 
 		//Check that the file is deleted.
-		fs.remove(rootPath.resolve(this.siteNameHash));
+		fs.remove(this.siteNameHash);
 
 		//Act
 		 EasyMock.replay(fs);
@@ -120,13 +120,13 @@ public class SiteListImplFileMiscTest {
 		//*********************
 		//Arrange
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);
-		SiteListFile file = new SiteListFile( testPath, fs);
+		SiteListFile file = new SiteListFile( fs);
 
 		//********************
 		//Anticipate
 
 		//Try to delete a file that does not exist.
-		fs.remove(rootPath.resolve(this.siteNameHash));
+		fs.remove(this.siteNameHash);
 		EasyMock.expectLastCall().andThrow(new IOException());
 
 		//Act
@@ -149,13 +149,13 @@ public class SiteListImplFileMiscTest {
 		//*********************
 		//Arrange
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);
-		SiteListFile file = new SiteListFile( testPath, fs);
+		SiteListFile file = new SiteListFile( fs);
 
 		//********************
 		//Anticipate
 
 		//Check that the file is deleted.
-		fs.clearFolder(rootPath);
+		fs.clearFolder();
 
 		//Act
 		EasyMock.replay(fs);
@@ -173,13 +173,13 @@ public class SiteListImplFileMiscTest {
 		//*********************
 		//Arrange
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);
-		SiteListFile file = new SiteListFile( testPath, fs);
+		SiteListFile file = new SiteListFile( fs);
 
 		//********************
 		//Anticipate
 
 		//Try to delete a file that does not exist.
-		fs.clearFolder(this.rootPath);
+		fs.clearFolder();
 		EasyMock.expectLastCall().andThrow(new IOException());
 
 		//Act
@@ -203,7 +203,7 @@ public class SiteListImplFileMiscTest {
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
 
 		SiteListFile file = EasyMock.createMockBuilder(SiteListFile.class)
-				.withConstructor(testPath,fs)
+				.withConstructor(fs)
 				.addMockedMethod("readFromFile").createMock();		
 		
 		//Set expectations
@@ -218,7 +218,7 @@ public class SiteListImplFileMiscTest {
 		expectedAnswer04.add("site01");
 		expectedAnswer04.add("site02");
 		
-		EasyMock.expect(fs.listFiles(rootPath))
+		EasyMock.expect(fs.listFiles())
 			.andReturn(expectedAnswer01);
 		EasyMock.expect(file.readFromFile("site01encoded"))
 			.andReturn(expectedAnswer02);
@@ -244,11 +244,11 @@ public class SiteListImplFileMiscTest {
 		//Create an FS mock
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);		
 
-		SiteListFile file = new SiteListFile(this.testPath, fs);		
+		SiteListFile file = new SiteListFile(fs);		
 		
 		//Anticipate
 		
-		EasyMock.expect(fs.listFiles(rootPath)).andThrow(new IOException());
+		EasyMock.expect(fs.listFiles()).andThrow(new IOException());
 
 		//Act
 		EasyMock.replay(fs);		
@@ -273,7 +273,7 @@ public class SiteListImplFileMiscTest {
 		IFileSystemWrapper fs = EasyMock.createMock(IFileSystemWrapper.class);
 		
 		SiteListFile file = EasyMock.createMockBuilder(SiteListFile.class)
-				.withConstructor(testPath,fs)
+				.withConstructor(fs)
 				.addMockedMethod("put").addMockedMethod("get").createMock();		
 
 		//Anticipate

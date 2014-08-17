@@ -21,19 +21,26 @@ import java.util.Vector;
  */
 public class FileSystemLowLevelWrapper implements IFileSystemWrapper {	
 
-	public Collection<Path> listFiles(Path folder) throws IOException {
+	private Path rootFolder;
+	
+	public FileSystemLowLevelWrapper(Path rootFolder) {
+		this.rootFolder = rootFolder.resolve(".mpw");
+	}
+	
+	public Collection<Path> listFiles() throws IOException {
 		Vector<Path> rValue = new Vector<Path>();
 		DirectoryStream<Path> stream = null;
 
-		stream = Files.newDirectoryStream(folder);			
+		stream = Files.newDirectoryStream(this.rootFolder);			
 		for (Path entry: stream) {
 			rValue.add(entry);
 		}			
 		return rValue;
 	}
 
-	public String readFile(Path entry) throws IOException 
+	public String readFile(String fileName) throws IOException 
 	{
+		Path entry = this.rootFolder.resolve(fileName);
 		try ( BufferedReader reader = new BufferedReader(new FileReader(entry.toFile())) ) {
 			String rValue = "";
 			while ( reader.ready() ) {
@@ -43,23 +50,25 @@ public class FileSystemLowLevelWrapper implements IFileSystemWrapper {
 		} 
 	}
 
-	public void writeFile(Path entry, String content) throws IOException
+	public void writeFile(String fileName, String content) throws IOException
 	{		
+		Path entry = this.rootFolder.resolve(fileName);
 		try ( BufferedWriter writer = new BufferedWriter(new FileWriter(entry.toFile())) ) {
 			writer.write(content);
 			return;
 		}									
 	}
 
-	public void remove(Path fileName) throws IOException {		
-		if ( this.fileExists(fileName) ) {			
-			Files.delete(fileName);					
+	public void remove(String fileName) throws IOException {
+		Path entry = this.rootFolder.resolve(fileName);
+		if ( this.doFileExists(entry) ) {			
+			Files.delete(entry);					
 		}				
 	}
 
-	public void createFolder(Path rootFolder) throws IOException {		
-		if ( !this.fileExists(rootFolder) ) {
-			File f = rootFolder.toFile();			
+	public void createFolder() throws IOException {		
+		if ( !this.doFileExists(this.rootFolder) ) {
+			File f = this.rootFolder.toFile();			
 			if ( !f.mkdirs() ) {
 				throw new IOException("Could not create folder to store files.");
 			}			
@@ -67,8 +76,10 @@ public class FileSystemLowLevelWrapper implements IFileSystemWrapper {
 	}
 
 
-	public void clearFolder(final Path rootFolder) throws IOException {		
-		if ( this.fileExists(rootFolder) ) {
+	public void clearFolder() throws IOException {
+		final Path rootFolder = this.rootFolder;
+		
+		if ( this.doFileExists(rootFolder) ) {
 			Files.walkFileTree(rootFolder, new SimpleFileVisitor<Path>() {
 				@Override
 				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
@@ -95,7 +106,12 @@ public class FileSystemLowLevelWrapper implements IFileSystemWrapper {
 		}
 	}
 
-	public boolean fileExists(Path filePath) throws IOException {
+	public boolean fileExists(String fileName) throws IOException {
+		Path filePath = this.rootFolder.resolve(fileName);
+		return this.doFileExists(filePath);
+	}
+	
+	private boolean doFileExists(Path filePath) throws IOException {
 		boolean exists = Files.exists(filePath);
 		boolean notExists = Files.notExists(filePath);
 		if ( exists && !notExists ) {
@@ -105,5 +121,6 @@ public class FileSystemLowLevelWrapper implements IFileSystemWrapper {
 			return false;			
 		}		
 		throw new IOException("FIle existence could not be determined");			
+
 	}
 }

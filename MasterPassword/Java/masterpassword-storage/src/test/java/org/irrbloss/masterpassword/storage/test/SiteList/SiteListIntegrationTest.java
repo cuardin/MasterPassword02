@@ -45,9 +45,9 @@ public class SiteListIntegrationTest {
 	@Test
 	public void testAddFirstList() throws PermanentSyncException {
 		SiteList list = new SiteList();
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(200);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(this.tempDir,200);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
-		SiteListFile siteList = new SiteListFile(this.tempDir, high);
+		SiteListFile siteList = new SiteListFile( high);
 
 		//Add an implementation. Check for asynchronicity
 		long startTime = System.currentTimeMillis();
@@ -74,10 +74,10 @@ public class SiteListIntegrationTest {
 	@Test 
 	public void testStoreSiteDescNormal() throws PermanentSyncException, InterruptedException, IOException {
 		SiteList list = new SiteList();
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(200);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(this.tempDir,200);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
 
-		ISiteListImpl file = new SiteListFile(this.tempDir, high);
+		ISiteListImpl file = new SiteListFile(high);
 		ISiteListImpl ram = new SiteListRAM();
 		list.addImpl(file);
 		list.addImpl(ram, true );
@@ -126,9 +126,9 @@ public class SiteListIntegrationTest {
 		list.waitForSync();
 		org.junit.Assert.assertEquals(2, list.size() );
 		
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(200);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(this.tempDir,200);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
-		ISiteListImpl file = new SiteListFile(this.tempDir, high );
+		ISiteListImpl file = new SiteListFile( high );
 		list.addImpl(file);		
 		list.put( new SiteDescriptor("Site01.com"));			
 		list.waitForSync();		
@@ -144,10 +144,10 @@ public class SiteListIntegrationTest {
 		SiteList list = new SiteList();
 		
 		ISiteListImpl ram = new SiteListRAM();
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(200);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(this.tempDir,200);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
 
-		ISiteListImpl file = new SiteListFile(this.tempDir, high );
+		ISiteListImpl file = new SiteListFile( high );
 		list.addImpl(ram); list.waitForSync();
 		list.addImpl(file);	list.waitForSync();
 		
@@ -168,9 +168,9 @@ public class SiteListIntegrationTest {
 		
 		ISiteListImpl ram = new SiteListRAM();
 		
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(200);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(this.tempDir,200);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
-		ISiteListImpl file = new SiteListFile(this.tempDir, high );
+		ISiteListImpl file = new SiteListFile( high );
 		list.addImpl(ram); list.waitForSync();
 		list.addImpl(file); list.waitForSync();
 		
@@ -184,9 +184,9 @@ public class SiteListIntegrationTest {
 		
 		ISiteListImpl ram = new SiteListRAM();
 		
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(200);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(this.tempDir, 200);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
-		ISiteListImpl file = new SiteListFile(this.tempDir, high );
+		ISiteListImpl file = new SiteListFile( high );
 		list.addImpl(ram); list.waitForSync();
 		list.addImpl(file); list.waitForSync();
 		
@@ -216,9 +216,9 @@ public class SiteListIntegrationTest {
 		
 		ISiteListImpl ram = new SiteListRAM();
 
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(200);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperDelayed(this.tempDir, 200);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
-		ISiteListImpl file = new SiteListFile( this.tempDir, high );
+		ISiteListImpl file = new SiteListFile( high );
 		list.addImpl(ram); list.waitForSync();
 		list.addImpl(file); list.waitForSync();
 		

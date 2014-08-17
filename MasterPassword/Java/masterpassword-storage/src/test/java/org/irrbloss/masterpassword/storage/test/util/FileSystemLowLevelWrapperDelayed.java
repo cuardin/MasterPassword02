@@ -11,31 +11,31 @@ import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
 public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper {
 
 	@Override
-	public void clearFolder(Path rootFolder) throws IOException {
+	public void clearFolder() throws IOException {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {
 			throw new Error(e);
 		}
 
-		super.clearFolder(rootFolder);
+		super.clearFolder();
 	}
 
 	@Override
-	public boolean fileExists(Path filePath) throws IOException {
+	public boolean fileExists(String fileName) throws IOException {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {
 			throw new Error(e);
 		}
 
-		return super.fileExists(filePath);
+		return super.fileExists(fileName);
 	}
 
 	private int sleepTime;
 
-	public FileSystemLowLevelWrapperDelayed( int sleepTime ) {
-		this(new FileSystemLowLevelWrapper(), sleepTime);		
+	public FileSystemLowLevelWrapperDelayed( Path rootFolder, int sleepTime ) {
+		this(new FileSystemLowLevelWrapper(rootFolder), sleepTime);		
 	}
 	
 	public FileSystemLowLevelWrapperDelayed(IFileSystemWrapper fs, int sleepTime) {
@@ -44,39 +44,39 @@ public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper
 	}
 
 	@Override
-	public Collection<Path> listFiles(Path folder) throws IOException {
+	public Collection<Path> listFiles() throws IOException {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {
 			throw new Error(e);
 		}
-		return super.listFiles(folder);
+		return super.listFiles();
 	}
 
 	@Override
-	public String readFile(Path entry) throws IOException {
-		try {
-			Thread.sleep(this.sleepTime);
-		} catch (InterruptedException e) {
-			throw new Error(e);
-		}
-
-		return super.readFile(entry);
-	}
-
-	@Override
-	public void writeFile(Path entry, String content) throws IOException {
+	public String readFile(String fileName) throws IOException {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {
 			throw new Error(e);
 		}
 
-		super.writeFile(entry, content);
+		return super.readFile(fileName);
 	}
 
 	@Override
-	public void remove(Path fileName) throws IOException {
+	public void writeFile(String fileName, String content) throws IOException {
+		try {
+			Thread.sleep(this.sleepTime);
+		} catch (InterruptedException e) {
+			throw new Error(e);
+		}
+
+		super.writeFile(fileName, content);
+	}
+
+	@Override
+	public void remove(String fileName) throws IOException {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {
@@ -86,7 +86,7 @@ public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper
 		super.remove(fileName);
 	}
 
-	public void createFolder(Path rootFolder) throws IOException 
+	public void createFolder() throws IOException 
 	{
 		try {
 			Thread.sleep(this.sleepTime);
@@ -94,6 +94,6 @@ public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper
 			throw new Error(e);
 		}
 
-		super.createFolder(rootFolder);
+		super.createFolder();
 	}
 }

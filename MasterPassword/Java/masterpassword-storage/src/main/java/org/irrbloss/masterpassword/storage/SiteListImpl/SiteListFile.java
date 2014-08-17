@@ -15,8 +15,7 @@ import org.irrbloss.masterpassword.storage.SiteDescriptor;
 import org.irrbloss.masterpassword.storage.Exceptions.PermanentSyncException;
 
 public class SiteListFile implements ISiteListImpl {
-
-	private Path rootFolder;
+	
 	private IFileSystemWrapper fs;
 	private Lock lock;
 	private MessageDigest md;
@@ -25,20 +24,14 @@ public class SiteListFile implements ISiteListImpl {
 	@Override
 	public void init() throws PermanentSyncException {
 		try {
-			fs.createFolder(rootFolder);
+			fs.createFolder();
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
 		}		
 	}
 
 	//Hidden constructor
-	public SiteListFile(Path baseFolder, IFileSystemWrapper fs ) {
-
-		if ( baseFolder != null ) {
-			this.rootFolder = baseFolder.resolve(".mpw");
-		} else {
-			this.rootFolder = null;
-		}
+	public SiteListFile( IFileSystemWrapper fs ) {
 		
 		this.fs = fs;
 		this.lock = new ReentrantLock();
@@ -57,7 +50,7 @@ public class SiteListFile implements ISiteListImpl {
 		//Return the number of files in the root folder.
 		this.lock.lock();
 		try {
-			return fs.listFiles(this.rootFolder).size();
+			return fs.listFiles().size();
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
 		} finally {
@@ -70,7 +63,7 @@ public class SiteListFile implements ISiteListImpl {
 		String fileName = this.encodeString(key);
 		this.lock.lock();		
 		try {					
-			return fs.fileExists(this.rootFolder.resolve(fileName));		
+			return fs.fileExists(fileName);		
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);	
 		} finally {
@@ -82,15 +75,14 @@ public class SiteListFile implements ISiteListImpl {
 		//Read the fileContent from the file. This has to be locked for thread saefty.
 		String content;		
 		try {
-			this.lock.lock();
-			Path filePath = this.rootFolder.resolve(fileName);
-			if ( !this.fs.fileExists(rootFolder) ) {
-				throw new IOException("Root folder does not exist: " + this.rootFolder );
-			} else if ( !this.fs.fileExists(filePath)) {
+			this.lock.lock();			
+			if ( !this.fs.fileExists(".") ) {
+				throw new IOException("Root folder does not exist." );
+			} else if ( !this.fs.fileExists(fileName)) {
 				return null;
 			} else {
 				//We are now ready to do the actual reading.
-				content = fs.readFile(filePath);
+				content = fs.readFile(fileName);
 			}
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
@@ -113,11 +105,10 @@ public class SiteListFile implements ISiteListImpl {
 
 	@Override
 	public void remove(String key) throws PermanentSyncException {		
-		String fileName = this.encodeString(key);
-		Path path = this.rootFolder.resolve(fileName);
+		String fileName = this.encodeString(key);		
 		try {
 			this.lock.lock();
-			fs.remove(path);
+			fs.remove(fileName);
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
 		} finally {
@@ -129,7 +120,7 @@ public class SiteListFile implements ISiteListImpl {
 	public void clear() throws PermanentSyncException {
 		this.lock.lock(); 
 		try {			
-			this.fs.clearFolder(this.rootFolder);
+			this.fs.clearFolder();
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
 		} finally {
@@ -144,7 +135,7 @@ public class SiteListFile implements ISiteListImpl {
 		Collection<Path> files = null;
 		try {
 			this.lock.lock();
-			files = fs.listFiles(rootFolder);
+			files = fs.listFiles();
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
 		} finally {
@@ -174,7 +165,7 @@ public class SiteListFile implements ISiteListImpl {
 			SiteDescriptor oldValue = this.get(key);
 			if ( oldValue == null || oldValue.getCreationTime().before(value.getCreationTime())) {
 				String fileName = this.encodeString(key);
-				this.fs.writeFile(this.rootFolder.resolve(fileName), value.toFormatedText() );										
+				this.fs.writeFile(fileName, value.toFormatedText() );										
 			}
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);

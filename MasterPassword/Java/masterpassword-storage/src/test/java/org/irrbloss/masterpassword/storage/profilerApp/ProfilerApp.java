@@ -23,9 +23,9 @@ public class ProfilerApp {
 	public static void testWriteSynchronous(Path tempDir) throws NoSuchAlgorithmException, PermanentSyncException {
 		//Generate 1000 text strings		
 		
-		IFileSystemWrapper low = new FileSystemLowLevelWrapperUnreliable(0,0.9);
+		IFileSystemWrapper low = new FileSystemLowLevelWrapperUnreliable(tempDir,0,0.9);
 		IFileSystemWrapper high = new FileSystemHighLevelWrapper(low);
-		SiteListFile siteList = new SiteListFile(tempDir, high);
+		SiteListFile siteList = new SiteListFile(high);
 		siteList.init();
 		
 		MessageDigest md = MessageDigest.getInstance("MD5");
@@ -46,7 +46,7 @@ public class ProfilerApp {
 		 //BufferedReader bufferRead = new BufferedReader(new InputStreamReader(System.in));
 		 //String s = bufferRead.readLine();
 		 System.in.read();		 
-		   
+		   		
 		    
 		Path tempDir = null;
 		try {
