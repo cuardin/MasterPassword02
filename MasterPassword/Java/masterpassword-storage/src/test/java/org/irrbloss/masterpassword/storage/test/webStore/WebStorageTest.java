@@ -37,7 +37,7 @@ public class WebStorageTest {
 	@Test
 	public void testUploadAndDownloadNewFile() throws BadWebResponse {				
 		helper.createUser();	
-		helper.uploadNewFile( "testFile", "testData" );
+		helper.writeFile( "testFile", "testData" );
 		List<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);
 		org.junit.Assert.assertEquals(list.get(0), "testFile");
@@ -56,7 +56,7 @@ public class WebStorageTest {
 	@Test
 	public void testDeleteFile() throws BadWebResponse {				
 		helper.createUser();	
-		helper.uploadNewFile( "testFile", "testData" );
+		helper.writeFile( "testFile", "testData" );
 		List<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
@@ -68,11 +68,11 @@ public class WebStorageTest {
 	@Test
 	public void testOvrerwriteFile() throws BadWebResponse {				
 		helper.createUser();	
-		helper.uploadNewFile( "testFile", "testData" );
+		helper.writeFile( "testFile", "testData" );
 		List<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
-		helper.uploadFileAndOverwrite(list.get(0), "testData2");
+		helper.writeFile(list.get(0), "testData2");
 						
 		String data = helper.getFile(list.get(0));
 		org.junit.Assert.assertEquals("testData2", data);

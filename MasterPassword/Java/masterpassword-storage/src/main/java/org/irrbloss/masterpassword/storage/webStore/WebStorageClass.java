@@ -1,13 +1,13 @@
 package org.irrbloss.masterpassword.storage.webStore;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.irrbloss.masterpassword.storage.test.webStore.NetworkSecrets;
 
-public class WebStorageClass {
+public class WebStorageClass   
+{
 
 	protected String username = null; //"cuardin";
 	protected String password = null;
@@ -52,27 +52,15 @@ public class WebStorageClass {
 		map.put("password", password );		
 		return map;
 	}
-
-	public void uploadNewFile( String fileName, Serializable data ) throws BadWebResponse
-	{		
-		HashMap<String,String> map = this.buildBasicHashMap();
-		map.put("fileName", fileName );
-		map.put("fileContents", QueryBuilderClass.convertToBase64(data) );
-		
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "createNewFile.php", map);
-
-		this.assertReturnValue(rValue);
-	}
 	
-	public void uploadFileAndOverwrite ( String fileName, Serializable data ) throws BadWebResponse 
+	public void writeFile( String fileName, String data ) throws BadWebResponse 
 	{
 		HashMap<String,String> map = this.buildBasicHashMap();	
 		map.put("fileName", fileName );
-		map.put("fileContents", QueryBuilderClass.convertToBase64(data) );
+		map.put("fileContents", data );
 		
 		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "overwriteFile.php", map);
+				this.rootAddres + "uploadFile.php", map);
 		
 		this.assertReturnValue(rValue);
 
@@ -120,7 +108,7 @@ public class WebStorageClass {
 		this.assertReturnValue(rValue);
 		
 		//Drop the first 4 characters that are header "OK: ".		
-		return QueryBuilderClass.convertFromBase64(rValue.substring(4));
+		return rValue.substring(4);
 
 	}
 

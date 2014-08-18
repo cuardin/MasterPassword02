@@ -1,14 +1,9 @@
 package org.irrbloss.masterpassword.storage.webStore;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -84,44 +79,4 @@ public class QueryBuilderClass {
 		}
 		return rValue;
 	}
-
-	public static String convertToBase64 ( Serializable obj ) {		
-		try {			
-			ByteArrayOutputStream bout = new ByteArrayOutputStream();
-			ObjectOutputStream out = new ObjectOutputStream(bout);
-			
-			out.writeObject(obj);			
-			out.close();
-			
-			byte[] rawData = bout.toByteArray();
-			
-			//Now convert to base64.
-			return javax.xml.bind.DatatypeConverter.printBase64Binary(rawData);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "FAIL: Error serializing object.";
-		}
-	}
-
-	
-	public static String convertFromBase64 ( String data ) {		
-		try {			
-			
-			//Convert from base64
-			byte[] rawData = javax.xml.bind.DatatypeConverter.parseBase64Binary(data);
-			
-			//Then parse to an object.
-			ByteArrayInputStream bin = new ByteArrayInputStream(rawData);
-			ObjectInputStream in = new ObjectInputStream(bin);			
-			Object copy = in.readObject();
-			in.close();
-			return (String)copy;
-									
-		} catch ( Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-
 }

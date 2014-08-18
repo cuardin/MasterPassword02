@@ -7,19 +7,7 @@ import org.junit.Test;
 
 public class WebStorageTestQueryBuilder {
 
-	private String baseURL = "http://masterpassword.armyr.se/php_scripts/";
-	
-	@Test
-	public void testConvertFromAndToBase64() {
-		//Circular argument, but who cares.
-		String a = "This is a test string";
-		String base64 = QueryBuilderClass.convertToBase64(a);
-		String b = (String)QueryBuilderClass.convertFromBase64(base64);
-		
-		org.junit.Assert.assertEquals ( a, b );
-		org.junit.Assert.assertEquals ( 
-				"rO0ABXQAFVRoaXMgaXMgYSB0ZXN0IHN0cmluZw==", base64 );
-	}
+	private String baseURL = "http://masterpassword.armyr.se/php_scripts/";	
 
 	@Test
 	public void testQueryGet()
