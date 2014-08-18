@@ -91,4 +91,10 @@ public class WebStorageTest {
 		helper.setPassword( "newPass" );
 		org.junit.Assert.assertFalse( helper.testAuthentication() );
 	}
+	
+	@Test
+	public void testDeleteAllFilesBelongingTo()
+	{
+		org.junit.Assert.fail("Not implemented yet.");
+	}
 }
