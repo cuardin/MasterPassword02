@@ -1,13 +1,15 @@
 package org.irrbloss.masterpassword.storage.webStore;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
 import org.irrbloss.masterpassword.storage.test.webStore.NetworkSecrets;
 
-public class WebStorageClass   
+public class WebStorageClass implements IFileSystemWrapper   
 {
 
 	protected String username = null; //"cuardin";
@@ -19,22 +21,22 @@ public class WebStorageClass
 	public boolean getNeedLogin() {
 		return this.needLogin;
 	}
-	
+
 	public void setUserAndPass( String username, String password ) 
 	{
 		this.username = username;
 		this.password = password;	
 	}
-	
+
 	public boolean testAuthentication() 
 	{
 		HashMap<String,String> map = this.buildBasicHashMap();
 		if ( map == null ) //In case no username or password has been supplied, there is no point in checking.
 			return false;
-	
+
 		String rValue = QueryBuilderClass.httpPost(
 				this.rootAddres + "authenticateUser.php", map);		
-		
+
 		try {
 			this.assertReturnValue(rValue);
 			return true;
@@ -43,7 +45,7 @@ public class WebStorageClass
 			return false;
 		}
 	}
-	
+
 	protected HashMap<String, String> buildBasicHashMap() {
 		if ( username == null || password == null ) {
 			return null;
@@ -53,64 +55,81 @@ public class WebStorageClass
 		map.put("password", password );		
 		return map;
 	}
-	
-	public void writeFile( String fileName, String data ) throws BadWebResponse 
-	{
-		HashMap<String,String> map = this.buildBasicHashMap();	
-		map.put("fileName", fileName );
-		map.put("fileContents", data );
-		
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "uploadFile.php", map);
-		
-		this.assertReturnValue(rValue);
 
-	}
-	
-	public void remove ( String fileName ) throws BadWebResponse 
+	public void writeFile( String fileName, String data ) throws IOException 
 	{
-		HashMap<String,String> map = this.buildBasicHashMap();	
-		map.put("fileName", fileName );
-				
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "deleteFile.php", map);
-		
-		this.assertReturnValue(rValue);
-	
-	}
-	 
-	public Collection<String> listFiles( ) throws BadWebResponse 
-	{
-		HashMap<String,String> map = this.buildBasicHashMap();	
-		
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres  + "listFiles.php", map);
-		
-		
-		this.assertReturnValue(rValue);
-		
-		//TODO: Considder if the list of strings should be generated directly.
-		List<FileListEntry> fileList = FileListParser.parseFileList(rValue);
-		List<String> rList = new LinkedList<String>();
-		for ( FileListEntry e : fileList ) {
-			rList.add(e.getFileName());
+		try {
+			HashMap<String,String> map = this.buildBasicHashMap();	
+			map.put("fileName", fileName );
+			map.put("fileContents", data );
+
+			String rValue = QueryBuilderClass.httpPost(
+					this.rootAddres + "uploadFile.php", map);
+
+			this.assertReturnValue(rValue);
+		} catch ( BadWebResponse e ) {
+			throw new IOException(e);
 		}
-		return rList;
-		
-	}
-			
-	public String readFile(String fileName) throws BadWebResponse {
-		HashMap<String,String> map = this.buildBasicHashMap();	
-		map.put("fileName", fileName);
-				
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "getFile.php", map);
-		
-		this.assertReturnValue(rValue);
-		
-		//Drop the first 4 characters that are header "OK: ".		
-		return rValue.substring(4);
 
+
+	}
+
+	public void remove ( String fileName ) throws IOException 
+	{
+		try {
+			HashMap<String,String> map = this.buildBasicHashMap();	
+			map.put("fileName", fileName );
+
+			String rValue = QueryBuilderClass.httpPost(
+					this.rootAddres + "deleteFile.php", map);
+
+			this.assertReturnValue(rValue);
+		} catch ( BadWebResponse e ) {
+			throw new IOException(e);
+		}
+
+	}
+
+	public Collection<String> listFiles( ) throws IOException 
+	{
+		try {
+			HashMap<String,String> map = this.buildBasicHashMap();	
+
+			String rValue = QueryBuilderClass.httpPost(
+					this.rootAddres  + "listFiles.php", map);
+
+
+			this.assertReturnValue(rValue);
+
+			//TODO: Considder if the list of strings should be generated directly.
+			List<FileListEntry> fileList = FileListParser.parseFileList(rValue);
+			List<String> rList = new LinkedList<String>();
+			for ( FileListEntry e : fileList ) {
+				rList.add(e.getFileName());
+			}
+			return rList;
+		} catch ( BadWebResponse e ) {
+			throw new IOException(e);
+		}
+
+
+	}
+
+	public String readFile(String fileName) throws IOException {
+		try {
+			HashMap<String,String> map = this.buildBasicHashMap();	
+			map.put("fileName", fileName);
+
+			String rValue = QueryBuilderClass.httpPost(
+					this.rootAddres + "getFile.php", map);
+
+			this.assertReturnValue(rValue);
+
+			//Drop the first 4 characters that are header "OK: ".		
+			return rValue.substring(4);
+		} catch ( BadWebResponse e ) {
+			throw new IOException(e);
+		}
 	}
 
 	protected void assertReturnValue( String str ) throws BadWebResponse 
@@ -119,44 +138,58 @@ public class WebStorageClass
 			throw new BadWebResponse ( str );
 		}
 	}
-	
-	public void createUser() throws BadWebResponse {		
-		HashMap<String,String> map = this.buildBasicHashMap();			
-		map.put("userCreationKey", this.userCreationKey  );
-		map.put("email", "test@armyr.se");		
-		
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "createUser.php", map);
-		this.assertReturnValue(rValue);
-		
-		map.put("privateKey", NetworkSecrets.getPrivateKey()  );
-		rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "verifyEmail.php", map);
-		this.assertReturnValue(rValue);
-	}
-	
-	public boolean fileExists(String fileName) throws BadWebResponse {
-		HashMap<String,String> map = this.buildBasicHashMap();	
-		map.put("fileName", fileName);
-				
-		String rValue = QueryBuilderClass.httpPost(
-				this.rootAddres + "fileExists.php", map);
-		
-		this.assertReturnValue(rValue);
-		
-		//Drop the first 4 characters that are header "OK: ".		
-		String result = rValue.substring(4);
-		
-		//Check if we got true or false
-		if ( result.equals("true")) {
-			return true;
-		} else if ( result.equals("false")) {
-			return false;
-		} else {
-			throw new BadWebResponse("Unexpected result returned.");
+
+	public void initialize() throws IOException {
+		try {
+			HashMap<String,String> map = this.buildBasicHashMap();			
+			map.put("userCreationKey", this.userCreationKey  );
+			map.put("email", "test@armyr.se");		
+
+			String rValue = QueryBuilderClass.httpPost(
+					this.rootAddres + "createUser.php", map);
+			this.assertReturnValue(rValue);
+
+			map.put("privateKey", NetworkSecrets.getPrivateKey()  );
+			rValue = QueryBuilderClass.httpPost(
+					this.rootAddres + "verifyEmail.php", map);
+			this.assertReturnValue(rValue);
+		} catch ( BadWebResponse e ) {
+			throw new IOException(e);
 		}
-		
 
 	}
+
+	public boolean fileExists(String fileName) throws IOException {
+		try {
+			HashMap<String,String> map = this.buildBasicHashMap();	
+			map.put("fileName", fileName);
+
+			String rValue = QueryBuilderClass.httpPost(
+					this.rootAddres + "fileExists.php", map);
+
+			this.assertReturnValue(rValue);
+
+			//Drop the first 4 characters that are header "OK: ".		
+			String result = rValue.substring(4);
+
+			//Check if we got true or false
+			if ( result.equals("true")) {
+				return true;
+			} else if ( result.equals("false")) {
+				return false;
+			} else {
+				throw new BadWebResponse("Unexpected result returned.");
+			}
+		} catch ( BadWebResponse e ) {
+			throw new IOException(e);
+		}
+	}
+
+	@Override
+	public void cleanUp() throws IOException {
+		// TODO Auto-generated method stub
+
+	}
+
 
 }

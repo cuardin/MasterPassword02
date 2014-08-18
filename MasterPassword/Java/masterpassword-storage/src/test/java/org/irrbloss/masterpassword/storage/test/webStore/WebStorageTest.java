@@ -1,9 +1,9 @@
 package org.irrbloss.masterpassword.storage.test.webStore;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 
-import org.irrbloss.masterpassword.storage.webStore.BadWebResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +35,8 @@ public class WebStorageTest {
 	}
 	
 	@Test
-	public void testUploadAndDownloadNewFile() throws BadWebResponse {				
-		helper.createUser();
+	public void testUploadAndDownloadNewFile() throws IOException {				
+		helper.initialize();
 		//Check that the file does not exist
 		org.junit.Assert.assertFalse ( helper.fileExists("testFile"));
 		
@@ -53,15 +53,15 @@ public class WebStorageTest {
 	}
 	
 	@Test
-	public void testEradicateUser() throws BadWebResponse {
-		helper.createUser(); //First create a user.
+	public void testEradicateUser() throws IOException  {
+		helper.initialize(); //First create a user.
 		helper.eradicateTestUser();
 		org.junit.Assert.assertFalse( helper.testAuthentication() );		
 	}
 
 	@Test
-	public void testDeleteFile() throws BadWebResponse {				
-		helper.createUser();	
+	public void testDeleteFile() throws IOException {				
+		helper.initialize();	
 		helper.writeFile( "testFile", "testData" );
 		Collection<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
@@ -72,8 +72,8 @@ public class WebStorageTest {
 	}
 	
 	@Test
-	public void testOvrerwriteFile() throws BadWebResponse {				
-		helper.createUser();	
+	public void testOvrerwriteFile() throws IOException {				
+		helper.initialize();	
 		helper.writeFile( "testFile", "testData" );
 		Collection<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
@@ -85,8 +85,8 @@ public class WebStorageTest {
 	}
 
 	@Test
-	public void testAuthenticateUser() throws BadWebResponse {				
-		helper.createUser();	
+	public void testAuthenticateUser() throws IOException {				
+		helper.initialize();	
 		org.junit.Assert.assertTrue( helper.testAuthentication() );		
 		helper.setPassword( "newPass" );
 		org.junit.Assert.assertFalse( helper.testAuthentication() );

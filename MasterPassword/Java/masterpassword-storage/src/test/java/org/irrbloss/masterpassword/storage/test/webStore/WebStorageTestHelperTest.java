@@ -1,6 +1,7 @@
 package org.irrbloss.masterpassword.storage.test.webStore;
 
-import org.irrbloss.masterpassword.storage.webStore.BadWebResponse;
+import java.io.IOException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,15 +31,15 @@ public class WebStorageTestHelperTest {
 	}
 	
 	@Test
-	public void testCreateUser() throws BadWebResponse {		
-		helper.createUser();	
+	public void testCreateUser() throws IOException {		
+		helper.initialize();	
 		org.junit.Assert.assertTrue( helper.testAuthentication() );
 	
 	}
 	
 	@Test
-	public void testEradicateUser() throws BadWebResponse {
-		helper.createUser(); //First create a user.
+	public void testEradicateUser() throws IOException {
+		helper.initialize(); //First create a user.
 		helper.eradicateTestUser();
 		org.junit.Assert.assertFalse( helper.testAuthentication() );		
 	}
