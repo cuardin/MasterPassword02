@@ -1,5 +1,7 @@
 package org.irrbloss.masterpassword.storage.webStore;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -66,7 +68,7 @@ public class WebStorageClass
 
 	}
 	
-	public void deleteFile ( String fileName ) throws BadWebResponse 
+	public void remove ( String fileName ) throws BadWebResponse 
 	{
 		HashMap<String,String> map = this.buildBasicHashMap();	
 		map.put("fileName", fileName );
@@ -77,8 +79,8 @@ public class WebStorageClass
 		this.assertReturnValue(rValue);
 	
 	}
-	
-	public List<String> listFiles( ) throws BadWebResponse 
+	 
+	public Collection<String> listFiles( ) throws BadWebResponse 
 	{
 		HashMap<String,String> map = this.buildBasicHashMap();	
 		
@@ -98,7 +100,7 @@ public class WebStorageClass
 		
 	}
 			
-	public String getFile(String fileName) throws BadWebResponse {
+	public String readFile(String fileName) throws BadWebResponse {
 		HashMap<String,String> map = this.buildBasicHashMap();	
 		map.put("fileName", fileName);
 				
@@ -132,6 +134,30 @@ public class WebStorageClass
 		rValue = QueryBuilderClass.httpPost(
 				this.rootAddres + "verifyEmail.php", map);
 		this.assertReturnValue(rValue);
+	}
+	
+	public boolean fileExists(String fileName) throws BadWebResponse {
+		HashMap<String,String> map = this.buildBasicHashMap();	
+		map.put("fileName", fileName);
+				
+		String rValue = QueryBuilderClass.httpPost(
+				this.rootAddres + "fileExists.php", map);
+		
+		this.assertReturnValue(rValue);
+		
+		//Drop the first 4 characters that are header "OK: ".		
+		String result = rValue.substring(4);
+		
+		//Check if we got true or false
+		if ( result.equals("true")) {
+			return true;
+		} else if ( result.equals("false")) {
+			return false;
+		} else {
+			throw new BadWebResponse("Unexpected result returned.");
+		}
+		
+
 	}
 
 }

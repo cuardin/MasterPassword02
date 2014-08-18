@@ -1,7 +1,7 @@
 package org.irrbloss.masterpassword.storage.test.webStore;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Collection;
 
 import org.irrbloss.masterpassword.storage.webStore.BadWebResponse;
 import org.junit.After;
@@ -36,13 +36,19 @@ public class WebStorageTest {
 	
 	@Test
 	public void testUploadAndDownloadNewFile() throws BadWebResponse {				
-		helper.createUser();	
+		helper.createUser();
+		//Check that the file does not exist
+		org.junit.Assert.assertFalse ( helper.fileExists("testFile"));
+		
 		helper.writeFile( "testFile", "testData" );
-		List<String> list = helper.listFiles();
+		Collection<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);
-		org.junit.Assert.assertEquals(list.get(0), "testFile");
+		org.junit.Assert.assertEquals(list.iterator().next(), "testFile");
+		
+		//Check that the file does exist now
+		org.junit.Assert.assertTrue ( helper.fileExists("testFile"));
 				
-		String data = helper.getFile(list.get(0));
+		String data = helper.readFile(list.iterator().next());
 		org.junit.Assert.assertEquals("testData", data);		
 	}
 	
@@ -57,10 +63,10 @@ public class WebStorageTest {
 	public void testDeleteFile() throws BadWebResponse {				
 		helper.createUser();	
 		helper.writeFile( "testFile", "testData" );
-		List<String> list = helper.listFiles();
+		Collection<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
-		helper.deleteFile(list.get(0));
+		helper.remove(list.iterator().next());
 		list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 0);				
 	}
@@ -69,12 +75,12 @@ public class WebStorageTest {
 	public void testOvrerwriteFile() throws BadWebResponse {				
 		helper.createUser();	
 		helper.writeFile( "testFile", "testData" );
-		List<String> list = helper.listFiles();
+		Collection<String> list = helper.listFiles();
 		org.junit.Assert.assertEquals(list.size(), 1);		
 				
-		helper.writeFile(list.get(0), "testData2");
+		helper.writeFile(list.iterator().next(), "testData2");
 						
-		String data = helper.getFile(list.get(0));
+		String data = helper.readFile(list.iterator().next());
 		org.junit.Assert.assertEquals("testData2", data);
 	}
 
