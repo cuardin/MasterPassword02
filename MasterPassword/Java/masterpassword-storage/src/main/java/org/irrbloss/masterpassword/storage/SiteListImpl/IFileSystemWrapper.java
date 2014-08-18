@@ -14,9 +14,9 @@ public interface IFileSystemWrapper {
 
 	public abstract void remove(String fileName) throws IOException;
 
-	public abstract void createFolder() throws IOException;
+	public abstract void initialize() throws IOException;
 
-	public abstract void clearFolder() throws IOException;
+	public abstract void cleanUp() throws IOException;
 
 	public abstract boolean fileExists(String fileName) throws IOException;
 

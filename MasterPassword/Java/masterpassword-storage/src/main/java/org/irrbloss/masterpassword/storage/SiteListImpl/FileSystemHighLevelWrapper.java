@@ -97,11 +97,11 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 	}
 
 
-	public void createFolder() throws IOException
+	public void initialize() throws IOException
 	{
 		for ( int i = 0; i <= n; i++ ) {						
 			try {
-				this.fs.createFolder();
+				this.fs.initialize();
 				return;
 			} catch (IOException e) {
 				if ( i == n ) {
@@ -113,11 +113,11 @@ public class FileSystemHighLevelWrapper implements IFileSystemWrapper {
 		throw new Error("This should never happen");
 	}
 
-	public void clearFolder() throws IOException
+	public void cleanUp() throws IOException
 	{
 		for ( int i = 0; i <= n; i++ ) {						
 			try {
-				this.fs.clearFolder();
+				this.fs.cleanUp();
 				return;
 			} catch (IOException e) {
 				if ( i == n ) {

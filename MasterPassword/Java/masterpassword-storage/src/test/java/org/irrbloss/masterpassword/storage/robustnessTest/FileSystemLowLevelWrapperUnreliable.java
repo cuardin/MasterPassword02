@@ -39,8 +39,8 @@ public class FileSystemLowLevelWrapperUnreliable extends FileSystemLowLevelWrapp
 	}
 
 	@Override
-	public void clearFolder() throws IOException {
-		super.clearFolder();
+	public void cleanUp() throws IOException {
+		super.cleanUp();
 	}
 
 	@Override
@@ -74,9 +74,9 @@ public class FileSystemLowLevelWrapperUnreliable extends FileSystemLowLevelWrapp
 	}
 
 	@Override
-	public void createFolder() throws IOException {
+	public void initialize() throws IOException {
 		this.mightFail();
-		super.createFolder();
+		super.initialize();
 	}
 
 }

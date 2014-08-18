@@ -23,7 +23,7 @@ public class SiteListFile implements ISiteListImpl {
 	@Override
 	public void init() throws PermanentSyncException {
 		try {
-			fs.createFolder();
+			fs.initialize();
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
 		}		
@@ -119,7 +119,7 @@ public class SiteListFile implements ISiteListImpl {
 	public void clear() throws PermanentSyncException {
 		this.lock.lock(); 
 		try {			
-			this.fs.clearFolder();
+			this.fs.cleanUp();
 		} catch (IOException e) {
 			throw new PermanentSyncException(e);
 		} finally {

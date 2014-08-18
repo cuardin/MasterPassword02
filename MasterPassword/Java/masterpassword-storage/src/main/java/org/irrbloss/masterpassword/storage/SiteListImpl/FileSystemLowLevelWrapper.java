@@ -66,7 +66,7 @@ public class FileSystemLowLevelWrapper implements IFileSystemWrapper {
 		}				
 	}
 
-	public void createFolder() throws IOException {		
+	public void initialize() throws IOException {		
 		if ( !this.doFileExists(this.rootFolder) ) {
 			File f = this.rootFolder.toFile();			
 			if ( !f.mkdirs() ) {
@@ -76,7 +76,7 @@ public class FileSystemLowLevelWrapper implements IFileSystemWrapper {
 	}
 
 
-	public void clearFolder() throws IOException {
+	public void cleanUp() throws IOException {
 		final Path rootFolder = this.rootFolder;
 		
 		if ( this.doFileExists(rootFolder) ) {

@@ -130,7 +130,7 @@ public class FileSystemLowLevelWrapperTest {
 		Path testFolder = this.tempDir.resolve(".mpw");
 		
 		//Act
-		fs.createFolder();
+		fs.initialize();
 		
 		//Assert
 		org.junit.Assert.assertTrue(Files.exists(testFolder));
@@ -146,7 +146,7 @@ public class FileSystemLowLevelWrapperTest {
 		FileSystemLowLevelWrapper fs = new FileSystemLowLevelWrapper(this.tempDir);		
 		
 		//Act
-		fs.clearFolder();
+		fs.cleanUp();
 		
 		//Assert
 		//Check that our directory is now empty

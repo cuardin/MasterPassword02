@@ -11,14 +11,14 @@ import org.irrbloss.masterpassword.storage.SiteListImpl.IFileSystemWrapper;
 public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper {
 
 	@Override
-	public void clearFolder() throws IOException {
+	public void cleanUp() throws IOException {
 		try {
 			Thread.sleep(this.sleepTime);
 		} catch (InterruptedException e) {
 			throw new Error(e);
 		}
 
-		super.clearFolder();
+		super.cleanUp();
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper
 		super.remove(fileName);
 	}
 
-	public void createFolder() throws IOException 
+	public void initialize() throws IOException 
 	{
 		try {
 			Thread.sleep(this.sleepTime);
@@ -94,6 +94,6 @@ public class FileSystemLowLevelWrapperDelayed extends FileSystemHighLevelWrapper
 			throw new Error(e);
 		}
 
-		super.createFolder();
+		super.initialize();
 	}
 }

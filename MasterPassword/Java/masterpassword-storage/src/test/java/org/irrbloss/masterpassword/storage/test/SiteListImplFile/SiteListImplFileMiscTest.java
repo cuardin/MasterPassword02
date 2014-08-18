@@ -49,7 +49,7 @@ public class SiteListImplFileMiscTest {
 		ISiteListImpl file = new SiteListFile(fs);
 
 		//Set expectations
-		fs.createFolder();
+		fs.initialize();
 
 		//Act
 		EasyMock.replay(fs);						
@@ -153,7 +153,7 @@ public class SiteListImplFileMiscTest {
 		//Anticipate
 
 		//Check that the file is deleted.
-		fs.clearFolder();
+		fs.cleanUp();
 
 		//Act
 		EasyMock.replay(fs);
@@ -177,7 +177,7 @@ public class SiteListImplFileMiscTest {
 		//Anticipate
 
 		//Try to delete a file that does not exist.
-		fs.clearFolder();
+		fs.cleanUp();
 		EasyMock.expectLastCall().andThrow(new IOException());
 
 		//Act
