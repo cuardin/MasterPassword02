@@ -43,13 +43,13 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     
     //*****************************************************
 	// Calculate the master key salt.
-	char *mpNameSpace = "com.lyndir.masterpassword";
+	char *mpNameSpace = "com.lyndir.masterpassword"; //Must be a few chars shorter than MAXSTRLEN
 	const uint32_t n_userNameLength = htonl((const u_long)strlen(userName));
 	//Is this needed now?
     size_t masterKeySaltLength = strlen(mpNameSpace) + sizeof(n_userNameLength)+strlen(userName);
 
-	char masterKeySalt[masterKeySaltLength];
-    memset(masterKeySalt, 0, masterKeySaltLength);
+	char masterKeySalt[2*MAXSTRLEN];
+	memset(masterKeySalt, 0, 2 * MAXSTRLEN);
 
 	char *mKS = masterKeySalt;
 	memcpy(mKS, mpNameSpace, strlen(mpNameSpace));
@@ -64,6 +64,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     //Check that we ended up where we expected. This is only to check for coding errors since the code
     //above quarantees this.
 	if (mKS - masterKeySalt != masterKeySaltLength) {
+		memset(masterKeySalt, 0, 2*MAXSTRLEN);
 		sprintf(password, "Error preparing the salt" );
 		return -1;
 	}
@@ -78,7 +79,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     {
     
         //We make sure that at least we do not leave any copies of sensitive info in RAM.
-        memset(masterKeySalt, 0, masterKeySaltLength);
+		memset(masterKeySalt, 0, 2 * MAXSTRLEN);
         memset(masterKey,0,MP_dkLen);
         
 		sprintf(password,"Could not generate master key: %d\n", errno);
@@ -86,7 +87,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 	}
     
     //We make sure that at least we do not leave any copies of sensitive info in RAM.
-    memset(masterKeySalt, 0, masterKeySaltLength);
+	memset(masterKeySalt, 0, 2 * MAXSTRLEN);
     
 	trc("masterPassword Hex: %s\n", Hex(masterPassword, strlen(masterPassword)));
 	trc("masterPassword ID: %s\n", IDForBuf(masterPassword, strlen(masterPassword)));
@@ -98,8 +99,8 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 	const uint32_t n_siteCounter = htonl(siteCounter);
 	size_t sitePasswordInfoLength = strlen(mpNameSpace) + sizeof(n_siteNameLength)+strlen(siteName) + sizeof(n_siteCounter);
 
-	char sitePasswordInfo[sitePasswordInfoLength];
-    memset( sitePasswordInfo, 0, sitePasswordInfoLength );
+	char sitePasswordInfo[2*MAXSTRLEN];
+	memset(sitePasswordInfo, 0, 2 * MAXSTRLEN );
     char* sPI = sitePasswordInfo;
 
 	memcpy(sPI, mpNameSpace, strlen(mpNameSpace));
@@ -118,7 +119,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 	if (sPI - sitePasswordInfo != sitePasswordInfoLength) {
         //We make sure we do not leave sensitive info in RAM.
         memset(masterKey, 0, MP_dkLen);
-        memset(sitePasswordInfo, 0, sitePasswordInfoLength);
+        memset(sitePasswordInfo, 0, 2*MAXSTRLEN);
 
 		fprintf(stderr, "Coding error when building the sitePasswordInfo seed.\n" );
 		return -1;
@@ -132,7 +133,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 
     //We make sure we do not leave sensitive info in RAM.
 	memset(masterKey, 0, MP_dkLen);
-	memset(sitePasswordInfo, 0, sitePasswordInfoLength);
+	memset(sitePasswordInfo, 0, 2*MAXSTRLEN);
 	   
 	trc("sitePasswordSeed ID: %s\n", IDForBuf(sitePasswordSeed, 32));
 
@@ -164,13 +165,13 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     
     //Set the entire password memory to 0 to ensure null termination.
     memset( password, 0, passLen*sizeof(password[0]) );
-	for (int c = 0; c < strlen(cipher); ++c) {
+	for (unsigned int c = 0; c < strlen(cipher); ++c) {
         password[c] = CharacterFromClass(cipher[c], sitePasswordSeed[c + 1]);
         trc("class %c, character: %c\n", cipher[c], password[c]);
 	}
 	
 	//We make sure we do not leave sensitive info in the RAM.
-	memset(sitePasswordSeed, 0, sizeof(sitePasswordSeed));
+	memset(sitePasswordSeed, 0, MAXPASSLEN);
 	
 	return 0;
 }

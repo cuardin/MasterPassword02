@@ -19,8 +19,12 @@
 #define BUFFER_LENGTH 265
 
 const MPElementType TypeWithName(const char *typeName) {
-    char lowerTypeName[BUFFER_LENGTH];
-    strlcpy(lowerTypeName, typeName, BUFFER_LENGTH);
+	if (strlen(typeName) > BUFFER_LENGTH) {
+		fprintf(stderr, "Too long string supplied\n");
+		return MPElementTypeGeneratedMaximum;
+	}
+	char lowerTypeName[BUFFER_LENGTH];
+    strcpy(lowerTypeName, typeName);
     for (char *tN = lowerTypeName; *tN; ++tN)
         *tN = tolower(*tN);
 
@@ -38,7 +42,7 @@ const MPElementType TypeWithName(const char *typeName) {
         return MPElementTypeGeneratedPIN;
 
     fprintf(stderr, "Not a generated type name: %s", lowerTypeName);
-    abort();
+	return MPElementTypeGeneratedMaximum;
 }
 
 const char *CipherForType(MPElementType type, uint8_t seedByte) {

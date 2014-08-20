@@ -231,6 +231,8 @@ int main(int argc, char *const argv[]) {
 	}
 	trc("masterPassword: %s\n", masterPassword.c_str());
 
+	std::cout << "Generating site password...." << std::endl;
+
 	char password[PASS_LENGTH];
 	memset(password, 0, PASS_LENGTH);
 
