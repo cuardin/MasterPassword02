@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 cuardin. All rights reserved.
 //
 
+//NOTE: For this to compile, you need CPPUnit 1.12.1 installed on your computer.
+
 #include <iostream>
 #include "MasterPasswordTest.h"
 #include <cppunit/ui/text/TestRunner.h>
