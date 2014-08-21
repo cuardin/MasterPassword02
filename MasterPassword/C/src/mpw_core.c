@@ -12,6 +12,7 @@
 
 #include "sha256.h"
 #include "crypto_scrypt.h"
+#include "mpw_core.h"
 
 #define MAXSTRLEN           1024 //The maximum length of an input string we support.
 #define MAXPASSLEN          32 //The maximum length of password that we can generate for any cipher. (Inc null term)
@@ -31,6 +32,39 @@
 //the function returns. It is the job of the calling function to do the same with the input and output arrays, if this
 //sort of paranoia is asked for.
 
+int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const sitePasswordInfoLength, char const * const mpNameSpace, char const * const siteName, int siteCounter )
+{
+    //*****************************************************
+	// Calculate the site seed.
+	const uint32_t n_siteNameLength = htonl((const u_long)strlen(siteName));
+	const uint32_t n_siteCounter = htonl(siteCounter);
+	*sitePasswordInfoLength = strlen(mpNameSpace) + sizeof(n_siteNameLength)+strlen(siteName) + sizeof(n_siteCounter);
+    
+    char* sPI = sitePasswordInfo;
+    
+	memcpy(sPI, mpNameSpace, strlen(mpNameSpace));
+    sPI += strlen(mpNameSpace);
+	
+    memcpy(sPI, &n_siteNameLength, sizeof(n_siteNameLength));
+    sPI += sizeof(n_siteNameLength);
+	
+    memcpy(sPI, siteName, strlen(siteName));
+    sPI += strlen(siteName);
+	
+    memcpy(sPI, &n_siteCounter, sizeof(n_siteCounter));
+    sPI += sizeof(n_siteCounter);
+    
+    //This is just to check for coding errors. The above code quarantees that this will allways pass.
+	if (sPI - sitePasswordInfo != *sitePasswordInfoLength) {
+		return -1;
+    }
+    
+	trc("seed from: hmac-sha256(masterKey, 'com.lyndir.masterpassword' | %s | %s | %s)\n", Hex(&n_siteNameLength, sizeof(n_siteNameLength)), siteName, Hex(&n_siteCounter, sizeof(n_siteCounter)));
+	trc("sitePasswordInfo ID: %s\n", IDForBuf(sitePasswordInfo, *sitePasswordInfoLength));
+    
+    return 0;
+}
+
 int mpw_core(char * const password, const size_t passLen, char const * const userName, 
 	char const * const masterPassword, char const * const siteTypeString, char const * const siteName,
 	const int siteCounter )
@@ -40,36 +74,24 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
         sprintf( password, "At least one input string was longer than the cap of %d\n", MAXSTRLEN);
         return -1;
     }
-    
-    //*****************************************************
-	// Calculate the master key salt.
-	char *mpNameSpace = "com.lyndir.masterpassword"; //Must be a few chars shorter than MAXSTRLEN
-	const uint32_t n_userNameLength = htonl((const u_long)strlen(userName));
-	//Is this needed now?
-    size_t masterKeySaltLength = strlen(mpNameSpace) + sizeof(n_userNameLength)+strlen(userName);
 
-	char masterKeySalt[2*MAXSTRLEN];
+    //Allocate all of the memory we neeed
+    char masterKeySalt[2*MAXSTRLEN];
 	memset(masterKeySalt, 0, 2 * MAXSTRLEN);
+    unsigned long masterKeySaltLength;
+    char *mpNameSpace = "com.lyndir.masterpassword"; //Must be a few chars shorter than MAXSTRLEN
+    char sitePasswordInfo[2*MAXSTRLEN];
+	memset(sitePasswordInfo, 0, 2 * MAXSTRLEN );
+    size_t sitePasswordInfoLength = 0;
 
-	char *mKS = masterKeySalt;
-	memcpy(mKS, mpNameSpace, strlen(mpNameSpace));
-    mKS += strlen(mpNameSpace);
+
     
-	memcpy(mKS, &n_userNameLength, sizeof(n_userNameLength));
-    mKS += sizeof(n_userNameLength);
-    
-	memcpy(mKS, userName, strlen(userName));
-    mKS += strlen(userName);
-    
-    //Check that we ended up where we expected. This is only to check for coding errors since the code
-    //above quarantees this.
-	if (mKS - masterKeySalt != masterKeySaltLength) {
-		memset(masterKeySalt, 0, 2*MAXSTRLEN);
+    if ( 0 != mpw_core_calculate_master_key_salt(mpNameSpace, userName, masterKeySalt, &masterKeySaltLength ) ) {
+        memset(masterKeySalt, 0, 2*MAXSTRLEN);
 		sprintf(password, "Error preparing the salt" );
-		return -1;
-	}
-		
-	trc("masterKeySalt ID: %s\n", IDForBuf(masterKeySalt, masterKeySaltLength));
+
+        return -1;
+    }
 
     //*****************************************************
 	// Calculate the master key.
@@ -93,41 +115,15 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 	trc("masterPassword ID: %s\n", IDForBuf(masterPassword, strlen(masterPassword)));
 	trc("masterKey ID: %s\n", IDForBuf(masterKey, MP_dkLen));
 
-    //*****************************************************
-	// Calculate the site seed.
-	const uint32_t n_siteNameLength = htonl((const u_long)strlen(siteName));
-	const uint32_t n_siteCounter = htonl(siteCounter);
-	size_t sitePasswordInfoLength = strlen(mpNameSpace) + sizeof(n_siteNameLength)+strlen(siteName) + sizeof(n_siteCounter);
 
-	char sitePasswordInfo[2*MAXSTRLEN];
-	memset(sitePasswordInfo, 0, 2 * MAXSTRLEN );
-    char* sPI = sitePasswordInfo;
-
-	memcpy(sPI, mpNameSpace, strlen(mpNameSpace));
-    sPI += strlen(mpNameSpace);
-	
-    memcpy(sPI, &n_siteNameLength, sizeof(n_siteNameLength));
-    sPI += sizeof(n_siteNameLength);
-	
-    memcpy(sPI, siteName, strlen(siteName));
-    sPI += strlen(siteName);
-	
-    memcpy(sPI, &n_siteCounter, sizeof(n_siteCounter));
-    sPI += sizeof(n_siteCounter);
-
-    //This is just to check for coding errors. The above code quarantees that this will allways pass.
-	if (sPI - sitePasswordInfo != sitePasswordInfoLength) {
+    if ( 0 != mpw_core_calculate_site_seed(sitePasswordInfo, &sitePasswordInfoLength, mpNameSpace, siteName, siteCounter )) {
         //We make sure we do not leave sensitive info in RAM.
         memset(masterKey, 0, MP_dkLen);
         memset(sitePasswordInfo, 0, 2*MAXSTRLEN);
-
+        
 		fprintf(stderr, "Coding error when building the sitePasswordInfo seed.\n" );
-		return -1;
     }
     
-	trc("seed from: hmac-sha256(masterKey, 'com.lyndir.masterpassword' | %s | %s | %s)\n", Hex(&n_siteNameLength, sizeof(n_siteNameLength)), siteName, Hex(&n_siteCounter, sizeof(n_siteCounter)));
-	trc("sitePasswordInfo ID: %s\n", IDForBuf(sitePasswordInfo, sitePasswordInfoLength));
-
 	uint8_t sitePasswordSeed[MAXPASSLEN];
 	HMAC_SHA256_Buf(masterKey, MP_dkLen, sitePasswordInfo, sitePasswordInfoLength, sitePasswordSeed);
 
@@ -174,4 +170,35 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 	memset(sitePasswordSeed, 0, MAXPASSLEN);
 	
 	return 0;
+}
+
+int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char const * const userName,
+                                       char * const masterKeySalt, unsigned long * const masterKeySaltLength )
+{
+    //*****************************************************
+	// Calculate the master key salt.
+	const uint32_t n_userNameLength = htonl((const u_long)strlen(userName));
+	//Is this needed now?
+    *masterKeySaltLength = strlen(mpNameSpace) + sizeof(n_userNameLength)+strlen(userName);
+    
+    
+	char *mKS = masterKeySalt;
+	memcpy(mKS, mpNameSpace, strlen(mpNameSpace));
+    mKS += strlen(mpNameSpace);
+    
+	memcpy(mKS, &n_userNameLength, sizeof(n_userNameLength));
+    mKS += sizeof(n_userNameLength);
+    
+	memcpy(mKS, userName, strlen(userName));
+    mKS += strlen(userName);
+    
+    //Check that we ended up where we expected. This is only to check for coding errors since the code
+    //above quarantees this.
+	if (mKS - masterKeySalt != *masterKeySaltLength) {
+		return -1;
+	}
+    
+	trc("masterKeySalt ID: %s\n", IDForBuf(masterKeySalt, *masterKeySaltLength));
+    
+    return 0;
 }

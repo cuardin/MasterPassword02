@@ -28,7 +28,7 @@ void MasterPasswordTest::testPassGet01()
     
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
 
-    CPPUNIT_ASSERT( bOK == 0 );
+    CPPUNIT_ASSERT_EQUAL( 0, bOK );
     CPPUNIT_ASSERT( !strcmp("SebeKuka3[Vavk", password ) );
 }
 
