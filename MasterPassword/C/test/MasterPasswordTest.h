@@ -18,10 +18,12 @@ using namespace CppUnit;
 
 class MasterPasswordTest : public TestFixture {
 public:
-        
+    void testPassGenerateSiteSeed();
+    void testPassGenerateMainSeed();
     void testPassGet01();
     void testPassGet02();
     void testPassGetLLunath();
+    void testPassGet03();
     
     static Test* suite();
     
