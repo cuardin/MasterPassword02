@@ -20,6 +20,7 @@ class MasterPasswordTest : public TestFixture {
 public:
     void testPassGenerateSiteSeed();
     void testPassGenerateMainSeed();
+    void testPassConvertToPassword();
     void testPassGet01();
     void testPassGet02();
     void testPassGetLLunath();

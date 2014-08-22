@@ -10,6 +10,8 @@ Test* MasterPasswordTest::suite() {
                                                                 &MasterPasswordTest::testPassGenerateMainSeed ) );
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
                                                                 &MasterPasswordTest::testPassGenerateSiteSeed ) );
+    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
+                                                                &MasterPasswordTest::testPassConvertToPassword ) );
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet01 ) );
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet02 ) );
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet03 ) );
@@ -58,6 +60,14 @@ void MasterPasswordTest::testPassGenerateSiteSeed()
                          std::string(IDForBuf(sitePasswordInfo, sitePasswordInfoLength) ) );
 }
 
+void MasterPasswordTest::testPassConvertToPassword()
+{
+    
+    //int bOK = mpw_core_convert_to_password(siteTypeString, sitePasswordSeed,
+   //                                  size_t passLen, password );
+
+    CPPUNIT_ASSERT( 1 == 2 );
+}
 
 void MasterPasswordTest::testPassGet01()
 {

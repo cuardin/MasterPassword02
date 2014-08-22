@@ -11,4 +11,6 @@ int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char cons
 int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const sitePasswordInfoLength,
                                  char const * const mpNameSpace, char const * const siteName, int siteCounter );
 
+int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t const * const sitePasswordSeed,
+                                 const size_t passLen, char * const password );
 #endif

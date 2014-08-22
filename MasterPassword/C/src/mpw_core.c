@@ -103,31 +103,12 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 
     //*****************************************************
     //Convert the sitePasswordSeed to a password using a cipher.
-        
-	// Determine the cipher
-	MPElementType siteType = TypeWithName(siteTypeString);
-	const char *cipher = CipherForType(siteType, sitePasswordSeed[0]);
-	trc("type %s, cipher: %s\n", siteTypeString, cipher);
-	if (strlen(cipher) >= MAXPASSLEN) {
+    if ( 0 != mpw_core_convert_to_password(siteTypeString, sitePasswordSeed,
+                                       passLen, password ) ) {
         cleanup(masterKey, sitePasswordSeed);
-		fprintf(stderr, "Cipher template longer than 32 characters returned. Not supported.\n" );
         return -1;
     }
-		
-    //Check that our output buffer is large enough.
-    if ( strlen(cipher) > passLen -1 ) {
-        cleanup(masterKey, sitePasswordSeed);
-        fprintf(stderr, "Cipher length was longer than requested output password length: %d vs %d\n",
-                (int)strlen(cipher), (int)passLen );
-        return -1;
-    }
-    
-    //Encode the password using out cipher.
-    memset( password, 0, passLen*sizeof(password[0]) ); //Set the entire password memory to 0 to ensure null termination.
-	for (unsigned int c = 0; c < strlen(cipher); ++c) {
-        password[c] = CharacterFromClass(cipher[c], sitePasswordSeed[c + 1]);
-        trc("class %c, character: %c\n", cipher[c], password[c]);
-	}
+
 	
 	//We make sure we do not leave sensitive info in the RAM.
     cleanup(masterKey, sitePasswordSeed);
@@ -201,3 +182,32 @@ int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const 
     return 0;
 }
 
+
+int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t const * const sitePasswordSeed,
+                                 const size_t passLen, char * const password )
+{
+    // Determine the cipher
+	MPElementType siteType = TypeWithName(siteTypeString);
+	const char *cipher = CipherForType(siteType, sitePasswordSeed[0]);
+	trc("type %s, cipher: %s\n", siteTypeString, cipher);
+	if (strlen(cipher) >= MAXPASSLEN) {
+		fprintf(stderr, "Cipher template longer than 32 characters returned. Not supported.\n" );
+        return -1;
+    }
+    
+    //Check that our output buffer is large enough.
+    if ( strlen(cipher) > passLen -1 ) {
+        fprintf(stderr, "Cipher length was longer than requested output password length: %d vs %d\n",
+                (int)strlen(cipher), (int)passLen );
+        return -1;
+    }
+    
+    //Encode the password using out cipher.
+    memset( password, 0, passLen*sizeof(password[0]) ); //Set the entire password memory to 0 to ensure null termination.
+	for (unsigned int c = 0; c < strlen(cipher); ++c) {
+        password[c] = CharacterFromClass(cipher[c], sitePasswordSeed[c + 1]);
+        trc("class %c, character: %c\n", cipher[c], password[c]);
+	}
+    
+    return 0;
+}
