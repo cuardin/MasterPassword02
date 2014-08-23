@@ -65,11 +65,21 @@ void MasterPasswordTest::testPassGenerateSiteSeed()
 
 void MasterPasswordTest::testPassConvertToPassword()
 {
-    
-    //int bOK = mpw_core_convert_to_password(siteTypeString, sitePasswordSeed,
-   //                                  size_t passLen, password );
+    int passLength = 128;
+    char  passwd[passLength];
+    char * const password = passwd;
 
-    CPPUNIT_ASSERT( 1 == 2 );
+
+    uint8_t const * const sitePasswordSeed =     //31 random characters and a null terminator
+        (uint8_t*)"C4157B94088A1A54DEE0516F7505A3A";
+
+    char const * const siteTypeString = "long";
+
+    int bOK = mpw_core_convert_to_password(siteTypeString, sitePasswordSeed,
+                                     passLength, password );
+
+    CPPUNIT_ASSERT_EQUAL( 0, bOK );
+    CPPUNIT_ASSERT_EQUAL( std::string("NuprFino6_Dudo"), std::string(password) );
 }
 
 void MasterPasswordTest::testPassGet01()
