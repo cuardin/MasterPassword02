@@ -22,20 +22,22 @@ Test* MasterPasswordTest::suite() {
 
 void MasterPasswordTest::testPassGenerateMainSeed()
 {
+    
     int buffLength = 1024;
     char  buffer[buffLength];
     char * const masterKeySalt = buffer;
     size_t masterKeySaltLength = 0;
     
-    char const * const userName = "user01";
+    char const * const userName = "user01åäö";
     char const * const mpNameSpace = "com.lyndir.masterpassword";
 
     
     int bOK = mpw_core_calculate_master_key_salt(mpNameSpace, userName, masterKeySalt, &masterKeySaltLength );
 
-    CPPUNIT_ASSERT_EQUAL( 35, (int)masterKeySaltLength );
+    CPPUNIT_ASSERT_EQUAL( 12, (int)strlen(userName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
+    CPPUNIT_ASSERT_EQUAL( 41, (int)masterKeySaltLength );
     CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( std::string("EA791F81ADC02DE8F8035681E56D60105EFFD6B611E79A0F4C2755C5C3D57943"),
+    CPPUNIT_ASSERT_EQUAL( std::string("222E3E9BD4111B77ADF4AA55A380C4E0D79C5858F210218CA8431384A9735BA0"),
                          std::string(IDForBuf(masterKeySalt, masterKeySaltLength) ) );
 }
 
@@ -46,17 +48,18 @@ void MasterPasswordTest::testPassGenerateSiteSeed()
     char * const sitePasswordInfo = buffer;
     size_t sitePasswordInfoLength = 0;
     
-    char const * const siteName = "site01.com";
+    char const * const siteName = "site01.åäö";
     const int siteCounter = 3;
     char const * const mpNameSpace = "com.lyndir.masterpassword";
     
     
     int bOK = mpw_core_calculate_site_seed( sitePasswordInfo, &sitePasswordInfoLength,
                                            mpNameSpace, siteName, siteCounter );
-    
+
+    CPPUNIT_ASSERT_EQUAL( 13, (int)strlen(siteName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
     CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( 43, (int)sitePasswordInfoLength );
-    CPPUNIT_ASSERT_EQUAL( std::string("01842AEE52DB48194A1B2E0C26B27AB9F549C1FACF5D2D4651B5C06B03BC001E"),
+    CPPUNIT_ASSERT_EQUAL( 46, (int)sitePasswordInfoLength );
+    CPPUNIT_ASSERT_EQUAL( std::string("C4157B94088A1A54DEE0516F7505A3A3C94EACFA6B6E6A32339333257AE85355"),
                          std::string(IDForBuf(sitePasswordInfo, sitePasswordInfoLength) ) );
 }
 
