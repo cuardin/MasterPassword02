@@ -4,6 +4,16 @@ extern "C" {
 #include "types.h"
 }
 
+std::string convertToHex( void const * const input, size_t const inputLen )
+{
+    std::stringstream sout;
+    sout << std::hex;
+    uint8_t *b = (uint8_t*)input;
+    for (int i = 0; i < inputLen; i++)
+        sout << (int)b[i];
+    return sout.str();
+}
+
 Test* MasterPasswordTest::suite() {
     TestSuite *suite = new TestSuite;
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
@@ -37,8 +47,8 @@ void MasterPasswordTest::testPassGenerateMainSeed()
     CPPUNIT_ASSERT_EQUAL( 12, (int)strlen(userName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
     CPPUNIT_ASSERT_EQUAL( 41, (int)masterKeySaltLength );
     CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( std::string("222E3E9BD4111B77ADF4AA55A380C4E0D79C5858F210218CA8431384A9735BA0"),
-                         std::string(IDForBuf(masterKeySalt, masterKeySaltLength) ) );
+    CPPUNIT_ASSERT_EQUAL( std::string("636f6d2e6c796e6469722e6d617374657270617373776f7264000c757365723031c3a5c3a4c3b6"),
+                         convertToHex(masterKeySalt, masterKeySaltLength) );
 }
 
 void MasterPasswordTest::testPassGenerateSiteSeed()
@@ -59,8 +69,9 @@ void MasterPasswordTest::testPassGenerateSiteSeed()
     CPPUNIT_ASSERT_EQUAL( 13, (int)strlen(siteName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
     CPPUNIT_ASSERT_EQUAL( 0, bOK );
     CPPUNIT_ASSERT_EQUAL( 46, (int)sitePasswordInfoLength );
-    CPPUNIT_ASSERT_EQUAL( std::string("C4157B94088A1A54DEE0516F7505A3A3C94EACFA6B6E6A32339333257AE85355"),
-                         std::string(IDForBuf(sitePasswordInfo, sitePasswordInfoLength) ) );
+    CPPUNIT_ASSERT_EQUAL( std::string(
+        "636f6d2e6c796e6469722e6d617374657270617373776f7264000d7369746530312ec3a5c3a4c3b60003"),
+        convertToHex(sitePasswordInfo, sitePasswordInfoLength) );
 }
 
 void MasterPasswordTest::testPassConvertToPassword()
