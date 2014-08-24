@@ -21,6 +21,7 @@ public:
     void testPassGenerateSiteSeed();
     void testPassGenerateMainSeed();
     void testPassConvertToPassword();
+    void testPassHashSecretKey();
     void testPassGet01();
     void testPassGet02();
     void testPassGetLLunath();

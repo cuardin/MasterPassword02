@@ -98,8 +98,8 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     
     //*****************************************************
 	// Hash the secret key and the site seed to get a string of bits we can use to generate a password
-	HMAC_SHA256_Buf(masterKey, MP_dkLen, sitePasswordInfo, sitePasswordInfoLength, sitePasswordSeed);
-	trc("sitePasswordSeed ID: %s\n", IDForBuf(sitePasswordSeed, 32));
+    mpw_core_compute_hmac(masterKey, sitePasswordInfo, sitePasswordInfoLength, sitePasswordSeed );
+    
 
     //*****************************************************
     //Convert the sitePasswordSeed to a password using a cipher.
@@ -182,6 +182,12 @@ int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const 
     return 0;
 }
 
+void mpw_core_compute_hmac(uint8_t const * const masterKey, char const * const sitePasswordInfo,
+                           const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed )
+{
+    HMAC_SHA256_Buf(masterKey, MP_dkLen, sitePasswordInfo, sitePasswordInfoLength, sitePasswordSeed);
+    trc("sitePasswordSeed ID: %s\n", IDForBuf(sitePasswordSeed, 32));
+}
 
 int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t const * const sitePasswordSeed,
                                  const size_t passLen, char * const password )

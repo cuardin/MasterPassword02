@@ -23,6 +23,8 @@ Test* MasterPasswordTest::suite() {
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
                                                                 &MasterPasswordTest::testPassGenerateSiteSeed ) );
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
+                                                                &MasterPasswordTest::testPassHashSecretKey ) );
+    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
                                                                 &MasterPasswordTest::testPassConvertToPassword ) );
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet01 ) );
     suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet02 ) );
@@ -81,18 +83,26 @@ void MasterPasswordTest::testPassConvertToPassword()
     int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
-
-
+    
+    
     uint8_t const * const sitePasswordSeed =     //31 random characters and a null terminator
-        (uint8_t*)"C4157B94088A1A54DEE0516F7505A3A";
-
+    (uint8_t*)"C4157B94088A1A54DEE0516F7505A3A";
+    
     char const * const siteTypeString = "long";
-
+    
     int bOK = mpw_core_convert_to_password(siteTypeString, sitePasswordSeed,
-                                     passLength, password );
-
+                                           passLength, password );
+    
     CPPUNIT_ASSERT_EQUAL( 0, bOK );
     CPPUNIT_ASSERT_EQUAL( std::string("NuprFino6_Dudo"), std::string(password) );
+}
+
+void MasterPasswordTest::testPassHashSecretKey()
+{
+
+//    void mpw_core_compute_hmac(uint8_t const * const masterKey, char const * const sitePasswordInfo,
+//                               const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed );
+    CPPUNIT_ASSERT_EQUAL( 0, 1 );
 }
 
 void MasterPasswordTest::testPassGet01()
