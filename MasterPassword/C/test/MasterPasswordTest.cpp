@@ -18,6 +18,20 @@ std::string convertToHex( void const * const input, size_t const inputLen )
     return sout.str();
 }
 
+int convertFromHex(const std::string input, void * const output, size_t const outputLen)
+{
+	if (input.size() > outputLen * 2) {
+		return -1;
+	}
+	char byte[3];
+
+	for (int i = 0; i < input.size(); i += 2) {		
+		byte[0] = input[i];
+		byte[1] = input[i + 1];
+		byte[2] = 0;
+		sscanf(byte, "");
+	}
+}
 
 TEST(MasterPasswordTest, testPassGenerateMainSeed ) {    
     const int buffLength = 1024;
@@ -61,6 +75,18 @@ TEST(MasterPasswordTest,testPassGenerateSiteSeed)
         convertToHex(sitePasswordInfo, sitePasswordInfoLength) );
 }
 
+TEST(MasterPasswordTest, testPassHashSecretKey)
+{
+	uint8_t const * const masterKey =     //64 random characters and a null terminator
+		(uint8_t*)"C4157B94088A1A54DEE0516F7505A3ABC4157B94088A1A54DEE0516F7505A3AB";
+	char const * const sitePasswordInfo =     //64 random characters and a null terminator
+		"C4157B94088A1A54DEE0516F7505A3ABC4157B94088A1A54DEE0516F7505A3AB";
+	uint8_t sitePasswordSeed[32];
+
+	mpw_core_compute_hmac(masterKey, sitePasswordInfo, 64, sitePasswordSeed);
+	EXPECT_EQ(std::string("51e6505192032398dbc083868413371308e0f6eac31e4af36074fa12ee0e9565"), convertToHex(sitePasswordSeed,32));
+}
+
 TEST(MasterPasswordTest,testPassConvertToPassword)
 {
     const int passLength = 128;
@@ -80,13 +106,6 @@ TEST(MasterPasswordTest,testPassConvertToPassword)
     EXPECT_EQ( std::string("NuprFino6_Dudo"), std::string(password) );
 }
 
-TEST(MasterPasswordTest,testPassHashSecretKey)
-{
-
-//    void mpw_core_compute_hmac(uint8_t const * const masterKey, char const * const sitePasswordInfo,
-//                               const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed );
-    EXPECT_EQ( 0, 1 );
-}
 
 TEST(MasterPasswordTest,testPassGet01)
 {
