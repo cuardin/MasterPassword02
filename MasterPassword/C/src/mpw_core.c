@@ -119,7 +119,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 }
 
 int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char const * const userName,
-                                       char * const masterKeySalt, unsigned long * const masterKeySaltLength )
+                                       char * const masterKeySalt, size_t * const masterKeySaltLength )
 {
     //*****************************************************
 	// Calculate the master key salt.

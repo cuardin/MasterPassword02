@@ -141,7 +141,7 @@ const char *IDForBuf(const void *buf, size_t length) {
 
 const char *Hex(const void *buf, size_t length) {
     char *id = (char*)calloc(length*2+1, sizeof(char));
-    for (int kH = 0; kH < length; kH++)
+    for (unsigned int kH = 0; kH < length; kH++)
         sprintf(&(id[kH * 2]), "%02X", ((const uint8_t*)buf)[kH]);
 	
     return id;

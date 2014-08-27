@@ -1,9 +1,11 @@
-#include "MasterPasswordTest.h"
 extern "C" {
 #include "mpw_core.h"
 #include "types.h"
 }
 
+#include "gtest/gtest.h"
+
+#include <sstream>
 #include <iomanip>      // std::setfill, std::setw
 
 std::string convertToHex( void const * const input, size_t const inputLen )
@@ -11,33 +13,14 @@ std::string convertToHex( void const * const input, size_t const inputLen )
     std::stringstream sout;
     sout << std::hex << std::setfill('0') << std::setw(2);
     uint8_t *b = (uint8_t*)input;
-    for (int i = 0; i < inputLen; i++)
+    for (unsigned int i = 0; i < inputLen; i++)
         sout << std::setfill('0') << std::setw(2) << (int)b[i];
     return sout.str();
 }
 
-Test* MasterPasswordTest::suite() {
-    TestSuite *suite = new TestSuite;
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
-                                                                &MasterPasswordTest::testPassGenerateMainSeed ) );
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
-                                                                &MasterPasswordTest::testPassGenerateSiteSeed ) );
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
-                                                                &MasterPasswordTest::testPassHashSecretKey ) );
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd",
-                                                                &MasterPasswordTest::testPassConvertToPassword ) );
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet01 ) );
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet02 ) );
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGet03 ) );
-    suite->addTest( new CppUnit::TestCaller<MasterPasswordTest>( "testAdd", &MasterPasswordTest::testPassGetLLunath ) );
-    return suite;
-}
 
-
-void MasterPasswordTest::testPassGenerateMainSeed()
-{
-    
-    int buffLength = 1024;
+TEST(MasterPasswordTest, testPassGenerateMainSeed ) {    
+    const int buffLength = 1024;
     char  buffer[buffLength];
     char * const masterKeySalt = buffer;
     size_t masterKeySaltLength = 0;
@@ -48,16 +31,16 @@ void MasterPasswordTest::testPassGenerateMainSeed()
     
     int bOK = mpw_core_calculate_master_key_salt(mpNameSpace, userName, masterKeySalt, &masterKeySaltLength );
 
-    CPPUNIT_ASSERT_EQUAL( 12, (int)strlen(userName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
-    CPPUNIT_ASSERT_EQUAL( 41, (int)masterKeySaltLength );
-    CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( std::string("636f6d2e6c796e6469722e6d617374657270617373776f72640000000c757365723031c3a5c3a4c3b6"),
+    EXPECT_EQ( 12, (int)strlen(userName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
+    EXPECT_EQ( 41, (int)masterKeySaltLength );
+    EXPECT_EQ( 0, bOK );
+    EXPECT_EQ( std::string("636f6d2e6c796e6469722e6d617374657270617373776f72640000000c757365723031c3a5c3a4c3b6"),
                          convertToHex(masterKeySalt, masterKeySaltLength) );
 }
 
-void MasterPasswordTest::testPassGenerateSiteSeed()
+TEST(MasterPasswordTest,testPassGenerateSiteSeed) 
 {
-    int buffLength = 1024;
+    const int buffLength = 1024;
     char  buffer[buffLength];
     char * const sitePasswordInfo = buffer;
     size_t sitePasswordInfoLength = 0;
@@ -70,17 +53,17 @@ void MasterPasswordTest::testPassGenerateSiteSeed()
     int bOK = mpw_core_calculate_site_seed( sitePasswordInfo, &sitePasswordInfoLength,
                                            mpNameSpace, siteName, siteCounter );
 
-    CPPUNIT_ASSERT_EQUAL( 13, (int)strlen(siteName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
-    CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( 46, (int)sitePasswordInfoLength );
-    CPPUNIT_ASSERT_EQUAL( std::string(
+    EXPECT_EQ( 13, (int)strlen(siteName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
+    EXPECT_EQ( 0, bOK );
+    EXPECT_EQ( 46, (int)sitePasswordInfoLength );
+    EXPECT_EQ( std::string(
         "636f6d2e6c796e6469722e6d617374657270617373776f72640000000d7369746530312ec3a5c3a4c3b600000003"),
         convertToHex(sitePasswordInfo, sitePasswordInfoLength) );
 }
 
-void MasterPasswordTest::testPassConvertToPassword()
+TEST(MasterPasswordTest,testPassConvertToPassword)
 {
-    int passLength = 128;
+    const int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
     
@@ -93,21 +76,21 @@ void MasterPasswordTest::testPassConvertToPassword()
     int bOK = mpw_core_convert_to_password(siteTypeString, sitePasswordSeed,
                                            passLength, password );
     
-    CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( std::string("NuprFino6_Dudo"), std::string(password) );
+    EXPECT_EQ( 0, bOK );
+    EXPECT_EQ( std::string("NuprFino6_Dudo"), std::string(password) );
 }
 
-void MasterPasswordTest::testPassHashSecretKey()
+TEST(MasterPasswordTest,testPassHashSecretKey)
 {
 
 //    void mpw_core_compute_hmac(uint8_t const * const masterKey, char const * const sitePasswordInfo,
 //                               const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed );
-    CPPUNIT_ASSERT_EQUAL( 0, 1 );
+    EXPECT_EQ( 0, 1 );
 }
 
-void MasterPasswordTest::testPassGet01()
+TEST(MasterPasswordTest,testPassGet01)
 {
-    int passLength = 128;
+    const int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
     
@@ -120,13 +103,13 @@ void MasterPasswordTest::testPassGet01()
     
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
 
-    CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( std::string("SebeKuka3[Vavk"), std::string(password) );
+    EXPECT_EQ( 0, bOK );
+    EXPECT_EQ( std::string("SebeKuka3[Vavk"), std::string(password) );
 }
 
-void MasterPasswordTest::testPassGet02()
+TEST(MasterPasswordTest,testPassGet02)
 {
-    int passLength = 128;
+    const int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
     
@@ -139,14 +122,14 @@ void MasterPasswordTest::testPassGet02()
     
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
     
-    CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL( std::string("0535"), std::string(password) );
+    EXPECT_EQ( 0, bOK );
+    EXPECT_EQ( std::string("0535"), std::string(password) );
 
 }
 
-void MasterPasswordTest::testPassGet03()
+TEST(MasterPasswordTest,testPassGet03)
 {
-    int passLength = 128;
+    const int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
     
@@ -159,15 +142,15 @@ void MasterPasswordTest::testPassGet03()
     
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
     
-    CPPUNIT_ASSERT_EQUAL(0, bOK );
-    CPPUNIT_ASSERT_EQUAL(std::string("5307"), std::string(password) );
+    EXPECT_EQ(0, bOK );
+    EXPECT_EQ(std::string("5307"), std::string(password) );
     
 }
 
 
-void MasterPasswordTest::testPassGetLLunath()
+TEST(MasterPasswordTest,testPassGetLLunath)
 {
-    int passLength = 128;
+    const int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
 
@@ -180,6 +163,6 @@ void MasterPasswordTest::testPassGetLLunath()
 
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
 
-    CPPUNIT_ASSERT_EQUAL( 0, bOK );
-    CPPUNIT_ASSERT_EQUAL(std::string("Dora6.NudiDuhj"), std::string(password) );
+    EXPECT_EQ( 0, bOK );
+    EXPECT_EQ(std::string("Dora6.NudiDuhj"), std::string(password) );
 }
