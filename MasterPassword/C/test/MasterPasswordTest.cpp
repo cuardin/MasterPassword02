@@ -52,6 +52,11 @@ TEST(MasterPasswordTest, testPassGenerateMainSeed ) {
                          convertToHex(masterKeySalt, masterKeySaltLength) );
 }
 
+TEST(MasterPasswordTest, testGenerateSecretKey)
+{	
+	EXPECT_EQ(0, 1);
+}
+
 TEST(MasterPasswordTest,testPassGenerateSiteSeed) 
 {
     const int buffLength = 1024;
