@@ -28,7 +28,18 @@ TEST(MasterPasswordTest, testPassGenerateMainSeed ) {
 
 TEST(MasterPasswordTest, testGenerateSecretKey)
 {	
-	EXPECT_EQ(0, 0);
+	char masterKeySalt[128];
+	convertFromHex("636f6d2e6c796e6469722e6d617374657270617373776f72640000000c757365723031c3a5c3a4c3b6",
+		masterKeySalt, 128 );
+	const size_t masterKeySaltLength = 41;
+	uint8_t masterKey[64];
+
+	char const * const masterPassword = "MasterPass01";
+
+	int bOK = mpw_core_calculate_master_key(masterPassword, masterKeySalt, masterKeySaltLength, masterKey);
+
+	EXPECT_EQ(0, bOK);
+	EXPECT_EQ(std::string("9124510a3ff74e95b5447686f717c52bd5f6b39676054472bf8ba83a72cd6972b790629de544d94d1e5f105d8c74a24910d944099cf4204dab16ac0feabb17b0"), convertToHex(masterKey, 64));
 }
 
 TEST(MasterPasswordTest,testPassGenerateSiteSeed) 
@@ -85,13 +96,14 @@ TEST(MasterPasswordTest,testPassConvertToPassword)
     EXPECT_EQ( std::string("NuprFino6_Dudo"), std::string(password) );
 }
 
+
 TEST(MasterPasswordTest,testPassGet01)
 {
     const int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
     
-    char const * const userName = "user01";
+    char const * const userName = "user01åäö";
     char const * const masterPassword = "MasterPass01";
     char const * const siteTypeString = "long";
     char const * const siteName = "testSite";
@@ -101,7 +113,7 @@ TEST(MasterPasswordTest,testPassGet01)
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
 
     EXPECT_EQ( 0, bOK );
-    EXPECT_EQ( std::string("SebeKuka3[Vavk"), std::string(password) );
+    EXPECT_EQ( std::string("Jiny9,RosaBotu"), std::string(password) );
 }
 
 /*

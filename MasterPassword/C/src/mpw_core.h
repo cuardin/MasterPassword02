@@ -10,6 +10,9 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char const * const userName,
                                        char * const masterKeySalt, size_t * const masterKeySaltLength );
 
+int mpw_core_calculate_master_key(char const * const masterPassword, char const * const masterKeySalt,
+	size_t masterKeySaltLength, uint8_t * const masterKey);
+
 int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const sitePasswordInfoLength,
                                  char const * const mpNameSpace, char const * const siteName, int siteCounter );
 
