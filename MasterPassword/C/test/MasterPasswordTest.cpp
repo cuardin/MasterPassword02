@@ -60,9 +60,7 @@ TEST(MasterPasswordTest,testPassGenerateSiteSeed)
 
     EXPECT_EQ( 13, (int)strlen(siteName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
     EXPECT_EQ( 0, bOK );
-    EXPECT_EQ( 46, (int)sitePasswordInfoLength );
-	
-	
+    EXPECT_EQ( 46, (int)sitePasswordInfoLength );		
 	EXPECT_EQ(std::string("636f6d2e6c796e6469722e6d617374657270617373776f72640000000d7369746530312ec3a5c3a4c3b600000001"),
         std::string( Hex(sitePasswordInfo, sitePasswordInfoLength) ) );
 }
@@ -73,7 +71,7 @@ TEST(MasterPasswordTest, testPassHashSecretKey)
 	convertFromHex("9124510a3ff74e95b5447686f717c52bd5f6b39676054472bf8ba83a72cd6972b790629de544d94d1e5f105d8c74a24910d944099cf4204dab16ac0feabb17b0",
 		masterKey, 64);
 	
-	uint8_t sitePasswordInfo[46]; //46 characters	TODO: Change to uint8!!!!!!
+	uint8_t sitePasswordInfo[46]; //46 characters in this case.
 	convertFromHex("636f6d2e6c796e6469722e6d617374657270617373776f72640000000d7369746530312ec3a5c3a4c3b600000001",
 		sitePasswordInfo, 46);
 	uint8_t sitePasswordSeed[32];

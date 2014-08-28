@@ -198,10 +198,10 @@ int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const 
 void mpw_core_compute_hmac(uint8_t const * const masterKey, uint8_t const * const sitePasswordInfo,
                            const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed )
 {
-	trc("*masterKey Hex %s,\n", Hex(masterKey, MP_dkLen));
-	trc("*sitePasswordInfo Hex %s,\n", Hex(sitePasswordInfo, sitePasswordInfoLength));
+	trc("->masterKey Hex %s,\n", Hex(masterKey, MP_dkLen));
+	trc("->sitePasswordInfo Hex %s,\n", Hex(sitePasswordInfo, sitePasswordInfoLength));
 	HMAC_SHA256_Buf(masterKey, MP_dkLen, sitePasswordInfo, sitePasswordInfoLength, sitePasswordSeed);
-    trc("-sitePasswordSeed Hex: %s\n", Hex(sitePasswordSeed, 32));
+    trc("<-sitePasswordSeed Hex: %s\n", Hex(sitePasswordSeed, 32));
 }
 
 int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t const * const sitePasswordSeed,
