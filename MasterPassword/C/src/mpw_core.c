@@ -65,7 +65,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     uint8_t masterKey[MP_dkLen]; memset( masterKey, 0, MP_dkLen);
 
     //The satlt for the specific site.
-    char sitePasswordInfo[2*MAXSTRLEN];	memset(sitePasswordInfo, 0, 2 * MAXSTRLEN );
+    uint8_t sitePasswordInfo[2*MAXSTRLEN];	memset(sitePasswordInfo, 0, 2 * MAXSTRLEN );
     size_t sitePasswordInfoLength = 0;
     
     //The random string of bits that will be used to form the password.
@@ -195,7 +195,7 @@ int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const 
     return 0;
 }
 
-void mpw_core_compute_hmac(uint8_t const * const masterKey, char const * const sitePasswordInfo,
+void mpw_core_compute_hmac(uint8_t const * const masterKey, uint8_t const * const sitePasswordInfo,
                            const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed )
 {
 	trc("*masterKey Hex %s,\n", Hex(masterKey, MP_dkLen));

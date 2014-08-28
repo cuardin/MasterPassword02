@@ -16,7 +16,7 @@ int mpw_core_calculate_master_key(char const * const masterPassword, char const 
 int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const sitePasswordInfoLength,
                                  char const * const mpNameSpace, char const * const siteName, int siteCounter );
 
-void mpw_core_compute_hmac(uint8_t const * const masterKey, char const * const sitePasswordInfo,
+void mpw_core_compute_hmac(uint8_t const * const masterKey, uint8_t const * const sitePasswordInfo,
                            const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed );
 
 int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t const * const sitePasswordSeed,
