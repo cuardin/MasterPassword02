@@ -13,6 +13,7 @@
 #include "sha256.h"
 #include "crypto_scrypt.h"
 #include "mpw_core.h"
+//#include "utils.h"
 
 #define MAXSTRLEN           1024 //The maximum length of an input string we support.
 #define MAXPASSLEN          32 //The maximum length of password that we can generate for any cipher. (Inc null term)
@@ -141,7 +142,7 @@ int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char cons
 		return -1;
 	}
     
-	trc("masterKeySalt ID: %s\n", IDForBuf(masterKeySalt, *masterKeySaltLength));
+	trc("masterKeySalt ID %s\n", IDForBuf(masterKeySalt, *masterKeySaltLength));
     
     return 0;
 }

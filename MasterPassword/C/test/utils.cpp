@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>      // std::setfill, std::setw
 
+
 std::string convertToHex(void const * const input, size_t const inputLen)
 {
 	std::stringstream sout;

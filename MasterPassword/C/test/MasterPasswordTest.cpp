@@ -67,14 +67,16 @@ TEST(MasterPasswordTest,testPassGenerateSiteSeed)
 
 TEST(MasterPasswordTest, testPassHashSecretKey)
 {
-	uint8_t const * const masterKey =     //64 random characters and a null terminator
-		(uint8_t*)"C4157B94088A1A54DEE0516F7505A3ABC4157B94088A1A54DEE0516F7505A3AB";
-	char const * const sitePasswordInfo =     //64 random characters and a null terminator
-		"C4157B94088A1A54DEE0516F7505A3ABC4157B94088A1A54DEE0516F7505A3AB";
+	uint8_t masterKey[64];
+	convertFromHex("9124510a3ff74e95b5447686f717c52bd5f6b39676054472bf8ba83a72cd6972b790629de544d94d1e5f105d8c74a24910d944099cf4204dab16ac0feabb17b0",
+		masterKey, 64);
+	char sitePasswordInfo[47]; //46 characters and a null terminator.
+	convertFromHex("636f6d2e6c796e6469722e6d617374657270617373776f72640000000d7369746530312ec3a5c3a4c3b60000000300",
+		sitePasswordInfo, 47);
 	uint8_t sitePasswordSeed[32];
 
 	mpw_core_compute_hmac(masterKey, sitePasswordInfo, 64, sitePasswordSeed);
-	EXPECT_EQ(std::string("51e6505192032398dbc083868413371308e0f6eac31e4af36074fa12ee0e9565"), convertToHex(sitePasswordSeed,32));
+	EXPECT_EQ(std::string("3ed64511012f969c88f83443cc88f2217fa849999707328d7373e0da0b83e44d"), convertToHex(sitePasswordSeed,32));
 }
 
 TEST(MasterPasswordTest,testPassConvertToPassword)
@@ -82,10 +84,10 @@ TEST(MasterPasswordTest,testPassConvertToPassword)
     const int passLength = 128;
     char  passwd[passLength];
     char * const password = passwd;
-    
-    
-    uint8_t const * const sitePasswordSeed =     //31 random characters and a null terminator
-    (uint8_t*)"C4157B94088A1A54DEE0516F7505A3A";
+        
+	uint8_t sitePasswordSeed[32];
+	convertFromHex("3ed64511012f969c88f83443cc88f2217fa849999707328d7373e0da0b83e44d",
+		sitePasswordSeed, 32);
     
     char const * const siteTypeString = "long";
     
@@ -93,10 +95,10 @@ TEST(MasterPasswordTest,testPassConvertToPassword)
                                            passLength, password );
     
     EXPECT_EQ( 0, bOK );
-    EXPECT_EQ( std::string("NuprFino6_Dudo"), std::string(password) );
+	EXPECT_EQ(std::string("Jiny9,RosaBotu"), std::string(password));
 }
 
-
+/*
 TEST(MasterPasswordTest,testPassGet01)
 {
     const int passLength = 128;
@@ -115,7 +117,7 @@ TEST(MasterPasswordTest,testPassGet01)
     EXPECT_EQ( 0, bOK );
     EXPECT_EQ( std::string("Jiny9,RosaBotu"), std::string(password) );
 }
-
+*/
 /*
 TEST(MasterPasswordTest,testPassGet02)
 {
