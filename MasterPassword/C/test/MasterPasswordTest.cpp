@@ -6,7 +6,7 @@ extern "C" {
 #include "gtest/gtest.h"
 
 #include "testutils.h"
-
+/*
 TEST(MasterPasswordTest, testPassGenerateMainSeed ) {    
     const int buffLength = 1024;
     char  buffer[buffLength];
@@ -64,7 +64,7 @@ TEST(MasterPasswordTest,testPassGenerateSiteSeed)
 	EXPECT_EQ(std::string("636f6d2e6c796e6469722e6d617374657270617373776f72640000000d7369746530312ec3a5c3a4c3b600000001"),
         std::string( Hex(sitePasswordInfo, sitePasswordInfoLength) ) );
 }
-
+*/
 TEST(MasterPasswordTest, testPassHashSecretKey)
 {
 	uint8_t masterKey[64];
@@ -81,7 +81,7 @@ TEST(MasterPasswordTest, testPassHashSecretKey)
 	EXPECT_EQ(std::string("21d6d4b2466641c519c5f3e6903e0557ef6d7efd46a5dddbbe9d0e7d13be9c2a"),
 		std::string(Hex(sitePasswordSeed,32)) );
 }
-
+/*
 TEST(MasterPasswordTest,testPassConvertToPassword)
 {
     const int passLength = 128;
@@ -181,3 +181,4 @@ TEST(MasterPasswordTest,testPassGetLLunath)
     EXPECT_EQ( 0, bOK );
     EXPECT_EQ(std::string("Dora6.NudiDuhj"), std::string(password) );
 }
+*/

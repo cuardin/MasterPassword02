@@ -8,6 +8,7 @@
  * Use #defines in order to avoid namespace collisions with anyone else's
  * SHA256 code (e.g., the code in OpenSSL).
  */
+
 #define SHA256_Init libcperciva_SHA256_Init
 #define SHA256_Update libcperciva_SHA256_Update
 #define SHA256_Final libcperciva_SHA256_Final
