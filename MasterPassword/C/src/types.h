@@ -5,6 +5,8 @@
 //  Created by Maarten Billemont on 02/01/12.
 //  Copyright (c) 2012 Lyndir. All rights reserved.
 //
+#ifndef _TYPES_H_
+#define _TYPES_H_
 
 #include <stdint.h>
 
@@ -52,3 +54,4 @@ const char CharacterFromClass(char characterClass, uint8_t seedByte);
 const char *IDForBuf(const void *buf, size_t length);
 const char *Hex(const void *buf, size_t length);
 
+#endif

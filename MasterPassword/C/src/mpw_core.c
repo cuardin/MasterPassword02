@@ -38,6 +38,21 @@ void cleanup(uint8_t * const masterKey, uint8_t * const sitePasswordSeed)
     memset(sitePasswordSeed,0,MAXPASSLEN);
 }
 
+int mpw_core_calculate_master_key(char const * const masterPassword, char const * const masterKeySalt,
+	size_t masterKeySaltLength, uint8_t * const masterKey)	
+{
+	if (crypto_scrypt((const uint8_t *)masterPassword, strlen(masterPassword), 
+		(const uint8_t *)masterKeySalt, masterKeySaltLength, MP_N, MP_r, MP_p, masterKey, MP_dkLen) < 0)
+	{
+		return -1;
+	}
+	trc("masterPassword Hex: %s\n", Hex(masterPassword, strlen(masterPassword)));
+	trc("masterPassword ID: %s\n", IDForBuf(masterPassword, strlen(masterPassword)));
+	trc("masterKey ID: %s\n", IDForBuf(masterKey, MP_dkLen));
+
+	return 0;
+}
+
 int mpw_core(char * const password, const size_t passLen, char const * const userName, 
 	char const * const masterPassword, char const * const siteTypeString, char const * const siteName,
 	const int siteCounter )
@@ -79,17 +94,13 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 
     //*****************************************************
 	// Calculate the master key.
-	if (crypto_scrypt((const uint8_t *)masterPassword, strlen(masterPassword), (const uint8_t *)masterKeySalt, masterKeySaltLength, MP_N, MP_r, MP_p, masterKey, MP_dkLen) < 0)
-    {
-        cleanup(masterKey, sitePasswordSeed);
-		sprintf(password,"Could not generate master key: %d\n", errno);
+	if (0 != mpw_core_calculate_master_key(masterPassword, masterKeySalt, masterKeySaltLength, masterKey) ) {
+		cleanup(masterKey, sitePasswordSeed);
+		sprintf(password, "Error preparing the salt");
 		return -1;
 	}
-	trc("masterPassword Hex: %s\n", Hex(masterPassword, strlen(masterPassword)));
-	trc("masterPassword ID: %s\n", IDForBuf(masterPassword, strlen(masterPassword)));
-	trc("masterKey ID: %s\n", IDForBuf(masterKey, MP_dkLen));
-    
-    //*****************************************************
+	
+	//*****************************************************
 	// Calculate the seed for the site.
     if ( 0 != mpw_core_calculate_site_seed(sitePasswordInfo, &sitePasswordInfoLength, mpNameSpace, siteName, siteCounter )) {
         cleanup(masterKey, sitePasswordSeed);
