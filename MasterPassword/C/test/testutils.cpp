@@ -2,16 +2,9 @@
 #include <sstream>
 #include <iomanip>      // std::setfill, std::setw
 
+#include "testutils.h"
 
-std::string convertToHex(void const * const input, size_t const inputLen)
-{
-	std::stringstream sout;
-	sout << std::hex << std::setfill('0') << std::setw(2);
-	uint8_t *b = (uint8_t*)input;
-	for (unsigned int i = 0; i < inputLen; i++)
-		sout << std::setfill('0') << std::setw(2) << (int)b[i];
-	return sout.str();
-}
+
 /*
 function parseHexString(str) {
 var result = [];
@@ -45,7 +38,7 @@ int charToValue(char c) {
 	}
 }
 
-void convertFromHex(std::string sHex, void * const output, const int outputLength)
+void convertFromHex(std::string sHex, void * const output, const size_t outputLength)
 {
 	uint8_t * const buffer = (uint8_t * const)output;
 	for (unsigned int i = 0; i < sHex.length() / 2 && i < outputLength; i++)

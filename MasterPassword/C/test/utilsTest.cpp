@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
-#include "utils.h"
+#include "testutils.h"
 
 TEST(UtilitiesTest, testConvertToHex) {
 	uint8_t rawBytes[] = { 3, 156, 54 };
-	std::string hexString = convertToHex(rawBytes, 3);
+	std::string hexString = Hex(rawBytes, 3);
 
 	EXPECT_EQ("039c36", hexString);
 }

@@ -128,6 +128,7 @@ const char CharacterFromClass(char characterClass, uint8_t seedByte) {
 
     return classCharacters[seedByte % strlen(classCharacters)];
 }
+
 const char *IDForBuf(const void *buf, size_t length) {
     uint8_t hash[32];
     SHA256_Buf(buf, length, hash);
@@ -139,10 +140,12 @@ const char *IDForBuf(const void *buf, size_t length) {
     return id;
 }
 
+char hexBuffer[2048];
+
 const char *Hex(const void *buf, size_t length) {
-    char *id = (char*)calloc(length*2+1, sizeof(char));
+	memset(hexBuffer, 0, 2048);
     for (unsigned int kH = 0; kH < length; kH++)
-        sprintf(&(id[kH * 2]), "%02X", ((const uint8_t*)buf)[kH]);
+        sprintf(&(hexBuffer[kH * 2]), "%02x", ((const uint8_t*)buf)[kH]);
 	
-    return id;
+    return hexBuffer;
 }

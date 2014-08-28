@@ -142,7 +142,7 @@ int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char cons
 		return -1;
 	}
     
-	trc("masterKeySalt ID %s\n", IDForBuf(masterKeySalt, *masterKeySaltLength));
+	trc("masterKeySalt Hex %s\n", Hex(masterKeySalt, *masterKeySaltLength));
     
     return 0;
 }
@@ -155,9 +155,9 @@ int mpw_core_calculate_master_key(char const * const masterPassword, char const 
 	{
 		return -1;
 	}
-	trc("masterPassword Hex: %s\n", Hex(masterPassword, strlen(masterPassword)));
-	trc("masterPassword ID: %s\n", IDForBuf(masterPassword, strlen(masterPassword)));
-	trc("masterKey ID: %s\n", IDForBuf(masterKey, MP_dkLen));
+	trc("masterPassword Hex: %s\n", Hex(masterPassword, strlen(masterPassword)));	
+	trc("masterKeySalt Hex: %s\n", Hex(masterKeySalt, masterKeySaltLength));
+	trc("masterKey Hex: %s\n", Hex(masterKey, MP_dkLen));
 
 	return 0;
 }
@@ -188,9 +188,9 @@ int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const 
 	if (sPI - sitePasswordInfo != *sitePasswordInfoLength) {
 		return -1;
     }
-    
-	trc("seed from: hmac-sha256(masterKey, 'com.lyndir.masterpassword' | %s | %s | %s)\n", Hex(&n_siteNameLength, sizeof(n_siteNameLength)), siteName, Hex(&n_siteCounter, sizeof(n_siteCounter)));
-	trc("sitePasswordInfo ID: %s\n", IDForBuf(sitePasswordInfo, *sitePasswordInfoLength));
+	    	
+	trc("siteName Hex: %s\n", Hex(siteName, strlen(siteName)));
+	trc("sitePasswordInfo Hex: %s\n", Hex(sitePasswordInfo, *sitePasswordInfoLength));
     
     return 0;
 }
@@ -198,8 +198,10 @@ int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const 
 void mpw_core_compute_hmac(uint8_t const * const masterKey, char const * const sitePasswordInfo,
                            const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed )
 {
-    HMAC_SHA256_Buf(masterKey, MP_dkLen, sitePasswordInfo, sitePasswordInfoLength, sitePasswordSeed);
-    trc("sitePasswordSeed ID: %s\n", IDForBuf(sitePasswordSeed, 32));
+	trc("*masterKey Hex %s,\n", Hex(masterKey, MP_dkLen));
+	trc("*sitePasswordInfo Hex %s,\n", Hex(sitePasswordInfo, sitePasswordInfoLength));
+	HMAC_SHA256_Buf(masterKey, MP_dkLen, sitePasswordInfo, sitePasswordInfoLength, sitePasswordSeed);
+    trc("-sitePasswordSeed Hex: %s\n", Hex(sitePasswordSeed, 32));
 }
 
 int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t const * const sitePasswordSeed,
@@ -225,7 +227,7 @@ int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t cons
     memset( password, 0, passLen*sizeof(password[0]) ); //Set the entire password memory to 0 to ensure null termination.
 	for (unsigned int c = 0; c < strlen(cipher); ++c) {
         password[c] = CharacterFromClass(cipher[c], sitePasswordSeed[c + 1]);
-        trc("class %c, character: %c\n", cipher[c], password[c]);
+        //trc("class %c, character: %c\n", cipher[c], password[c]);
 	}
     
     return 0;
