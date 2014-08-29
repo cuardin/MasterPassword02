@@ -25,7 +25,8 @@ TEST(MasterPasswordTest, testPassGenerateMainSeed ) {
     EXPECT_EQ( std::string("636f6d2e6c796e6469722e6d617374657270617373776f72640000000c757365723031c3a5c3a4c3b6"),
                          std::string(Hex(masterKeySalt, masterKeySaltLength)) );
 }
-
+*/
+/*
 TEST(MasterPasswordTest, testGenerateSecretKey)
 {	
 	char masterKeySalt[128];
@@ -42,7 +43,8 @@ TEST(MasterPasswordTest, testGenerateSecretKey)
 	EXPECT_EQ(std::string("9124510a3ff74e95b5447686f717c52bd5f6b39676054472bf8ba83a72cd6972b790629de544d94d1e5f105d8c74a24910d944099cf4204dab16ac0feabb17b0"), 
 		std::string(Hex(masterKey, 64)) );
 }
-
+*/
+/*
 TEST(MasterPasswordTest,testPassGenerateSiteSeed) 
 {
     const int buffLength = 1024;
