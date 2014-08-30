@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6B0BE7EF1970D404004CA5A3 /* libcppunit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B0BE7EE1970D404004CA5A3 /* libcppunit.a */; };
 		6B0BE8001970D4B0004CA5A3 /* getopt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B0BE7F21970D4B0004CA5A3 /* getopt.cpp */; };
 		6B0BE8021970D4B0004CA5A3 /* mpw_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B0BE7F51970D4B0004CA5A3 /* mpw_core.c */; };
 		6B0BE8031970D4B0004CA5A3 /* crypto_scrypt-ref.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B0BE7F81970D4B0004CA5A3 /* crypto_scrypt-ref.c */; };
 		6B0BE8041970D4B0004CA5A3 /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B0BE7FB1970D4B0004CA5A3 /* sha256.c */; };
 		6B0BE8051970D4B0004CA5A3 /* types.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B0BE7FE1970D4B0004CA5A3 /* types.c */; };
-		6BA1107E196FB11100BAB389 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BA1107D196FB11100BAB389 /* main.cpp */; };
+		6B41A35919B1A1A100148663 /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B41A35719B1A1A100148663 /* libgtest_main.a */; };
+		6B41A35A19B1A1A100148663 /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B41A35819B1A1A100148663 /* libgtest.a */; };
+		6B41A35D19B1A1BC00148663 /* testutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B41A35B19B1A1BC00148663 /* testutils.cpp */; };
+		6B41A35F19B1A1C400148663 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B41A35E19B1A1C400148663 /* main.cpp */; };
 		6BA11080196FB11100BAB389 /* MasterPasswordTest_OSX.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6BA1107F196FB11100BAB389 /* MasterPasswordTest_OSX.1 */; };
 		6BA11088196FB15100BAB389 /* MasterPasswordTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BA11087196FB15100BAB389 /* MasterPasswordTest.cpp */; };
 /* End PBXBuildFile section */
@@ -32,7 +34,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6B0BE7EE1970D404004CA5A3 /* libcppunit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcppunit.a; path = ../../../../../../../usr/local/lib/libcppunit.a; sourceTree = "<group>"; };
 		6B0BE7F11970D4B0004CA5A3 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		6B0BE7F21970D4B0004CA5A3 /* getopt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = getopt.cpp; sourceTree = "<group>"; };
 		6B0BE7F31970D4B0004CA5A3 /* getopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getopt.h; sourceTree = "<group>"; };
@@ -46,8 +47,12 @@
 		6B0BE7FD1970D4B0004CA5A3 /* sysendian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sysendian.h; sourceTree = "<group>"; };
 		6B0BE7FE1970D4B0004CA5A3 /* types.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = types.c; sourceTree = "<group>"; };
 		6B0BE7FF1970D4B0004CA5A3 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		6B41A35719B1A1A100148663 /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = MasterPasswordTest_OSX/libgtest_main.a; sourceTree = "<group>"; };
+		6B41A35819B1A1A100148663 /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = MasterPasswordTest_OSX/libgtest.a; sourceTree = "<group>"; };
+		6B41A35B19B1A1BC00148663 /* testutils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testutils.cpp; sourceTree = "<group>"; };
+		6B41A35C19B1A1BC00148663 /* testutils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testutils.h; sourceTree = "<group>"; };
+		6B41A35E19B1A1C400148663 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		6BA1107A196FB11100BAB389 /* MasterPasswordTest_OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MasterPasswordTest_OSX; sourceTree = BUILT_PRODUCTS_DIR; };
-		6BA1107D196FB11100BAB389 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		6BA1107F196FB11100BAB389 /* MasterPasswordTest_OSX.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = MasterPasswordTest_OSX.1; sourceTree = "<group>"; };
 		6BA11087196FB15100BAB389 /* MasterPasswordTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MasterPasswordTest.cpp; sourceTree = "<group>"; };
 		6BA11089196FB7CA00BAB389 /* MasterPasswordTest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterPasswordTest.h; sourceTree = "<group>"; };
@@ -58,7 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B0BE7EF1970D404004CA5A3 /* libcppunit.a in Frameworks */,
+				6B41A35919B1A1A100148663 /* libgtest_main.a in Frameworks */,
+				6B41A35A19B1A1A100148663 /* libgtest.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,8 +103,9 @@
 		6BA11071196FB11100BAB389 = {
 			isa = PBXGroup;
 			children = (
+				6B41A35719B1A1A100148663 /* libgtest_main.a */,
+				6B41A35819B1A1A100148663 /* libgtest.a */,
 				6B0BE7F01970D4B0004CA5A3 /* src */,
-				6B0BE7EE1970D404004CA5A3 /* libcppunit.a */,
 				6BA1107C196FB11100BAB389 /* MasterPasswordTest_OSX */,
 				6BA1107B196FB11100BAB389 /* Products */,
 			);
@@ -115,7 +122,6 @@
 		6BA1107C196FB11100BAB389 /* MasterPasswordTest_OSX */ = {
 			isa = PBXGroup;
 			children = (
-				6BA1107D196FB11100BAB389 /* main.cpp */,
 				6BA11086196FB12500BAB389 /* test */,
 				6BA1107F196FB11100BAB389 /* MasterPasswordTest_OSX.1 */,
 			);
@@ -125,6 +131,9 @@
 		6BA11086196FB12500BAB389 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				6B41A35E19B1A1C400148663 /* main.cpp */,
+				6B41A35B19B1A1BC00148663 /* testutils.cpp */,
+				6B41A35C19B1A1BC00148663 /* testutils.h */,
 				6BA11087196FB15100BAB389 /* MasterPasswordTest.cpp */,
 				6BA11089196FB7CA00BAB389 /* MasterPasswordTest.h */,
 			);
@@ -187,9 +196,10 @@
 				6BA11088196FB15100BAB389 /* MasterPasswordTest.cpp in Sources */,
 				6B0BE8041970D4B0004CA5A3 /* sha256.c in Sources */,
 				6B0BE8031970D4B0004CA5A3 /* crypto_scrypt-ref.c in Sources */,
+				6B41A35D19B1A1BC00148663 /* testutils.cpp in Sources */,
 				6B0BE8051970D4B0004CA5A3 /* types.c in Sources */,
+				6B41A35F19B1A1C400148663 /* main.cpp in Sources */,
 				6B0BE8001970D4B0004CA5A3 /* getopt.cpp in Sources */,
-				6BA1107E196FB11100BAB389 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,9 +286,12 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/local/include,
+					"/Users/cuardin/Documents/MasterPassword02/MasterPassword/C/test/gtest-1.7.0/include",
 				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					"$(PROJECT_DIR)/MasterPasswordTest_OSX",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -290,9 +303,12 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/local/include,
+					"/Users/cuardin/Documents/MasterPassword02/MasterPassword/C/test/gtest-1.7.0/include",
 				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					"$(PROJECT_DIR)/MasterPasswordTest_OSX",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

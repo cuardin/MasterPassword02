@@ -36,6 +36,7 @@ int charToValue(char c) {
 	case 'e': return 14;
 	case 'f': return 15;
 	}
+    return -100000;
 }
 
 void convertFromHex(std::string sHex, void * const output, const size_t outputLength)

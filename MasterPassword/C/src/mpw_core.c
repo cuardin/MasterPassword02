@@ -162,7 +162,7 @@ int mpw_core_calculate_master_key(char const * const masterPassword, char const 
 	return 0;
 }
 
-int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const sitePasswordInfoLength, char const * const mpNameSpace, char const * const siteName, int siteCounter )
+int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * const sitePasswordInfoLength, char const * const mpNameSpace, char const * const siteName, int siteCounter )
 {
     //*****************************************************
 	// Calculate the site seed.
@@ -170,7 +170,7 @@ int mpw_core_calculate_site_seed( char * const sitePasswordInfo, size_t * const 
 	const uint32_t n_siteCounter = htonl(siteCounter);
 	*sitePasswordInfoLength = strlen(mpNameSpace) + sizeof(n_siteNameLength)+strlen(siteName) + sizeof(n_siteCounter);
     
-    char* sPI = sitePasswordInfo;
+    uint8_t* sPI = sitePasswordInfo;
     
 	memcpy(sPI, mpNameSpace, strlen(mpNameSpace));
     sPI += strlen(mpNameSpace);

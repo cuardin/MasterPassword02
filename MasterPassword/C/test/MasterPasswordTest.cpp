@@ -6,7 +6,7 @@ extern "C" {
 #include "gtest/gtest.h"
 
 #include "testutils.h"
-/*
+
 TEST(MasterPasswordTest, testPassGenerateMainSeed ) {    
     const int buffLength = 1024;
     char  buffer[buffLength];
@@ -25,8 +25,8 @@ TEST(MasterPasswordTest, testPassGenerateMainSeed ) {
     EXPECT_EQ( std::string("636f6d2e6c796e6469722e6d617374657270617373776f72640000000c757365723031c3a5c3a4c3b6"),
                          std::string(Hex(masterKeySalt, masterKeySaltLength)) );
 }
-*/
-/*
+
+
 TEST(MasterPasswordTest, testGenerateSecretKey)
 {	
 	char masterKeySalt[128];
@@ -43,13 +43,12 @@ TEST(MasterPasswordTest, testGenerateSecretKey)
 	EXPECT_EQ(std::string("9124510a3ff74e95b5447686f717c52bd5f6b39676054472bf8ba83a72cd6972b790629de544d94d1e5f105d8c74a24910d944099cf4204dab16ac0feabb17b0"), 
 		std::string(Hex(masterKey, 64)) );
 }
-*/
-/*
+
 TEST(MasterPasswordTest,testPassGenerateSiteSeed) 
 {
     const int buffLength = 1024;
-    char  buffer[buffLength];
-    char * const sitePasswordInfo = buffer;
+    uint8_t  buffer[buffLength];
+    uint8_t * const sitePasswordInfo = buffer;
     size_t sitePasswordInfoLength = 0;
     
     char const * const siteName = "site01.åäö";
@@ -66,7 +65,8 @@ TEST(MasterPasswordTest,testPassGenerateSiteSeed)
 	EXPECT_EQ(std::string("636f6d2e6c796e6469722e6d617374657270617373776f72640000000d7369746530312ec3a5c3a4c3b600000001"),
         std::string( Hex(sitePasswordInfo, sitePasswordInfoLength) ) );
 }
-*/
+
+
 TEST(MasterPasswordTest, testPassHashSecretKey)
 {
 	uint8_t masterKey[64];
@@ -83,7 +83,8 @@ TEST(MasterPasswordTest, testPassHashSecretKey)
 	EXPECT_EQ(std::string("21d6d4b2466641c519c5f3e6903e0557ef6d7efd46a5dddbbe9d0e7d13be9c2a"),
 		std::string(Hex(sitePasswordSeed,32)) );
 }
-/*
+
+
 TEST(MasterPasswordTest,testPassConvertToPassword)
 {
     const int passLength = 128;
@@ -183,4 +184,3 @@ TEST(MasterPasswordTest,testPassGetLLunath)
     EXPECT_EQ( 0, bOK );
     EXPECT_EQ(std::string("Dora6.NudiDuhj"), std::string(password) );
 }
-*/

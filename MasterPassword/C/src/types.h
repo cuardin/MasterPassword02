@@ -8,7 +8,8 @@
 #ifndef _TYPES_H_
 #define _TYPES_H_
 
-#include <stdint.h>
+#include <stdint.h> //What is needed fro, here?
+#include <stddef.h> //For size_t
 
 typedef enum {
     MPElementContentTypePassword,
