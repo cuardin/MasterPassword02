@@ -52,7 +52,7 @@ TEST(MasterPasswordTest,testPassGenerateSiteSeed)
     size_t sitePasswordInfoLength = 0;
     
     char const * const siteName = "site01.åäö";
-    const int siteCounter = 1;
+    const uint32_t siteCounter = 1;
 	const char *mpNameSpace = "com.lyndir.masterpassword";
     
     
@@ -115,7 +115,7 @@ TEST(MasterPasswordTest,testPassGet01)
     char const * const masterPassword = "MasterPass01";
     char const * const siteTypeString = "long";
 	char const * const siteName = "site01.åäö";
-    const int siteCounter = 1;
+    const uint32_t siteCounter = 1;
     
     
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
@@ -135,7 +135,7 @@ TEST(MasterPasswordTest,testPassGet02)
     char const * const masterPassword = "AndAMasterPassword";
     char const * const siteTypeString = "pin";
     char const * const siteName = "anotherSite.com";
-    const int siteCounter = 5;
+    const uint32_t siteCounter = 5;
     
     
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
@@ -155,7 +155,7 @@ TEST(MasterPasswordTest,testPassGet03)
     char const * const masterPassword = "AndMöstärPoss";
     char const * const siteTypeString = "pin";
     char const * const siteName = "anöther.com";
-    const int siteCounter = 5;
+    const uint32_t siteCounter = 5;
     
     
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
@@ -176,7 +176,7 @@ TEST(MasterPasswordTest,testPassGetLLunath)
     char const * const masterPassword = "banana colored duckling";
     char const * const siteTypeString = "long";
     char const * const siteName = "masterpasswordapp.com";
-    const int siteCounter = 1;
+    const uint32_t siteCounter = 1;
 
 
     int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);

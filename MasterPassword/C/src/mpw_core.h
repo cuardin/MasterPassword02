@@ -14,7 +14,7 @@ int mpw_core_calculate_master_key(char const * const masterPassword, char const 
 	size_t masterKeySaltLength, uint8_t * const masterKey);
 
 int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * const sitePasswordInfoLength,
-                                 char const * const mpNameSpace, char const * const siteName, int siteCounter );
+                                 char const * const mpNameSpace, char const * const siteName, uint32_t siteCounter );
 
 void mpw_core_compute_hmac(uint8_t const * const masterKey, uint8_t const * const sitePasswordInfo,
                            const size_t sitePasswordInfoLength, uint8_t * const sitePasswordSeed );

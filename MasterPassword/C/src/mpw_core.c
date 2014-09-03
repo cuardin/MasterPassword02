@@ -4,12 +4,6 @@
 #include <errno.h>
 #include <string.h>
 #include "types.h"
-#if defined(WIN32)
-#include <WinSock2.h>
-#else
-#include <netinet/in.h>
-#endif
-
 #include "sha256.h"
 #include "crypto_scrypt.h"
 #include "mpw_core.h"
@@ -39,6 +33,16 @@ void cleanup(uint8_t * const masterKey, uint8_t * const sitePasswordSeed)
     memset(sitePasswordSeed,0,MAXPASSLEN);
 }
 
+//My own implementation of htonl to avoid socket dependencies.
+uint32_t htonl(uint32_t input)
+{
+	long output = 0;
+	output |= (input & 0xFF000000) >> 24;
+	output |= (input & 0x00FF0000) >> 8;
+	output |= (input & 0x0000FF00) << 8;
+	output |= (input & 0x000000FF) << 24;
+	return output;
+}
 
 int mpw_core(char * const password, const size_t passLen, char const * const userName, 
 	char const * const masterPassword, char const * const siteTypeString, char const * const siteName,
@@ -121,7 +125,7 @@ int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char cons
 {
     //*****************************************************
 	// Calculate the master key salt.
-	const uint32_t n_userNameLength = htonl((const u_long)strlen(userName));
+	const uint32_t n_userNameLength = htonl((uint32_t)strlen(userName));
 	//Is this needed now?
     *masterKeySaltLength = strlen(mpNameSpace) + sizeof(n_userNameLength)+strlen(userName);
     
@@ -162,11 +166,11 @@ int mpw_core_calculate_master_key(char const * const masterPassword, char const 
 	return 0;
 }
 
-int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * const sitePasswordInfoLength, char const * const mpNameSpace, char const * const siteName, int siteCounter )
+int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * const sitePasswordInfoLength, char const * const mpNameSpace, char const * const siteName, uint32_t siteCounter )
 {
     //*****************************************************
 	// Calculate the site seed.
-	const uint32_t n_siteNameLength = htonl((const u_long)strlen(siteName));
+	const uint32_t n_siteNameLength = htonl((uint32_t)strlen(siteName));
 	const uint32_t n_siteCounter = htonl(siteCounter);
 	*sitePasswordInfoLength = strlen(mpNameSpace) + sizeof(n_siteNameLength)+strlen(siteName) + sizeof(n_siteCounter);
     
