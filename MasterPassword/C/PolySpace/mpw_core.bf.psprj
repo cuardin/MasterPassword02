@@ -26,32 +26,47 @@
         <element>BAD_EQUAL_USE</element>
         <element>BAD_FLOAT_OP</element>
         <element>BAD_FREE</element>
+        <element>DEACTIVATED_CODE</element>
         <element>DEAD_CODE</element>
         <element>DECL_MISMATCH</element>
         <element>DOUBLE_DEALLOCATION</element>
         <element>FLOAT_CONV_OVFL</element>
+        <element>FLOAT_OVFL</element>
         <element>FLOAT_STD_LIB</element>
         <element>FLOAT_ZERO_DIV</element>
         <element>FREED_PTR</element>
         <element>FUNC_CAST</element>
         <element>INT_CONV_OVFL</element>
+        <element>INT_OVFL</element>
         <element>INT_STD_LIB</element>
         <element>INT_ZERO_DIV</element>
+        <element>MEM_LEAK</element>
         <element>MEM_STD_LIB</element>
         <element>MISSING_NULL_CHAR</element>
         <element>MISSING_RETURN</element>
         <element>NON_INIT_PTR</element>
+        <element>NON_INIT_PTR_CONV</element>
         <element>NON_INIT_VAR</element>
         <element>NULL_PTR</element>
+        <element>NULL_PTR_ARITH</element>
+        <element>OBJECT_SIZE_MISMATCH</element>
         <element>OTHER_STD_LIB</element>
         <element>OUT_BOUND_ARRAY</element>
         <element>OUT_BOUND_PTR</element>
+        <element>PARTIALLY_ACCESSED_ARRAY</element>
+        <element>PASS_BY_VALUE</element>
         <element>PTR_CAST</element>
         <element>PTR_SIZEOF_MISMATCH</element>
+        <element>QUALIFIER_MISMATCH</element>
+        <element>SHIFT_NEG</element>
+        <element>SHIFT_OVFL</element>
         <element>SIGN_CHANGE</element>
         <element>STRING_FORMAT</element>
         <element>STR_STD_LIB</element>
         <element>UINT_CONV_OVFL</element>
+        <element>UINT_OVFL</element>
+        <element>UNCALLED_FUNC</element>
+        <element>UNPROTECTED_MEMORY_ALLOCATION</element>
         <element>VAR_SHADOWING</element>
       </option>
       <option flagname="-report-output-format">PDF</option>

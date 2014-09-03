@@ -63,7 +63,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     
     //The main salt based on the user name.
     char masterKeySalt[2*MAXSTRLEN]; memset(masterKeySalt, 0, 2 * MAXSTRLEN);
-    unsigned long masterKeySaltLength = 0;
+    size_t masterKeySaltLength = 0;
     
     //The master key itself.
     uint8_t masterKey[MP_dkLen]; memset( masterKey, 0, MP_dkLen);
