@@ -11,7 +11,7 @@
     <file path="file:/C:/Users/darmyr/Desktop/GitHub/MasterPassword02/MasterPassword/C/src/" order="0"/>
     <file path="file:/C:/Users/darmyr/Desktop/GitHub/MasterPassword02/MasterPassword/C/src/scrypt/" order="1"/>
   </include>
-  <module name="Module_1" path="file:/C:/Users/darmyr/Desktop/GitHub/MasterPassword02/MasterPassword/C/PolySpace/Module_1" isactive="true">
+  <module name="Module_1" path="file:/C:/Users/darmyr/Desktop/GitHub/MasterPassword02/MasterPassword/C/PolySpace/Module_1/" isactive="true">
     <source>
       <file path="file:/C:/Users/darmyr/Desktop/GitHub/MasterPassword02/MasterPassword/C/src/mpw_core.c"/>
       <file path="file:/C:/Users/darmyr/Desktop/GitHub/MasterPassword02/MasterPassword/C/src/scrypt/crypto_scrypt-ref.c"/>
@@ -24,6 +24,8 @@
         <element>file:/C:/Users/darmyr/Desktop/GitHub/MasterPassword02/MasterPassword/C/src/scrypt/</element>
       </option>
       <option flagname="-OS-target">no_predefined_os</option>
+      <option flagname="-add-to-results-repository">false</option>
+      <option flagname="-batch">true</option>
       <!-- ADVANCED TARGET OPTIONS -->
     </optionset>
     <result>
