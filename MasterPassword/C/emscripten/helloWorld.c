@@ -30,6 +30,14 @@ void test01()
 	printf( "%s\n", Hex(digest, 32) );
 }
 
+int scrypt_wrapper( uint8_t const * const masterPass, const int masterpassLen,
+        uint8_t const * const masterKeySalt, const int masterKeySaltLen, 
+        uint8_t * const masterKey )
+{
+    return crypto_scrypt(masterPass, masterpassLen, masterKeySalt, 
+            masterKeySaltLen, MP_N, MP_r, MP_p, masterKey, MP_dkLen);
+}
+
 void test02()
 {
     printf( "\n* Test 02\n" );
@@ -43,10 +51,10 @@ void test02()
 	char const * const masterPassword = "MasterPass01";
     
     int bOK = 0;
-    bOK = crypto_scrypt((const uint8_t *)masterPassword, strlen(masterPassword),
-		(const uint8_t *)masterKeySalt, masterKeySaltLength, MP_N, MP_r, MP_p, masterKey, MP_dkLen);
-	
-
+    bOK = scrypt_wrapper( (const uint8_t *)masterPassword, 
+            strlen(masterPassword), (const uint8_t *)masterKeySalt, 
+            masterKeySaltLength, masterKey );
+        
 	printf( "%d==%d\n", 0, bOK);
 	printf ( "9124510a3ff74e95b5447686f717c52bd5f6b39676054472bf8ba83a72cd6972b790629de544d94d1e5f105d8c74a24910d944099cf4204dab16ac0feabb17b0\n");
     printf ( "%s\n", Hex(masterKey, 64) );
