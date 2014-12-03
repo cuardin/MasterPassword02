@@ -85,7 +85,7 @@ TEST(MasterPasswordTest, testPassHashSecretKey)
 }
 
 
-TEST(MasterPasswordTest,testPassConvertToPassword)
+TEST(MasterPasswordTest,testPassConvertToPasswordLong)
 {
     const int passLength = 128;
     char  passwd[passLength];
@@ -104,6 +104,24 @@ TEST(MasterPasswordTest,testPassConvertToPassword)
 	EXPECT_EQ(std::string("Gink2^LalqZuza"), std::string(password));
 }
 
+TEST(MasterPasswordTest, testPassConvertToPasswordMaximum)
+{
+	const int passLength = 128;
+	char  passwd[passLength];
+	char * const password = passwd;
+
+	uint8_t sitePasswordSeed[32];
+	convertFromHex("c20b97cd72c9c6b19530a46ae86ea48e78d3d279404540cf2d56568a09cbc1a3",
+		sitePasswordSeed, 32);
+
+	char const * const siteTypeString = "maximum";
+
+	int bOK = mpw_core_convert_to_password(siteTypeString, sitePasswordSeed,
+		passLength, password);
+
+	EXPECT_EQ(0, bOK);
+	EXPECT_EQ(std::string("C1$p52dawNfJkN(w^%x#"), std::string(password));
+}
 
 TEST(MasterPasswordTest,testPassGet01)
 {
@@ -166,21 +184,21 @@ TEST(MasterPasswordTest,testPassGet03)
 }
 
 
-TEST(MasterPasswordTest,testPassGetLLunath)
+TEST(MasterPasswordTest, testPassGetLLunath02)
 {
-    const int passLength = 128;
-    char  passwd[passLength];
-    char * const password = passwd;
+	const int passLength = 128;
+	char  passwd[passLength];
+	char * const password = passwd;
 
-    char const * const userName = "Robert Lee Mitchel";
-    char const * const masterPassword = "banana colored duckling";
-    char const * const siteTypeString = "long";
-    char const * const siteName = "masterpasswordapp.com";
-    const uint32_t siteCounter = 1;
+	char const * const userName = "Robert Lee Mitchell";
+	char const * const masterPassword = "Banana Colored Duckling";
+	char const * const siteTypeString = "maximum";
+	char const * const siteName = "site.com";
+	const uint32_t siteCounter = 1;
 
 
-    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
+	int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
 
-    EXPECT_EQ( 0, bOK );
-    EXPECT_EQ(std::string("Dora6.NudiDuhj"), std::string(password) );
+	EXPECT_EQ(0, bOK);
+	EXPECT_EQ(std::string("C1$p52dawNfJkN(w^%x#"), std::string(password));
 }
