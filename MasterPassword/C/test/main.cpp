@@ -9,9 +9,11 @@
 #include "gtest/gtest.h"
 #include <iostream>
 
+void readXMLDoc();
+
 int main(int argc, char **argv) {
 	::testing::InitGoogleTest(&argc, argv);
-	int rValue = RUN_ALL_TESTS();
+	int rValue = RUN_ALL_TESTS();	
 	std::cout << "Press enter to quit";
 	std::cin.get();
 }
