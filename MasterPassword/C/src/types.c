@@ -28,17 +28,17 @@ const MPElementType TypeWithName(const char *typeName) {
     for (char *tN = lowerTypeName; *tN; ++tN)
         *tN = tolower(*tN);
 
-    if (0 == strcmp(lowerTypeName, "x") || 0 == strcmp(lowerTypeName, "max") || 0 == strcmp(lowerTypeName, "maximum"))
+	if (0 == strcmp(lowerTypeName, "x") || 0 == strcmp(lowerTypeName, "max") || 0 == strcmp(lowerTypeName, "maximum") || 0 == strcmp(lowerTypeName, "generatedmaximum"))
         return MPElementTypeGeneratedMaximum;
-    if (0 == strcmp(lowerTypeName, "l") || 0 == strcmp(lowerTypeName, "long"))
+    if (0 == strcmp(lowerTypeName, "l") || 0 == strcmp(lowerTypeName, "long") || 0 == strcmp(lowerTypeName, "generatedlong"))
         return MPElementTypeGeneratedLong;
-    if (0 == strcmp(lowerTypeName, "m") || 0 == strcmp(lowerTypeName, "med") || 0 == strcmp(lowerTypeName, "medium"))
+	if (0 == strcmp(lowerTypeName, "m") || 0 == strcmp(lowerTypeName, "med") || 0 == strcmp(lowerTypeName, "medium") || 0 == strcmp(lowerTypeName, "generatedmedium"))
         return MPElementTypeGeneratedMedium;
-    if (0 == strcmp(lowerTypeName, "b") || 0 == strcmp(lowerTypeName, "basic"))
+	if (0 == strcmp(lowerTypeName, "b") || 0 == strcmp(lowerTypeName, "basic") || 0 == strcmp(lowerTypeName, "generatedbasic"))
         return MPElementTypeGeneratedBasic;
-    if (0 == strcmp(lowerTypeName, "s") || 0 == strcmp(lowerTypeName, "short"))
+	if (0 == strcmp(lowerTypeName, "s") || 0 == strcmp(lowerTypeName, "short") || 0 == strcmp(lowerTypeName, "generatedshort") )
         return MPElementTypeGeneratedShort;
-    if (0 == strcmp(lowerTypeName, "p") || 0 == strcmp(lowerTypeName, "pin"))
+	if (0 == strcmp(lowerTypeName, "p") || 0 == strcmp(lowerTypeName, "pin") || 0 == strcmp(lowerTypeName, "generatedpin") )
         return MPElementTypeGeneratedPIN;
 
     fprintf(stderr, "Not a generated type name: %s", lowerTypeName);

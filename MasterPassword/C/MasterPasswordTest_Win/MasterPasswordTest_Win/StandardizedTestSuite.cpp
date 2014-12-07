@@ -66,7 +66,7 @@ TestData readXMLDoc() {
 		
 		testData[id] = testCase;
 
-		pListElement = pListElement->NextSiblingElement("case");
+		pListElement = pListElement->NextSiblingElement("case");		
 	}
 
 	return testData;
@@ -78,9 +78,34 @@ TestData readXMLDoc() {
 class EncodeTest: public testing::TestWithParam<std::pair<const std::string,TestCase>> {};
 
 TEST_P(EncodeTest, EncodesAsExpected ) {	
-	std::cout << "Test ID: " << GetParam().first << std::endl;
-	//TODO: Fill in the test case here. :D
-	ASSERT_TRUE(true);
+	std::string id = GetParam().first;
+	std::cout << "Test ID: " << id << std::endl;	
+
+	const int passLength = 128;
+	char  passwd[passLength];
+	char * const password = passwd;
+	char  keyIDBuf[passLength];
+	char * const keyID = keyIDBuf;
+
+	TestCase testCase = GetParam().second;
+
+	char const * const userName = testCase.at("fullName").c_str();
+	for (int i = 0; i < strlen(userName); i++) {
+		std::cout << (int)userName[i];
+	}
+	std::cout << std::endl;
+
+	char const * const masterPassword = testCase.at("masterPassword").c_str();
+	char const * const siteTypeString = testCase.at("siteType").c_str();
+	char const * const siteName = testCase.at("siteName").c_str();
+	const uint32_t siteCounter = atoll( testCase.at("siteCounter").c_str() );
+
+	int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, keyID, passLength);
+
+	EXPECT_EQ(0, bOK);
+	EXPECT_EQ(std::string(testCase.at("keyID")), std::string(keyID));
+	EXPECT_EQ(std::string(testCase.at("result")), std::string(password));
+
 }
 
 INSTANTIATE_TEST_CASE_P(InstantiationName, EncodeTest, ::testing::ValuesIn(readXMLDoc()) );

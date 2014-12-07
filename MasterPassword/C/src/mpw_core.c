@@ -44,9 +44,27 @@ uint32_t htonl(uint32_t input)
 	return output;
 }
 
+int hashArray(const void *buf, size_t length, char * const keyID, const size_t keyIDLen)
+{
+	if (keyIDLen == 0)
+		return 0;
+
+	if (keyIDLen < 65)
+		return -1;
+
+	unsigned char hash[32];
+	SHA256_Buf(buf, length, hash);
+
+	for (int kH = 0; kH < 32; kH++)
+		sprintf(&(keyID[kH * 2]), "%02X", hash[kH]);
+
+	return 0;
+}
+
+
 int mpw_core(char * const password, const size_t passLen, char const * const userName, 
 	char const * const masterPassword, char const * const siteTypeString, char const * const siteName,
-	const int siteCounter )
+	const int siteCounter, char * const keyID, const size_t keyIDLen )
 {
     //**************************************************
     //Verify that the input strings are not longer than MAXSTRLEN
@@ -85,7 +103,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
 
     //*****************************************************
 	// Calculate the master key.
-	if (0 != mpw_core_calculate_master_key(masterPassword, masterKeySalt, masterKeySaltLength, masterKey) ) {
+	if (0 != mpw_core_calculate_master_key(masterPassword, masterKeySalt, masterKeySaltLength, masterKey, keyID, keyIDLen) ) {
 		cleanup(masterKey, sitePasswordSeed);
 		sprintf(password, "Error preparing the salt");
 		return -1;
@@ -152,16 +170,22 @@ int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char cons
 }
 
 int mpw_core_calculate_master_key(char const * const masterPassword, char const * const masterKeySalt,
-	size_t masterKeySaltLength, uint8_t * const masterKey)
+	size_t masterKeySaltLength, uint8_t * const masterKey, char * const keyID, const size_t keyIDLen )
 {
 	if (crypto_scrypt((const uint8_t *)masterPassword, strlen(masterPassword),
 		(const uint8_t *)masterKeySalt, masterKeySaltLength, MP_N, MP_r, MP_p, masterKey, MP_dkLen) < 0)
 	{
 		return -1;
 	}
+
+	if (hashArray(masterKey, MP_dkLen, keyID, keyIDLen)) 
+	{
+		return -1;
+	}
 	trc("masterPassword Hex: %s\n", Hex(masterPassword, strlen(masterPassword)));	
 	trc("masterKeySalt Hex: %s\n", Hex(masterKeySalt, masterKeySaltLength));
 	trc("masterKey Hex: %s\n", Hex(masterKey, MP_dkLen));
+	trc("masterKey Hash: %s\n", keyID );
 
 	return 0;
 }

@@ -37,7 +37,7 @@ TEST(MasterPasswordTest, testGenerateSecretKey)
 
 	char const * const masterPassword = "MasterPass01";
 
-	int bOK = mpw_core_calculate_master_key(masterPassword, masterKeySalt, masterKeySaltLength, masterKey);
+	int bOK = mpw_core_calculate_master_key(masterPassword, masterKeySalt, masterKeySaltLength, masterKey, 0, 0);
 
 	EXPECT_EQ(0, bOK);
 	EXPECT_EQ(std::string("9124510a3ff74e95b5447686f717c52bd5f6b39676054472bf8ba83a72cd6972b790629de544d94d1e5f105d8c74a24910d944099cf4204dab16ac0feabb17b0"), 
@@ -133,10 +133,9 @@ TEST(MasterPasswordTest,testPassGet01)
     char const * const masterPassword = "MasterPass01";
     char const * const siteTypeString = "long";
 	char const * const siteName = "site01.åäö";
-    const uint32_t siteCounter = 1;
+    const uint32_t siteCounter = 1;    
     
-    
-    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
+    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
 
     EXPECT_EQ( 0, bOK );
 	EXPECT_EQ(std::string("Gink2^LalqZuza"), std::string(password));
@@ -156,7 +155,7 @@ TEST(MasterPasswordTest,testPassGet02)
     const uint32_t siteCounter = 5;
     
     
-    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
+    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
     
     EXPECT_EQ( 0, bOK );
     EXPECT_EQ( std::string("0535"), std::string(password) );
@@ -176,7 +175,7 @@ TEST(MasterPasswordTest,testPassGet03)
     const uint32_t siteCounter = 5;
     
     
-    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
+    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
     
     EXPECT_EQ(0, bOK );
     EXPECT_EQ(std::string("5307"), std::string(password) );
@@ -197,8 +196,9 @@ TEST(MasterPasswordTest, testPassGetLLunath02)
 	const uint32_t siteCounter = 1;
 
 
-	int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter);
+	int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
 
 	EXPECT_EQ(0, bOK);
 	EXPECT_EQ(std::string("C1$p52dawNfJkN(w^%x#"), std::string(password));
 }
+
