@@ -1,4 +1,4 @@
-//
+﻿//
 //  MPTypes.h
 //  MasterPassword
 //
@@ -6,14 +6,20 @@
 //  Copyright (c) 2012 Lyndir. All rights reserved.
 //
 
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <sys/types.h>
 #include <ctype.h>
+#include <errno.h>
+//#include <unistd.h>
 
-//Make sure that we use C declarations for sha256 as it is a C file.
 #include "sha256.h"
+
+#ifdef COLOR
+#include <curses.h>
+#include <term.h>
+#endif
 
 #include "types.h"
 #define BUFFER_LENGTH 265
@@ -24,128 +30,242 @@ const MPElementType TypeWithName(const char *typeName) {
 		return MPElementTypeGeneratedMaximum;
 	}
 	char lowerTypeName[BUFFER_LENGTH];
-    strcpy(lowerTypeName, typeName);
-    for (char *tN = lowerTypeName; *tN; ++tN)
-        *tN = tolower(*tN);
+	strcpy(lowerTypeName, typeName);
+	for (char *tN = lowerTypeName; *tN; ++tN)
+		*tN = tolower(*tN);
 
-	if (0 == strcmp(lowerTypeName, "x") || 0 == strcmp(lowerTypeName, "max") || 0 == strcmp(lowerTypeName, "maximum") || 0 == strcmp(lowerTypeName, "generatedmaximum"))
-        return MPElementTypeGeneratedMaximum;
-    if (0 == strcmp(lowerTypeName, "l") || 0 == strcmp(lowerTypeName, "long") || 0 == strcmp(lowerTypeName, "generatedlong"))
-        return MPElementTypeGeneratedLong;
-	if (0 == strcmp(lowerTypeName, "m") || 0 == strcmp(lowerTypeName, "med") || 0 == strcmp(lowerTypeName, "medium") || 0 == strcmp(lowerTypeName, "generatedmedium"))
-        return MPElementTypeGeneratedMedium;
-	if (0 == strcmp(lowerTypeName, "b") || 0 == strcmp(lowerTypeName, "basic") || 0 == strcmp(lowerTypeName, "generatedbasic"))
-        return MPElementTypeGeneratedBasic;
-	if (0 == strcmp(lowerTypeName, "s") || 0 == strcmp(lowerTypeName, "short") || 0 == strcmp(lowerTypeName, "generatedshort") )
-        return MPElementTypeGeneratedShort;
-	if (0 == strcmp(lowerTypeName, "p") || 0 == strcmp(lowerTypeName, "pin") || 0 == strcmp(lowerTypeName, "generatedpin") )
-        return MPElementTypeGeneratedPIN;
+	if (0 == strcmp(lowerTypeName, "x") || 0 == strcmp(lowerTypeName, "max") || 0 == strcmp(lowerTypeName, "maximum"))
+		return MPElementTypeGeneratedMaximum;
+	if (0 == strcmp(lowerTypeName, "l") || 0 == strcmp(lowerTypeName, "long"))
+		return MPElementTypeGeneratedLong;
+	if (0 == strcmp(lowerTypeName, "m") || 0 == strcmp(lowerTypeName, "med") || 0 == strcmp(lowerTypeName, "medium"))
+		return MPElementTypeGeneratedMedium;
+	if (0 == strcmp(lowerTypeName, "b") || 0 == strcmp(lowerTypeName, "basic"))
+		return MPElementTypeGeneratedBasic;
+	if (0 == strcmp(lowerTypeName, "s") || 0 == strcmp(lowerTypeName, "short"))
+		return MPElementTypeGeneratedShort;
+	if (0 == strcmp(lowerTypeName, "i") || 0 == strcmp(lowerTypeName, "pin"))
+		return MPElementTypeGeneratedPIN;
+	if (0 == strcmp(lowerTypeName, "n") || 0 == strcmp(lowerTypeName, "name"))
+		return MPElementTypeGeneratedName;
+	if (0 == strcmp(lowerTypeName, "p") || 0 == strcmp(lowerTypeName, "phrase"))
+		return MPElementTypeGeneratedPhrase;
 
-    fprintf(stderr, "Not a generated type name: %s", lowerTypeName);
-	return MPElementTypeGeneratedMaximum;
+	fprintf(stderr, "Not a generated type name: %s", lowerTypeName);
+	abort();
 }
 
-const char *CipherForType(MPElementType type, uint8_t seedByte) {
-    if (!(type & MPElementTypeClassGenerated)) {
-        fprintf(stderr, "Not a generated type: %d", type);
-        abort();
-    }
+const char *TemplateForType(MPElementType type, uint8_t seedByte) {
+	if (!(type & MPElementTypeClassGenerated)) {
+		fprintf(stderr, "Not a generated type: %d", type);
+		abort();
+	}
 
-    switch (type) {
-        case MPElementTypeGeneratedMaximum: {
-            char *ciphers[] = { "anoxxxxxxxxxxxxxxxxx", "axxxxxxxxxxxxxxxxxno" };
-            return ciphers[seedByte % 2];
-        }
-        case MPElementTypeGeneratedLong: {
-            char *ciphers[] = { "CvcvnoCvcvCvcv", "CvcvCvcvnoCvcv", "CvcvCvcvCvcvno", "CvccnoCvcvCvcv", "CvccCvcvnoCvcv", "CvccCvcvCvcvno", "CvcvnoCvccCvcv", "CvcvCvccnoCvcv", "CvcvCvccCvcvno", "CvcvnoCvcvCvcc", "CvcvCvcvnoCvcc", "CvcvCvcvCvccno", "CvccnoCvccCvcv", "CvccCvccnoCvcv", "CvccCvccCvcvno", "CvcvnoCvccCvcc", "CvcvCvccnoCvcc", "CvcvCvccCvccno", "CvccnoCvcvCvcc", "CvccCvcvnoCvcc", "CvccCvcvCvccno" };
-            return ciphers[seedByte % 21];
-        }
-        case MPElementTypeGeneratedMedium: {
-            char *ciphers[] = { "CvcnoCvc", "CvcCvcno" };
-            return ciphers[seedByte % 2];
-        }
-        case MPElementTypeGeneratedBasic: {
-            char *ciphers[] = { "aaanaaan", "aannaaan", "aaannaaa" };
-            return ciphers[seedByte % 3];
-        }
-        case MPElementTypeGeneratedShort: {
-            return "Cvcn";
-        }
-        case MPElementTypeGeneratedPIN: {
-            return "nnnn";
-        }
-        default: {
-            fprintf(stderr, "Unknown generated type: %d", type);
-            abort();
-        }
-    }
+	switch (type) {
+	case MPElementTypeGeneratedMaximum: {
+		const char *templates[] = { "anoxxxxxxxxxxxxxxxxx", "axxxxxxxxxxxxxxxxxno" };
+		return templates[seedByte % 2];
+	}
+	case MPElementTypeGeneratedLong: {
+		const char *templates[] = { "CvcvnoCvcvCvcv", "CvcvCvcvnoCvcv", "CvcvCvcvCvcvno", "CvccnoCvcvCvcv", "CvccCvcvnoCvcv", "CvccCvcvCvcvno", "CvcvnoCvccCvcv", "CvcvCvccnoCvcv", "CvcvCvccCvcvno", "CvcvnoCvcvCvcc", "CvcvCvcvnoCvcc", "CvcvCvcvCvccno", "CvccnoCvccCvcv", "CvccCvccnoCvcv", "CvccCvccCvcvno", "CvcvnoCvccCvcc", "CvcvCvccnoCvcc", "CvcvCvccCvccno", "CvccnoCvcvCvcc", "CvccCvcvnoCvcc", "CvccCvcvCvccno" };
+		return templates[seedByte % 21];
+	}
+	case MPElementTypeGeneratedMedium: {
+		const char *templates[] = { "CvcnoCvc", "CvcCvcno" };
+		return templates[seedByte % 2];
+	}
+	case MPElementTypeGeneratedBasic: {
+		const char *templates[] = { "aaanaaan", "aannaaan", "aaannaaa" };
+		return templates[seedByte % 3];
+	}
+	case MPElementTypeGeneratedShort: {
+		return "Cvcn";
+	}
+	case MPElementTypeGeneratedPIN: {
+		return "nnnn";
+	}
+	case MPElementTypeGeneratedName: {
+		return "cvccvcvcv";
+	}
+	case MPElementTypeGeneratedPhrase: {
+		const char *templates[] = { "cvcc cvc cvccvcv cvc", "cvc cvccvcvcv cvcv", "cv cvccv cvc cvcvccv" };
+		return templates[seedByte % 3];
+	}
+	default: {
+		fprintf(stderr, "Unknown generated type: %d", type);
+		abort();
+	}
+	}
+}
+
+const MPElementVariant VariantWithName(const char *variantName) {
+	if (strlen(variantName) > BUFFER_LENGTH) {
+		fprintf(stderr, "Too long string supplied\n");
+		return MPElementTypeGeneratedMaximum;
+	}
+	char lowerVariantName[BUFFER_LENGTH];
+
+	strcpy(lowerVariantName, variantName);
+	for (char *vN = lowerVariantName; *vN; ++vN)
+		*vN = tolower(*vN);
+
+	if (0 == strcmp(lowerVariantName, "p") || 0 == strcmp(lowerVariantName, "password"))
+		return MPElementVariantPassword;
+	if (0 == strcmp(lowerVariantName, "l") || 0 == strcmp(lowerVariantName, "login"))
+		return MPElementVariantLogin;
+	if (0 == strcmp(lowerVariantName, "a") || 0 == strcmp(lowerVariantName, "answer"))
+		return MPElementVariantAnswer;
+
+	fprintf(stderr, "Not a variant name: %s", lowerVariantName);
+	abort();
+}
+
+const char *ScopeForVariant(MPElementVariant variant) {
+	switch (variant) {
+	case MPElementVariantPassword: {
+		return "com.lyndir.masterpassword";
+	}
+	case MPElementVariantLogin: {
+		return "com.lyndir.masterpassword.login";
+	}
+	case MPElementVariantAnswer: {
+		return "com.lyndir.masterpassword.answer";
+	}
+	default: {
+		fprintf(stderr, "Unknown variant: %d", variant);
+		abort();
+	}
+	}
 }
 
 const char CharacterFromClass(char characterClass, uint8_t seedByte) {
-    const char *classCharacters;
-    switch (characterClass) {
-        case 'V': {
-            classCharacters = "AEIOU";
-            break;
-        }
-        case 'C': {
-            classCharacters = "BCDFGHJKLMNPQRSTVWXYZ";
-            break;
-        }
-        case 'v': {
-            classCharacters = "aeiou";
-            break;
-        }
-        case 'c': {
-            classCharacters = "bcdfghjklmnpqrstvwxyz";
-            break;
-        }
-        case 'A': {
-            classCharacters = "AEIOUBCDFGHJKLMNPQRSTVWXYZ";
-            break;
-        }
-        case 'a': {
-            classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz";
-            break;
-        }
-        case 'n': {
-            classCharacters = "0123456789";
-            break;
-        }
-        case 'o': {
-            classCharacters = "@&%?,=[]_:-+*$#!'^~;()/.";
-            break;
-        }
-        case 'x': {
-            classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz0123456789!@#$%^&*()";
-            break;
-        }
-        default: {
-            fprintf(stderr, "Unknown character class: %c", characterClass);
-            abort();
-         }
-    }
+	const char *classCharacters;
+	switch (characterClass) {
+	case 'V': {
+		classCharacters = "AEIOU";
+		break;
+	}
+	case 'C': {
+		classCharacters = "BCDFGHJKLMNPQRSTVWXYZ";
+		break;
+	}
+	case 'v': {
+		classCharacters = "aeiou";
+		break;
+	}
+	case 'c': {
+		classCharacters = "bcdfghjklmnpqrstvwxyz";
+		break;
+	}
+	case 'A': {
+		classCharacters = "AEIOUBCDFGHJKLMNPQRSTVWXYZ";
+		break;
+	}
+	case 'a': {
+		classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz";
+		break;
+	}
+	case 'n': {
+		classCharacters = "0123456789";
+		break;
+	}
+	case 'o': {
+		classCharacters = "@&%?,=[]_:-+*$#!'^~;()/.";
+		break;
+	}
+	case 'x': {
+		classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz0123456789!@#$%^&*()";
+		break;
+	}
+	case ' ': {
+		classCharacters = " ";
+		break;
+	}
+	default: {
+		fprintf(stderr, "Unknown character class: %c", characterClass);
+		abort();
+	}
+	}
 
-    return classCharacters[seedByte % strlen(classCharacters)];
+	return classCharacters[seedByte % strlen(classCharacters)];
 }
 
 const char *IDForBuf(const void *buf, size_t length) {
-    uint8_t hash[32];
-    SHA256_Buf(buf, length, hash);
+	uint8_t hash[32];
+	SHA256_Buf(buf, length, hash);
 
-    char *id = (char*)calloc(65, sizeof(char));
-    for (int kH = 0; kH < 32; kH++)
-        sprintf(&(id[kH * 2]), "%02X", hash[kH]);
+	char *id = (char *)calloc(65, sizeof(char));
+	for (int kH = 0; kH < 32; kH++)
+		sprintf(&(id[kH * 2]), "%02X", hash[kH]);
 
-    return id;
+	return id;
 }
 
-char hexBuffer[2048];
-
 const char *Hex(const void *buf, size_t length) {
-	memset(hexBuffer, 0, 2048);
-    for (unsigned int kH = 0; kH < length; kH++)
-        sprintf(&(hexBuffer[kH * 2]), "%02x", ((const uint8_t*)buf)[kH]);
-	
-    return hexBuffer;
+	char *id = (char *)calloc(length * 2 + 1, sizeof(char));
+	for (int kH = 0; kH < length; kH++)
+		sprintf(&(id[kH * 2]), "%02x", ((const uint8_t*)buf)[kH]);
+
+	return id;
+}
+
+#ifdef COLOR
+int putvari;
+char *putvarc = NULL;
+bool istermsetup = false;
+static void initputvar() {
+	if (putvarc)
+		free(putvarc);
+	putvarc = (char *)calloc(256, sizeof(char));
+	putvari = 0;
+
+	if (!istermsetup)
+		istermsetup = (OK == setupterm(NULL, STDERR_FILENO, NULL));
+}
+static int putvar(int c) {
+	putvarc[putvari++] = c;
+	return 0;
+}
+#endif
+
+const char *Identicon(const char *userName, const char *masterPassword) {
+	const char *leftArm[] = { "╔", "╚", "╰", "═" };
+	const char *rightArm[] = { "╗", "╝", "╯", "═" };
+	const char *body[] = { "█", "░", "▒", "▓", "☺", "☻" };
+	const char *accessory[] = { "◈", "◎", "◐", "◑", "◒", "◓", "☀", "☁", "☂", "☃", "☄", "★", "☆", "☎", "☏", "⎈", "⌂", "☘", "☢", "☣", "☕", "⌚", "⌛", "⏰", "⚡", "⛄", "⛅", "☔", "♔", "♕", "♖", "♗", "♘", "♙", "♚", "♛", "♜", "♝", "♞", "♟", "♨", "♩", "♪", "♫", "⚐", "⚑", "⚔", "⚖", "⚙", "⚠", "⌘", "⏎", "✄", "✆", "✈", "✉", "✌" };
+
+	uint8_t identiconSeed[32];
+	HMAC_SHA256_Buf(masterPassword, strlen(masterPassword), userName, strlen(userName), identiconSeed);
+
+	uint8_t colorIdentifier = identiconSeed[4] % 7 + 1;
+	char *colorString, *resetString;
+#ifdef COLOR
+	if (isatty(STDERR_FILENO)) {
+		initputvar();
+		tputs(tparm(tgetstr("AF", NULL), colorIdentifier), 1, putvar);
+		colorString = calloc(strlen(putvarc) + 1, sizeof(char));
+		strcpy(colorString, putvarc);
+		tputs(tgetstr("me", NULL), 1, putvar);
+		resetString = calloc(strlen(putvarc) + 1, sizeof(char));
+		strcpy(resetString, putvarc);
+	}
+	else
+#endif
+	{
+		colorString = calloc(1, sizeof(char));
+		resetString = calloc(1, sizeof(char));
+	}
+
+	char *identicon = (char *)calloc(256, sizeof(char));
+	sprintf(identicon, "%s%s%s%s%s%s",
+		colorString,
+		leftArm[identiconSeed[0] % (sizeof(leftArm) / sizeof(leftArm[0]))],
+		body[identiconSeed[1] % (sizeof(body) / sizeof(body[0]))],
+		rightArm[identiconSeed[2] % (sizeof(rightArm) / sizeof(rightArm[0]))],
+		accessory[identiconSeed[3] % (sizeof(accessory) / sizeof(accessory[0]))],
+		resetString);
+
+	free(colorString);
+	free(resetString);
+	return identicon;
 }

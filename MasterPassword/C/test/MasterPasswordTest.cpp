@@ -133,9 +133,10 @@ TEST(MasterPasswordTest,testPassGet01)
     char const * const masterPassword = "MasterPass01";
     char const * const siteTypeString = "long";
 	char const * const siteName = "site01.åäö";
+	char const* const mpNameSpace = ScopeForVariant(MPElementVariantPassword);
     const uint32_t siteCounter = 1;    
     
-    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+	int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
 
     EXPECT_EQ( 0, bOK );
 	EXPECT_EQ(std::string("Gink2^LalqZuza"), std::string(password));
@@ -152,10 +153,11 @@ TEST(MasterPasswordTest,testPassGet02)
     char const * const masterPassword = "AndAMasterPassword";
     char const * const siteTypeString = "pin";
     char const * const siteName = "anotherSite.com";
+	char const* const mpNameSpace = ScopeForVariant(MPElementVariantPassword);
     const uint32_t siteCounter = 5;
     
     
-    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+    int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
     
     EXPECT_EQ( 0, bOK );
     EXPECT_EQ( std::string("0535"), std::string(password) );
@@ -172,10 +174,11 @@ TEST(MasterPasswordTest,testPassGet03)
     char const * const masterPassword = "AndMöstärPoss";
     char const * const siteTypeString = "pin";
     char const * const siteName = "anöther.com";
+	char const* const mpNameSpace = ScopeForVariant(MPElementVariantPassword);
     const uint32_t siteCounter = 5;
     
     
-    int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+    int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
     
     EXPECT_EQ(0, bOK );
     EXPECT_EQ(std::string("5307"), std::string(password) );
@@ -193,12 +196,12 @@ TEST(MasterPasswordTest, testPassGetLLunath02)
 	char const * const masterPassword = "Banana Colored Duckling";
 	char const * const siteTypeString = "maximum";
 	char const * const siteName = "site.com";
+	char const* const mpNameSpace = ScopeForVariant(MPElementVariantPassword);
 	const uint32_t siteCounter = 1;
 
 
-	int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+	int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
 
 	EXPECT_EQ(0, bOK);
 	EXPECT_EQ(std::string("C1$p52dawNfJkN(w^%x#"), std::string(password));
 }
-

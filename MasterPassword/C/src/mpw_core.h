@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-int mpw_core(char * const password, const size_t passLen, char const * const userName,
+int mpw_core(char const * const mpNameSpace, char * const password, const size_t passLen, char const * const userName,
 	char const * const masterPassword, char const * const siteTypeString, char const * const siteName,
 	const int siteCounter, char * const keyID, const size_t keyIDLen );
 

@@ -27,7 +27,7 @@ TestData readXMLDoc() {
 	XMLError eResult;
 
 	XMLDocument doc;	
-	XMLCheckResult(doc.LoadFile("../../test/standardTests.xml"));
+	XMLCheckResult(doc.LoadFile("../../test/mpw_tests.xml"));
 
 	TestData data;
 	XMLNode * pRoot = doc.FirstChild();
@@ -99,8 +99,9 @@ TEST_P(EncodeTest, EncodesAsExpected ) {
 	char const * const siteTypeString = testCase.at("siteType").c_str();
 	char const * const siteName = testCase.at("siteName").c_str();
 	const uint32_t siteCounter = atoll( testCase.at("siteCounter").c_str() );
+	char const * const siteScope = ScopeForVariant(VariantWithName(testCase.at("siteVariant").c_str()));
 
-	int bOK = mpw_core(password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, keyID, passLength);
+	int bOK = mpw_core(siteScope, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, keyID, passLength);
 
 	EXPECT_EQ(0, bOK);
 	EXPECT_EQ(std::string(testCase.at("keyID")), std::string(keyID));
@@ -108,4 +109,4 @@ TEST_P(EncodeTest, EncodesAsExpected ) {
 
 }
 
-INSTANTIATE_TEST_CASE_P(InstantiationName, EncodeTest, ::testing::ValuesIn(readXMLDoc()) );
+INSTANTIATE_TEST_CASE_P(StandardizedTest, EncodeTest, ::testing::ValuesIn(readXMLDoc()) );

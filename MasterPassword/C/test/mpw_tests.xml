@@ -5,7 +5,7 @@
         <keyID>98EEF4D1DF46D849574A82A03C3177056B15DFFCA29BB3899DE4628453675302</keyID>
         <siteName>masterpasswordapp.com</siteName>
         <siteCounter>1</siteCounter>
-        <siteType>GeneratedLong</siteType>
+        <siteType>long</siteType>
         <siteVariant>Password</siteVariant>
         <siteContext />
         <result>Jejr5[RepuSosp</result>
@@ -23,27 +23,35 @@
     <case id="mb_siteName" parent="default">
         <siteName>⛄</siteName>
         <result>LiheCuwhSerz6)</result>
-    </case>            
+    </case>        
     <case id="type_maximum" parent="default">
-        <siteType>GeneratedMaximum</siteType>
+        <siteType>maximum</siteType>
         <result>W6@692^B1#&amp;@gVdSdLZ@</result>
     </case>
     <case id="type_medium" parent="default">
-        <siteType>GeneratedMedium</siteType>
+        <siteType>medium</siteType>
         <result>Jej2$Quv</result>
     </case>
     <case id="type_basic" parent="default">
-        <siteType>GeneratedBasic</siteType>
+        <siteType>basic</siteType>
         <result>WAo2xIg6</result>
     </case>
     <case id="type_short" parent="default">
-        <siteType>GeneratedShort</siteType>
+        <siteType>short</siteType>
         <result>Jej2</result>
     </case>
     <case id="type_pin" parent="default">
-        <siteType>GeneratedPIN</siteType>
+        <siteType>pin</siteType>
         <result>7662</result>
-    </case>        
+    </case>
+    <case id="type_name" parent="default">
+        <siteType>name</siteType>
+        <result>jejraquvo</result>
+    </case>
+    <case id="type_phrase" parent="default">
+        <siteType>phrase</siteType>
+        <result>jejr quv cabsibu tam</result>
+    </case>
     <case id="counter_ceiling" parent="default">
         <siteCounter>4294967295</siteCounter>
         <result>XambHoqo6[Peni</result>

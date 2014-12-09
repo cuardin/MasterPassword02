@@ -8,6 +8,7 @@
 
 svn checkout http://scrypt.googlecode.com/svn/trunk/ scrypt
 cp scrypt/lib/crypto/crypto_scrypt-ref.c ../src/scrypt/
+cp scrypt/lib/crypto/crypto_scrypt-nosse.c ../src/scrypt/
 cp scrypt/lib/crypto/crypto_scrypt.h ../src/scrypt/
 cp scrypt/scrypt_platform.h ../src/scrypt/
 cp scrypt/libcperciva/alg/sha256.c ../src/scrypt/

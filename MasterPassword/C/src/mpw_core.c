@@ -62,7 +62,7 @@ int hashArray(const void *buf, size_t length, char * const keyID, const size_t k
 }
 
 
-int mpw_core(char * const password, const size_t passLen, char const * const userName, 
+int mpw_core(char const * const mpNameSpace, char * const password, const size_t passLen, char const * const userName,
 	char const * const masterPassword, char const * const siteTypeString, char const * const siteName,
 	const int siteCounter, char * const keyID, const size_t keyIDLen )
 {
@@ -74,10 +74,7 @@ int mpw_core(char * const password, const size_t passLen, char const * const use
     }
 
     //**************************************************
-    //Allocate all of the memory we neeed
-    
-    //A string that makes salts from this program unique from other programs.
-    char *mpNameSpace = "com.lyndir.masterpassword"; //Must be a few chars shorter than MAXSTRLEN
+    //Allocate all of the memory we neeed        
     
     //The main salt based on the user name.
     char masterKeySalt[2*MAXSTRLEN]; memset(masterKeySalt, 0, 2 * MAXSTRLEN);
@@ -237,7 +234,7 @@ int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t cons
 {
     // Determine the cipher
 	MPElementType siteType = TypeWithName(siteTypeString);
-	const char *cipher = CipherForType(siteType, sitePasswordSeed[0]);
+	const char *cipher = TemplateForType(siteType, sitePasswordSeed[0]);
 	trc("type %s, cipher: %s\n", siteTypeString, cipher);
 	if (strlen(cipher) >= MAXPASSLEN) {
 		fprintf(stderr, "Cipher template longer than 32 characters returned. Not supported.\n" );
