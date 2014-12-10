@@ -64,7 +64,7 @@ int hashArray(const void *buf, size_t length, char * const keyID, const size_t k
 
 int mpw_core(char const * const mpNameSpace, char * const password, const size_t passLen, char const * const userName,
 	char const * const masterPassword, char const * const siteTypeString, char const * const siteName,
-	const int siteCounter, char * const keyID, const size_t keyIDLen )
+	const int siteCounter, char const * const siteContext, char * const keyID, const size_t keyIDLen )
 {
     //**************************************************
     //Verify that the input strings are not longer than MAXSTRLEN
@@ -92,7 +92,7 @@ int mpw_core(char const * const mpNameSpace, char * const password, const size_t
 
     //**************************************************
     //Compute the main program salt based on the username.
-    if ( 0 != mpw_core_calculate_master_key_salt(mpNameSpace, userName, masterKeySalt, &masterKeySaltLength ) ) {
+    if ( 0 != mpw_core_calculate_master_key_salt( userName, masterKeySalt, &masterKeySaltLength ) ) {
         cleanup(masterKey, sitePasswordSeed);
 		sprintf(password, "Error preparing the salt" );
         return -1;
@@ -108,7 +108,8 @@ int mpw_core(char const * const mpNameSpace, char * const password, const size_t
 	
 	//*****************************************************
 	// Calculate the seed for the site.
-    if ( 0 != mpw_core_calculate_site_seed(sitePasswordInfo, &sitePasswordInfoLength, mpNameSpace, siteName, siteCounter )) {
+    if ( 0 != mpw_core_calculate_site_seed(sitePasswordInfo, &sitePasswordInfoLength, 
+		mpNameSpace, siteName, siteCounter, siteContext )) {
         cleanup(masterKey, sitePasswordSeed);
 		fprintf(stderr, "Coding error when building the sitePasswordInfo seed.\n" );
     }
@@ -135,12 +136,16 @@ int mpw_core(char const * const mpNameSpace, char * const password, const size_t
     
 }
 
-int mpw_core_calculate_master_key_salt(char const * const mpNameSpace, char const * const userName,
+int mpw_core_calculate_master_key_salt( char const * const userName,
                                        char * const masterKeySalt, size_t * const masterKeySaltLength )
 {
     //*****************************************************
 	// Calculate the master key salt.
+
+	//The standard namespace
+	char const * const mpNameSpace = "com.lyndir.masterpassword";
 	const uint32_t n_userNameLength = htonl((uint32_t)strlen(userName));
+	
 	//Is this needed now?
     *masterKeySaltLength = strlen(mpNameSpace) + sizeof(n_userNameLength)+strlen(userName);
     
@@ -187,13 +192,24 @@ int mpw_core_calculate_master_key(char const * const masterPassword, char const 
 	return 0;
 }
 
-int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * const sitePasswordInfoLength, char const * const mpNameSpace, char const * const siteName, uint32_t siteCounter )
+int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * const sitePasswordInfoLength, 
+	char const * const mpNameSpace, char const * const siteName, uint32_t siteCounter, 
+	char const * const siteContext )
 {
     //*****************************************************
 	// Calculate the site seed.
 	const uint32_t n_siteNameLength = htonl((uint32_t)strlen(siteName));
+
 	const uint32_t n_siteCounter = htonl(siteCounter);
 	*sitePasswordInfoLength = strlen(mpNameSpace) + sizeof(n_siteNameLength)+strlen(siteName) + sizeof(n_siteCounter);
+	
+	uint32_t n_siteContextLength = 0;
+	if ( strlen(siteContext) != 0) {
+		n_siteContextLength = htonl((uint32_t)strlen(siteContext));
+
+		*sitePasswordInfoLength += sizeof(n_siteContextLength) + strlen(siteContext);
+
+	}
     
     uint8_t* sPI = sitePasswordInfo;
     
@@ -209,6 +225,15 @@ int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * con
     memcpy(sPI, &n_siteCounter, sizeof(n_siteCounter));
     sPI += sizeof(n_siteCounter);
     
+	if (strlen(siteContext) != 0) {
+
+		memcpy(sPI, &n_siteContextLength, sizeof(n_siteContextLength));
+		sPI += sizeof(n_siteContextLength);
+
+		memcpy(sPI, siteContext, strlen(siteContext));
+		sPI += strlen(siteContext);
+	}
+
     //This is just to check for coding errors. The above code quarantees that this will allways pass.
 	if (sPI - sitePasswordInfo != *sitePasswordInfoLength) {
 		return -1;

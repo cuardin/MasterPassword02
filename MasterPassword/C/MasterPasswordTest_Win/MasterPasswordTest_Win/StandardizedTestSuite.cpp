@@ -59,6 +59,7 @@ TestData readXMLDoc() {
 				testCase[name] = value;
 				std::cout << name << ": " << testCase[name] << std::endl;
 			} else {
+				testCase[name] = "";
 				std::cout << name << ": " << "null" << std::endl;
 			}
 			pNodeListElement = pNodeListElement->NextSiblingElement();			
@@ -89,19 +90,15 @@ TEST_P(EncodeTest, EncodesAsExpected ) {
 
 	TestCase testCase = GetParam().second;
 
-	char const * const userName = testCase.at("fullName").c_str();
-	for (int i = 0; i < strlen(userName); i++) {
-		std::cout << (int)userName[i];
-	}
-	std::cout << std::endl;
-
+	char const * const userName = testCase.at("fullName").c_str();	
 	char const * const masterPassword = testCase.at("masterPassword").c_str();
 	char const * const siteTypeString = testCase.at("siteType").c_str();
 	char const * const siteName = testCase.at("siteName").c_str();
 	const uint32_t siteCounter = atoll( testCase.at("siteCounter").c_str() );
 	char const * const siteScope = ScopeForVariant(VariantWithName(testCase.at("siteVariant").c_str()));
+	char const * const siteContext = testCase.at("siteContext").c_str();
 
-	int bOK = mpw_core(siteScope, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, keyID, passLength);
+	int bOK = mpw_core(siteScope, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, siteContext, keyID, passLength);
 
 	EXPECT_EQ(0, bOK);
 	EXPECT_EQ(std::string(testCase.at("keyID")), std::string(keyID));

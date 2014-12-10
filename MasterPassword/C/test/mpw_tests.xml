@@ -24,6 +24,18 @@
         <siteName>⛄</siteName>
         <result>LiheCuwhSerz6)</result>
     </case>        
+   <case id="loginName" parent="default">
+        <siteVariant>Login</siteVariant>
+        <result>WohzKifuDilo5,</result>
+    </case>
+    <case id="securityAnswer" parent="default">
+        <siteVariant>Answer</siteVariant>
+        <result>XineDiyj2)Tozz</result>
+    </case>
+    <case id="securityAnswer_context" parent="securityAnswer">
+        <siteContext>question</siteContext>
+        <result>Xoge7*MiycPiyp</result>
+    </case>
     <case id="type_maximum" parent="default">
         <siteType>maximum</siteType>
         <result>W6@692^B1#&amp;@gVdSdLZ@</result>

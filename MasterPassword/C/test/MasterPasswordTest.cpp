@@ -13,11 +13,10 @@ TEST(MasterPasswordTest, testPassGenerateMainSeed ) {
     char * const masterKeySalt = buffer;
     size_t masterKeySaltLength = 0;
     
-    char const * const userName = "user01åäö";
-    char const * const mpNameSpace = "com.lyndir.masterpassword";
+    char const * const userName = "user01åäö";    
 
     
-    int bOK = mpw_core_calculate_master_key_salt(mpNameSpace, userName, masterKeySalt, &masterKeySaltLength );
+    int bOK = mpw_core_calculate_master_key_salt( userName, masterKeySalt, &masterKeySaltLength );
 
     EXPECT_EQ( 12, (int)strlen(userName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
     EXPECT_EQ( 41, (int)masterKeySaltLength );
@@ -57,7 +56,7 @@ TEST(MasterPasswordTest,testPassGenerateSiteSeed)
     
     
     int bOK = mpw_core_calculate_site_seed( sitePasswordInfo, &sitePasswordInfoLength,
-                                           mpNameSpace, siteName, siteCounter );
+                                           mpNameSpace, siteName, siteCounter, "" );
 
     EXPECT_EQ( 13, (int)strlen(siteName) ); //Ensure utf8 encoding(So last 3 are 2-byte);
     EXPECT_EQ( 0, bOK );
@@ -136,7 +135,7 @@ TEST(MasterPasswordTest,testPassGet01)
 	char const* const mpNameSpace = ScopeForVariant(MPElementVariantPassword);
     const uint32_t siteCounter = 1;    
     
-	int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+	int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, "", 0, 0);
 
     EXPECT_EQ( 0, bOK );
 	EXPECT_EQ(std::string("Gink2^LalqZuza"), std::string(password));
@@ -157,7 +156,7 @@ TEST(MasterPasswordTest,testPassGet02)
     const uint32_t siteCounter = 5;
     
     
-    int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+    int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, "", 0, 0);
     
     EXPECT_EQ( 0, bOK );
     EXPECT_EQ( std::string("0535"), std::string(password) );
@@ -178,7 +177,7 @@ TEST(MasterPasswordTest,testPassGet03)
     const uint32_t siteCounter = 5;
     
     
-    int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+    int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, "", 0, 0);
     
     EXPECT_EQ(0, bOK );
     EXPECT_EQ(std::string("5307"), std::string(password) );
@@ -200,7 +199,7 @@ TEST(MasterPasswordTest, testPassGetLLunath02)
 	const uint32_t siteCounter = 1;
 
 
-	int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, 0, 0);
+	int bOK = mpw_core(mpNameSpace, password, passLength, userName, masterPassword, siteTypeString, siteName, siteCounter, "", 0, 0);
 
 	EXPECT_EQ(0, bOK);
 	EXPECT_EQ(std::string("C1$p52dawNfJkN(w^%x#"), std::string(password));
