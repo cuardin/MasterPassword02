@@ -18,6 +18,9 @@
 		6B41A35F19B1A1C400148663 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B41A35E19B1A1C400148663 /* main.cpp */; };
 		6B41A39719B1A76400148663 /* testHMAC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B41A39519B1A76400148663 /* testHMAC.cpp */; };
 		6B41A39819B1A76400148663 /* utilsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B41A39619B1A76400148663 /* utilsTest.cpp */; };
+		6B74A0531A39AF6200561ADD /* StandardizedTestSuite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B74A0521A39AF6200561ADD /* StandardizedTestSuite.cpp */; };
+		6B74A0571A39AFAC00561ADD /* tinyXML2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B74A0551A39AFAC00561ADD /* tinyXML2.cpp */; };
+		6B74A0591A39B1CA00561ADD /* mpw_tests.xml in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6B74A0581A39B1C300561ADD /* mpw_tests.xml */; };
 		6BA11080196FB11100BAB389 /* MasterPasswordTest_OSX.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6BA1107F196FB11100BAB389 /* MasterPasswordTest_OSX.1 */; };
 		6BA11088196FB15100BAB389 /* MasterPasswordTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6BA11087196FB15100BAB389 /* MasterPasswordTest.cpp */; };
 /* End PBXBuildFile section */
@@ -26,9 +29,10 @@
 		6BA11078196FB11100BAB389 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
+			dstPath = /usr/share/man/man1;
 			dstSubfolderSpec = 0;
 			files = (
+				6B74A0591A39B1CA00561ADD /* mpw_tests.xml in CopyFiles */,
 				6BA11080196FB11100BAB389 /* MasterPasswordTest_OSX.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
@@ -56,6 +60,10 @@
 		6B41A35E19B1A1C400148663 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		6B41A39519B1A76400148663 /* testHMAC.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = testHMAC.cpp; sourceTree = "<group>"; };
 		6B41A39619B1A76400148663 /* utilsTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utilsTest.cpp; sourceTree = "<group>"; };
+		6B74A0521A39AF6200561ADD /* StandardizedTestSuite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandardizedTestSuite.cpp; sourceTree = "<group>"; };
+		6B74A0551A39AFAC00561ADD /* tinyXML2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyXML2.cpp; sourceTree = "<group>"; };
+		6B74A0561A39AFAC00561ADD /* tinyXML2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyXML2.h; sourceTree = "<group>"; };
+		6B74A0581A39B1C300561ADD /* mpw_tests.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = mpw_tests.xml; sourceTree = "<group>"; };
 		6BA1107A196FB11100BAB389 /* MasterPasswordTest_OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MasterPasswordTest_OSX; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BA1107F196FB11100BAB389 /* MasterPasswordTest_OSX.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = MasterPasswordTest_OSX.1; sourceTree = "<group>"; };
 		6BA11087196FB15100BAB389 /* MasterPasswordTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MasterPasswordTest.cpp; sourceTree = "<group>"; };
@@ -104,9 +112,20 @@
 			path = scrypt;
 			sourceTree = "<group>";
 		};
+		6B74A0541A39AFAC00561ADD /* tinyXML */ = {
+			isa = PBXGroup;
+			children = (
+				6B74A0551A39AFAC00561ADD /* tinyXML2.cpp */,
+				6B74A0561A39AFAC00561ADD /* tinyXML2.h */,
+			);
+			name = tinyXML;
+			path = ../tinyXML;
+			sourceTree = "<group>";
+		};
 		6BA11071196FB11100BAB389 = {
 			isa = PBXGroup;
 			children = (
+				6B74A0541A39AFAC00561ADD /* tinyXML */,
 				6B41A35719B1A1A100148663 /* libgtest_main.a */,
 				6B41A35819B1A1A100148663 /* libgtest.a */,
 				6B0BE7F01970D4B0004CA5A3 /* src */,
@@ -135,6 +154,8 @@
 		6BA11086196FB12500BAB389 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				6B74A0581A39B1C300561ADD /* mpw_tests.xml */,
+				6B74A0521A39AF6200561ADD /* StandardizedTestSuite.cpp */,
 				6B41A39519B1A76400148663 /* testHMAC.cpp */,
 				6B41A39619B1A76400148663 /* utilsTest.cpp */,
 				6B41A35E19B1A1C400148663 /* main.cpp */,
@@ -204,7 +225,9 @@
 				6B0BE8031970D4B0004CA5A3 /* crypto_scrypt-ref.c in Sources */,
 				6B41A35D19B1A1BC00148663 /* testutils.cpp in Sources */,
 				6B0BE8051970D4B0004CA5A3 /* types.c in Sources */,
+				6B74A0531A39AF6200561ADD /* StandardizedTestSuite.cpp in Sources */,
 				6B41A39719B1A76400148663 /* testHMAC.cpp in Sources */,
+				6B74A0571A39AFAC00561ADD /* tinyXML2.cpp in Sources */,
 				6B41A39819B1A76400148663 /* utilsTest.cpp in Sources */,
 				6B41A35F19B1A1C400148663 /* main.cpp in Sources */,
 				6B0BE8001970D4B0004CA5A3 /* getopt.cpp in Sources */,

@@ -23,11 +23,14 @@ using namespace tinyxml2;
 #define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return TestData(); }
 #endif
 
-TestData readXMLDoc() {
-	XMLError eResult;
+TestData readXMLDoc() {	
 
 	XMLDocument doc;	
-	XMLCheckResult(doc.LoadFile("../../test/mpw_tests.xml"));
+#ifdef WIN32
+    XMLCheckResult(doc.LoadFile("../../test/mpw_tests.xml"));
+#else
+    XMLCheckResult(doc.LoadFile("mpw_tests.xml"));
+#endif
 
 	TestData data;
 	XMLNode * pRoot = doc.FirstChild();
@@ -94,7 +97,7 @@ TEST_P(EncodeTest, EncodesAsExpected ) {
 	char const * const masterPassword = testCase.at("masterPassword").c_str();
 	char const * const siteTypeString = testCase.at("siteType").c_str();
 	char const * const siteName = testCase.at("siteName").c_str();
-	const uint32_t siteCounter = atoll( testCase.at("siteCounter").c_str() );
+	const uint32_t siteCounter = (uint32_t)atoll( testCase.at("siteCounter").c_str() );
 	char const * const siteScope = ScopeForVariant(VariantWithName(testCase.at("siteVariant").c_str()));
 	char const * const siteContext = testCase.at("siteContext").c_str();
 

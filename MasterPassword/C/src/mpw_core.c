@@ -34,9 +34,9 @@ void cleanup(uint8_t * const masterKey, uint8_t * const sitePasswordSeed)
 }
 
 //My own implementation of htonl to avoid socket dependencies.
-uint32_t htonl(uint32_t input)
+uint32_t myHtonl(uint32_t input)
 {
-	long output = 0;
+	uint32_t output = 0;
 	output |= (input & 0xFF000000) >> 24;
 	output |= (input & 0x00FF0000) >> 8;
 	output |= (input & 0x0000FF00) << 8;
@@ -144,7 +144,7 @@ int mpw_core_calculate_master_key_salt( char const * const userName,
 
 	//The standard namespace
 	char const * const mpNameSpace = "com.lyndir.masterpassword";
-	const uint32_t n_userNameLength = htonl((uint32_t)strlen(userName));
+	const uint32_t n_userNameLength = myHtonl((uint32_t)strlen(userName));
 	
 	//Is this needed now?
     *masterKeySaltLength = strlen(mpNameSpace) + sizeof(n_userNameLength)+strlen(userName);
@@ -198,14 +198,14 @@ int mpw_core_calculate_site_seed( uint8_t * const sitePasswordInfo, size_t * con
 {
     //*****************************************************
 	// Calculate the site seed.
-	const uint32_t n_siteNameLength = htonl((uint32_t)strlen(siteName));
+	const uint32_t n_siteNameLength = myHtonl((uint32_t)strlen(siteName));
 
-	const uint32_t n_siteCounter = htonl(siteCounter);
+	const uint32_t n_siteCounter = myHtonl(siteCounter);
 	*sitePasswordInfoLength = strlen(mpNameSpace) + sizeof(n_siteNameLength)+strlen(siteName) + sizeof(n_siteCounter);
 	
 	uint32_t n_siteContextLength = 0;
 	if ( strlen(siteContext) != 0) {
-		n_siteContextLength = htonl((uint32_t)strlen(siteContext));
+		n_siteContextLength = myHtonl((uint32_t)strlen(siteContext));
 
 		*sitePasswordInfoLength += sizeof(n_siteContextLength) + strlen(siteContext);
 
