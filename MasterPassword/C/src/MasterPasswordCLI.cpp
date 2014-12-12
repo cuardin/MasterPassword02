@@ -236,8 +236,8 @@ int main(int argc, char *const argv[]) {
 	char password[PASS_LENGTH];
 	memset(password, 0, PASS_LENGTH);
 
-	int status = mpw_core(password, PASS_LENGTH, userName.c_str(),
-		masterPassword.c_str(), siteTypeString.c_str(), siteName.c_str(), siteCounter, 0, 0);
+	int status = mpw_core("com.lyndir.masterpassword", password, PASS_LENGTH, userName.c_str(),
+		masterPassword.c_str(), siteTypeString.c_str(), siteName.c_str(), siteCounter, "", 0, 0);
 	if (status != 0) {
 		std::cerr << "Error generating password: " << std::endl;
 		std::cout << password << std::endl;

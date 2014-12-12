@@ -45,5 +45,3 @@ Release
 *.sdf
 *.suo
 *.opensdf
-/MasterPassword/C/PolySpace/Result_mpw_core
-/MasterPassword/C/PolySpace/Prover_results

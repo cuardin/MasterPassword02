@@ -10,10 +10,9 @@
 		6B446112196BB50B00A39D94 /* getopt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B446104196BB50B00A39D94 /* getopt.cpp */; };
 		6B446113196BB50B00A39D94 /* MasterPasswordCLI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B446106196BB50B00A39D94 /* MasterPasswordCLI.cpp */; };
 		6B446114196BB50B00A39D94 /* mpw_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B446107196BB50B00A39D94 /* mpw_core.c */; };
-		6B446115196BB50B00A39D94 /* crypto_scrypt-ref.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B44610A196BB50B00A39D94 /* crypto_scrypt-ref.c */; };
 		6B446116196BB50B00A39D94 /* sha256.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B44610D196BB50B00A39D94 /* sha256.c */; };
 		6B446117196BB50B00A39D94 /* types.c in Sources */ = {isa = PBXBuildFile; fileRef = 6B446110196BB50B00A39D94 /* types.c */; };
-		6BD9F3621967FFC7008A2E69 /* MasterPasswordCLI_OSX.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = 6BD9F3611967FFC7008A2E69 /* MasterPasswordCLI_OSX.1 */; };
+		6BF1616C1A3B94D1001D87FE /* crypto_scrypt-nosse.c in Sources */ = {isa = PBXBuildFile; fileRef = 6BF1616B1A3B94D1001D87FE /* crypto_scrypt-nosse.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,7 +22,6 @@
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				6BD9F3621967FFC7008A2E69 /* MasterPasswordCLI_OSX.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
@@ -31,13 +29,11 @@
 
 /* Begin PBXFileReference section */
 		6B200779196BBE3F00BDA61D /* download_scrypt.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = download_scrypt.sh; path = ../util/download_scrypt.sh; sourceTree = "<group>"; };
-		6B446103196BB50B00A39D94 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
 		6B446104196BB50B00A39D94 /* getopt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = getopt.cpp; sourceTree = "<group>"; };
 		6B446105196BB50B00A39D94 /* getopt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = getopt.h; sourceTree = "<group>"; };
 		6B446106196BB50B00A39D94 /* MasterPasswordCLI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MasterPasswordCLI.cpp; sourceTree = "<group>"; };
 		6B446107196BB50B00A39D94 /* mpw_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mpw_core.c; sourceTree = "<group>"; };
 		6B446108196BB50B00A39D94 /* mpw_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mpw_core.h; sourceTree = "<group>"; };
-		6B44610A196BB50B00A39D94 /* crypto_scrypt-ref.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "crypto_scrypt-ref.c"; sourceTree = "<group>"; };
 		6B44610B196BB50B00A39D94 /* crypto_scrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypto_scrypt.h; sourceTree = "<group>"; };
 		6B44610C196BB50B00A39D94 /* scrypt_platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scrypt_platform.h; sourceTree = "<group>"; };
 		6B44610D196BB50B00A39D94 /* sha256.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sha256.c; sourceTree = "<group>"; };
@@ -46,7 +42,7 @@
 		6B446110196BB50B00A39D94 /* types.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = types.c; sourceTree = "<group>"; };
 		6B446111196BB50B00A39D94 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		6BD9F35C1967FFC7008A2E69 /* MasterPasswordCLI_OSX */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MasterPasswordCLI_OSX; sourceTree = BUILT_PRODUCTS_DIR; };
-		6BD9F3611967FFC7008A2E69 /* MasterPasswordCLI_OSX.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = MasterPasswordCLI_OSX.1; sourceTree = "<group>"; };
+		6BF1616B1A3B94D1001D87FE /* crypto_scrypt-nosse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "crypto_scrypt-nosse.c"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +59,6 @@
 		6B446102196BB50B00A39D94 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				6B446103196BB50B00A39D94 /* config.h */,
 				6B446104196BB50B00A39D94 /* getopt.cpp */,
 				6B446105196BB50B00A39D94 /* getopt.h */,
 				6B446106196BB50B00A39D94 /* MasterPasswordCLI.cpp */,
@@ -80,7 +75,7 @@
 		6B446109196BB50B00A39D94 /* scrypt */ = {
 			isa = PBXGroup;
 			children = (
-				6B44610A196BB50B00A39D94 /* crypto_scrypt-ref.c */,
+				6BF1616B1A3B94D1001D87FE /* crypto_scrypt-nosse.c */,
 				6B44610B196BB50B00A39D94 /* crypto_scrypt.h */,
 				6B44610C196BB50B00A39D94 /* scrypt_platform.h */,
 				6B44610D196BB50B00A39D94 /* sha256.c */,
@@ -95,7 +90,6 @@
 			children = (
 				6B200779196BBE3F00BDA61D /* download_scrypt.sh */,
 				6B446102196BB50B00A39D94 /* src */,
-				6BD9F35E1967FFC7008A2E69 /* MasterPasswordCLI_OSX */,
 				6BD9F35D1967FFC7008A2E69 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -106,14 +100,6 @@
 				6BD9F35C1967FFC7008A2E69 /* MasterPasswordCLI_OSX */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		6BD9F35E1967FFC7008A2E69 /* MasterPasswordCLI_OSX */ = {
-			isa = PBXGroup;
-			children = (
-				6BD9F3611967FFC7008A2E69 /* MasterPasswordCLI_OSX.1 */,
-			);
-			path = MasterPasswordCLI_OSX;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -169,10 +155,10 @@
 			files = (
 				6B446116196BB50B00A39D94 /* sha256.c in Sources */,
 				6B446112196BB50B00A39D94 /* getopt.cpp in Sources */,
+				6BF1616C1A3B94D1001D87FE /* crypto_scrypt-nosse.c in Sources */,
 				6B446114196BB50B00A39D94 /* mpw_core.c in Sources */,
 				6B446117196BB50B00A39D94 /* types.c in Sources */,
 				6B446113196BB50B00A39D94 /* MasterPasswordCLI.cpp in Sources */,
-				6B446115196BB50B00A39D94 /* crypto_scrypt-ref.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
