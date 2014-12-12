@@ -28,14 +28,14 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		6BA11078196FB11100BAB389 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 6;
 			files = (
 				6B74A0591A39B1CA00561ADD /* mpw_tests.xml in CopyFiles */,
 				6BA11080196FB11100BAB389 /* MasterPasswordTest_OSX.1 in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
