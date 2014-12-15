@@ -184,6 +184,7 @@ int mpw_core_calculate_master_key(char const * const masterPassword, char const 
 	{
 		return -1;
 	}
+    
 	trc("masterPassword Hex: %s\n", Hex(masterPassword, strlen(masterPassword)));	
 	trc("masterKeySalt Hex: %s\n", Hex(masterKeySalt, masterKeySaltLength));
 	trc("masterKey Hex: %s\n", Hex(masterKey, MP_dkLen));
@@ -258,7 +259,7 @@ int mpw_core_convert_to_password(char const * const siteTypeString, uint8_t cons
                                  const size_t passLen, char * const password )
 {
     // Determine the cipher
-	MPElementType siteType = TypeWithName(siteTypeString);
+	MPSiteType siteType = TypeWithName(siteTypeString);
 	const char *cipher = TemplateForType(siteType, sitePasswordSeed[0]);
 	trc("type %s, cipher: %s\n", siteTypeString, cipher);
 	if (strlen(cipher) >= MAXPASSLEN) {
