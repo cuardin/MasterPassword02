@@ -31,9 +31,6 @@ extern "C" {
 #include "types.h"
 }
 
-
-
-
 #define MP_env_fullname     "MP_FULLNAME"
 #define MP_env_sitetype     "MP_SITETYPE"
 #define MP_env_sitecounter  "MP_SITECOUNTER"
@@ -143,7 +140,7 @@ int main(int argc, char *const argv[]) {
     
     // Read the environment.
     char* pointer = getenv(MP_env_fullname);
-    std::string userName = pointer?pointer:"";
+    std::string fullName = pointer?pointer:"";
     std::string masterPassword;
     std::string siteName;
     std::string siteVariantString = "password";
@@ -167,7 +164,7 @@ int main(int argc, char *const argv[]) {
                 usage();
                 break;
             case 'u':
-                userName = o.value;
+                fullName = o.value;
                 break;
             case 't':
                 siteTypeString = o.value;
@@ -205,9 +202,9 @@ int main(int argc, char *const argv[]) {
         }
     }
     
-    if (userName.empty()) {
-        std::cout << "Username: ";
-        std::cin >> userName;
+    if (fullName.empty()) {
+        std::cout << "Full Name: ";
+        std::cin >> fullName;
     }
     
     if (siteName.empty()) {
@@ -266,9 +263,9 @@ int main(int argc, char *const argv[]) {
         std::string line(buffer);
         //Split at :
         size_t splitIdx = line.find_first_of(':');
-        std::string fileUserName = line.substr(0, splitIdx);
+        std::string filefullName = line.substr(0, splitIdx);
         std::string fileMasterPass = line.substr(splitIdx + 1, line.size());
-        if (fileUserName == userName) {
+        if (filefullName == fullName) {
             masterPassword = fileMasterPass;
             break;
         }
@@ -282,8 +279,8 @@ int main(int argc, char *const argv[]) {
         std::cout << std::endl;
     }
     trc("masterPassword: %s\n", masterPassword.c_str());
-    std::cout << userName << "'s password for " << siteName << std::endl;
-    std::cout << Identicon( userName.c_str(), masterPassword.c_str() ) << std::endl;
+    std::cout << fullName << "'s password for " << siteName << std::endl;
+    std::cout << Identicon( fullName.c_str(), masterPassword.c_str() ) << std::endl;
     
     std::cout << "Generating site password...." << std::endl;
     
@@ -294,7 +291,7 @@ int main(int argc, char *const argv[]) {
 
     
     int status = mpw_core(ScopeForVariant(MPSiteVariantPassword), password, PASS_LENGTH,
-                          userName.c_str(), masterPassword.c_str(), siteTypeString.c_str(),
+                          fullName.c_str(), masterPassword.c_str(), siteTypeString.c_str(),
                           siteName.c_str(), siteCounter, siteContextString.c_str(), keyID, KEY_ID_LENGTH);
     if (status != 0) {
         std::cerr << "Error generating password: " << std::endl;
