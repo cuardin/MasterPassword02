@@ -99,7 +99,11 @@ const char *TemplateForType(MPSiteType type, uint8_t seedByte) {
 }
 
 const MPSiteVariant VariantWithName(const char *variantName) {
-    char lowerVariantName[strlen(variantName)];
+	if (strlen(variantName) > BUFFER_LENGTH) {
+		fprintf(stderr, "Too long string supplied\n");
+		return MPSiteVariantPassword;
+	}	
+	char lowerVariantName[BUFFER_LENGTH];
     strcpy(lowerVariantName, variantName);
     for (char *vN = lowerVariantName; *vN; ++vN)
         *vN = tolower(*vN);

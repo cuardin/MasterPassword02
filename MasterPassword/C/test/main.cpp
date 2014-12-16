@@ -8,20 +8,19 @@
 
 #include "gtest/gtest.h"
 #include <iostream>
+#ifdef WIN32
+//Win32-specific
+#else
 #include <unistd.h>
+#endif
 
 void readXMLDoc();
 
-int main(int argc, char **argv) {
-    char cwd[1024];
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-        fprintf(stdout, "Current working dir: %s\n", cwd);
-    else
-        perror("getcwd() error");
-    
+int main(int argc, char **argv) {        
 	::testing::InitGoogleTest(&argc, argv);
     int rValue = RUN_ALL_TESTS();
 	std::cout << "Press enter to quit";
+	std::cin.get();
 	std::cin.get();
     return rValue;
 }

@@ -181,7 +181,7 @@ int main(int argc, char *const argv[]) {
             case 'C':
                 siteContextString = o.value;
                 break;
-            case '?':
+            /*case '?':
                 switch (optopt) {
                     case 'u':
                         fprintf(stderr, "Missing full name to option: -%c\n", optopt);
@@ -195,7 +195,7 @@ int main(int argc, char *const argv[]) {
                     default:
                         fprintf(stderr, "Unknown option: -%c\n", optopt);
                 }
-                return 1;
+                return 1;*/
             default:
                 std::cerr << "Unknown option found: " << o.opt << std::endl;
                 return 1;
@@ -236,7 +236,7 @@ int main(int argc, char *const argv[]) {
         }
     }
 
-    MPSiteVariant siteVariant;
+    MPSiteVariant siteVariant = MPSiteVariantPassword;
     MPSiteType siteType;
     if (siteVariantString.size() == 0 )
         siteVariant = VariantWithName( siteVariantString.c_str() );
@@ -294,14 +294,15 @@ int main(int argc, char *const argv[]) {
                           fullName.c_str(), masterPassword.c_str(), siteTypeString.c_str(),
                           siteName.c_str(), siteCounter, siteContextString.c_str(), keyID, KEY_ID_LENGTH);
     if (status != 0) {
-        std::cerr << "Error generating password: " << std::endl;
-        std::cout << password << std::endl;
+        std::cerr << "Error generating password." << std::endl;        
+		return status;
     }
     
     // Output the password.
-    std::cout << "Site password: " << password << std::endl;
-    
-    
+    std::cout << "Site password: " << password << std::endl;    
+	std::cout << "Press enter to exit." << std::endl;
+	std::cin.get();
+	std::cin.get();
     return 0;
 }
 
