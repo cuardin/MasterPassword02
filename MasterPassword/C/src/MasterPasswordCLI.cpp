@@ -6,6 +6,7 @@
 typedef long ssize_t;
 #include <WinSock2.h>
 #define PSEP "\\"
+
 #else
 #define PSEP "/"
 #include <sys/ioctl.h>
@@ -13,17 +14,20 @@ typedef long ssize_t;
 #include <pwd.h>
 #include <netinet/in.h>
 #include <termios.h>
+
 #if defined(__linux__)
 #include <linux/fs.h>
 #elif defined(__CYGWIN__)
 #include <cygwin/fs.h>
 #else
+
 #include <sys/disk.h>
 #endif
+
 #endif
+
 #include <stdlib.h>
 #include <errno.h>
-
 #include "getopt.h"
 
 extern "C" {
