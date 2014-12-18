@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <fstream>
 
 #if defined(WIN32)
@@ -28,7 +28,7 @@ typedef long ssize_t;
 
 #include <stdlib.h>
 #include <errno.h>
-#include "getopt.h"
+#include "parseInput.h"
 
 extern "C" {
 #include "mpw_core.h"
@@ -304,9 +304,11 @@ int main(int argc, char *const argv[]) {
     
     // Output the password.
     std::cout << "Site password: " << password << std::endl;    
-	std::cout << "Press enter to exit." << std::endl;
+#ifdef WIN32	
+    std::cout << "Press enter to exit." << std::endl;
 	std::cin.get();
 	std::cin.get();
+#endif    
     return 0;
 }
 

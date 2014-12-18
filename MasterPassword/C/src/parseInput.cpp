@@ -1,4 +1,4 @@
-#include "getopt.h"
+#include "parseInput.h"
 
 ParsedInput parseInput(const int nargs, char const * const arguments[])
 {
