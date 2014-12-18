@@ -35,17 +35,17 @@ typedef enum {
 } MPSiteFeature;
 
 typedef enum {
-	/** Generate the password. */
-	MPElementTypeClassGenerated = 1 << 4,
-	/** Store the password. */
-	MPElementTypeClassStored = 1 << 5,
+    /** Generate the password. */
+    MPElementTypeClassGenerated = 1 << 4,
+    /** Store the password. */
+    MPElementTypeClassStored = 1 << 5,
 } MPElementTypeClass;
 
 typedef enum {
-	/** Export the key-protected content data. */
-	MPElementFeatureExportContent = 1 << 10,
-	/** Never export content. */
-	MPElementFeatureDevicePrivate = 1 << 11,
+    /** Export the key-protected content data. */
+    MPElementFeatureExportContent = 1 << 10,
+    /** Never export content. */
+    MPElementFeatureDevicePrivate = 1 << 11,
 } MPElementFeature;
 
 typedef enum {

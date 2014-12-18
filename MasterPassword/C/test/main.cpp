@@ -17,12 +17,12 @@
 void readXMLDoc();
 
 int main(int argc, char **argv) {        
-	::testing::InitGoogleTest(&argc, argv);
+    ::testing::InitGoogleTest(&argc, argv);
     int rValue = RUN_ALL_TESTS();
 
 #   ifdef WIN32	
-	std::cout << "Press enter to quit";	
-	std::cin.get();
+    std::cout << "Press enter to quit";	
+    std::cin.get();
 #   endif
 
     return rValue;

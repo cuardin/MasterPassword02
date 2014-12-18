@@ -299,15 +299,15 @@ int main(int argc, char *const argv[]) {
                           siteName.c_str(), siteCounter, siteContextString.c_str(), keyID, KEY_ID_LENGTH);
     if (status != 0) {
         std::cerr << "Error generating password." << std::endl;        
-		return status;
+        return status;
     }
     
     // Output the password.
     std::cout << "Site password: " << password << std::endl;    
 #ifdef WIN32	
     std::cout << "Press enter to exit." << std::endl;
-	std::cin.get();
-	std::cin.get();
+    std::cin.get();
+    std::cin.get();
 #endif    
     return 0;
 }

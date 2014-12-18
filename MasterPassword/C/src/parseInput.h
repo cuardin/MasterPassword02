@@ -6,15 +6,15 @@
 
 struct Option
 {
-	char opt;
-	std::string value;
+    char opt;
+    std::string value;
 };
 
 struct ParsedInput
 {
-	std::string fileName;
-	std::vector<Option> options;
-	std::vector<std::string> remaining;
+    std::string fileName;
+    std::vector<Option> options;
+    std::vector<std::string> remaining;
 };
 
 ParsedInput parseInput(const int nargs, char const * const arguments[]);

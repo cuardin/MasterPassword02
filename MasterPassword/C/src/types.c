@@ -25,85 +25,85 @@
 #define BUFFER_LENGTH 265
 
 const MPSiteType TypeWithName(const char *typeName) {
-	if (strlen(typeName) > BUFFER_LENGTH) {
-		fprintf(stderr, "Too long string supplied\n");
-		return MPSiteTypeGeneratedMaximum;
-	}
-	char lowerTypeName[BUFFER_LENGTH];
-	strcpy(lowerTypeName, typeName);
-	for (char *tN = lowerTypeName; *tN; ++tN)
-		*tN = tolower(*tN);
+    if (strlen(typeName) > BUFFER_LENGTH) {
+        fprintf(stderr, "Too long string supplied\n");
+        return MPSiteTypeGeneratedMaximum;
+    }
+    char lowerTypeName[BUFFER_LENGTH];
+    strcpy(lowerTypeName, typeName);
+    for (char *tN = lowerTypeName; *tN; ++tN)
+        *tN = tolower(*tN);
 
-	if (0 == strcmp(lowerTypeName, "x") || 0 == strcmp(lowerTypeName, "max") || 0 == strcmp(lowerTypeName, "maximum"))
-		return MPSiteTypeGeneratedMaximum;
-	if (0 == strcmp(lowerTypeName, "l") || 0 == strcmp(lowerTypeName, "long"))
-		return MPSiteTypeGeneratedLong;
-	if (0 == strcmp(lowerTypeName, "m") || 0 == strcmp(lowerTypeName, "med") || 0 == strcmp(lowerTypeName, "medium"))
-		return MPSiteTypeGeneratedMedium;
-	if (0 == strcmp(lowerTypeName, "b") || 0 == strcmp(lowerTypeName, "basic"))
-		return MPSiteTypeGeneratedBasic;
-	if (0 == strcmp(lowerTypeName, "s") || 0 == strcmp(lowerTypeName, "short"))
-		return MPSiteTypeGeneratedShort;
-	if (0 == strcmp(lowerTypeName, "i") || 0 == strcmp(lowerTypeName, "pin"))
-		return MPSiteTypeGeneratedPIN;
-	if (0 == strcmp(lowerTypeName, "n") || 0 == strcmp(lowerTypeName, "name"))
-		return MPSiteTypeGeneratedName;
-	if (0 == strcmp(lowerTypeName, "p") || 0 == strcmp(lowerTypeName, "phrase"))
-		return MPSiteTypeGeneratedPhrase;
+    if (0 == strcmp(lowerTypeName, "x") || 0 == strcmp(lowerTypeName, "max") || 0 == strcmp(lowerTypeName, "maximum"))
+        return MPSiteTypeGeneratedMaximum;
+    if (0 == strcmp(lowerTypeName, "l") || 0 == strcmp(lowerTypeName, "long"))
+        return MPSiteTypeGeneratedLong;
+    if (0 == strcmp(lowerTypeName, "m") || 0 == strcmp(lowerTypeName, "med") || 0 == strcmp(lowerTypeName, "medium"))
+        return MPSiteTypeGeneratedMedium;
+    if (0 == strcmp(lowerTypeName, "b") || 0 == strcmp(lowerTypeName, "basic"))
+        return MPSiteTypeGeneratedBasic;
+    if (0 == strcmp(lowerTypeName, "s") || 0 == strcmp(lowerTypeName, "short"))
+        return MPSiteTypeGeneratedShort;
+    if (0 == strcmp(lowerTypeName, "i") || 0 == strcmp(lowerTypeName, "pin"))
+        return MPSiteTypeGeneratedPIN;
+    if (0 == strcmp(lowerTypeName, "n") || 0 == strcmp(lowerTypeName, "name"))
+        return MPSiteTypeGeneratedName;
+    if (0 == strcmp(lowerTypeName, "p") || 0 == strcmp(lowerTypeName, "phrase"))
+        return MPSiteTypeGeneratedPhrase;
 
-	fprintf(stderr, "Not a generated type name: %s", lowerTypeName);
-	abort();
+    fprintf(stderr, "Not a generated type name: %s", lowerTypeName);
+    abort();
 }
 
 const char *TemplateForType(MPSiteType type, uint8_t seedByte) {
-	if (!(type & MPSiteTypeClassGenerated)) {
-		fprintf(stderr, "Not a generated type: %d", type);
-		abort();
-	}
+    if (!(type & MPSiteTypeClassGenerated)) {
+        fprintf(stderr, "Not a generated type: %d", type);
+        abort();
+    }
 
-	switch (type) {
-	case MPSiteTypeGeneratedMaximum: {
-		const char *templates[] = { "anoxxxxxxxxxxxxxxxxx", "axxxxxxxxxxxxxxxxxno" };
-		return templates[seedByte % 2];
-	}
-	case MPSiteTypeGeneratedLong: {
-		const char *templates[] = { "CvcvnoCvcvCvcv", "CvcvCvcvnoCvcv", "CvcvCvcvCvcvno", "CvccnoCvcvCvcv", "CvccCvcvnoCvcv", "CvccCvcvCvcvno", "CvcvnoCvccCvcv", "CvcvCvccnoCvcv", "CvcvCvccCvcvno", "CvcvnoCvcvCvcc", "CvcvCvcvnoCvcc", "CvcvCvcvCvccno", "CvccnoCvccCvcv", "CvccCvccnoCvcv", "CvccCvccCvcvno", "CvcvnoCvccCvcc", "CvcvCvccnoCvcc", "CvcvCvccCvccno", "CvccnoCvcvCvcc", "CvccCvcvnoCvcc", "CvccCvcvCvccno" };
-		return templates[seedByte % 21];
-	}
-	case MPSiteTypeGeneratedMedium: {
-		const char *templates[] = { "CvcnoCvc", "CvcCvcno" };
-		return templates[seedByte % 2];
-	}
-	case MPSiteTypeGeneratedBasic: {
-		const char *templates[] = { "aaanaaan", "aannaaan", "aaannaaa" };
-		return templates[seedByte % 3];
-	}
-	case MPSiteTypeGeneratedShort: {
-		return "Cvcn";
-	}
-	case MPSiteTypeGeneratedPIN: {
-		return "nnnn";
-	}
-	case MPSiteTypeGeneratedName: {
-		return "cvccvcvcv";
-	}
-	case MPSiteTypeGeneratedPhrase: {
-		const char *templates[] = { "cvcc cvc cvccvcv cvc", "cvc cvccvcvcv cvcv", "cv cvccv cvc cvcvccv" };
-		return templates[seedByte % 3];
-	}
-	default: {
-		fprintf(stderr, "Unknown generated type: %d", type);
-		abort();
-	}
-	}
+    switch (type) {
+    case MPSiteTypeGeneratedMaximum: {
+        const char *templates[] = { "anoxxxxxxxxxxxxxxxxx", "axxxxxxxxxxxxxxxxxno" };
+        return templates[seedByte % 2];
+    }
+    case MPSiteTypeGeneratedLong: {
+        const char *templates[] = { "CvcvnoCvcvCvcv", "CvcvCvcvnoCvcv", "CvcvCvcvCvcvno", "CvccnoCvcvCvcv", "CvccCvcvnoCvcv", "CvccCvcvCvcvno", "CvcvnoCvccCvcv", "CvcvCvccnoCvcv", "CvcvCvccCvcvno", "CvcvnoCvcvCvcc", "CvcvCvcvnoCvcc", "CvcvCvcvCvccno", "CvccnoCvccCvcv", "CvccCvccnoCvcv", "CvccCvccCvcvno", "CvcvnoCvccCvcc", "CvcvCvccnoCvcc", "CvcvCvccCvccno", "CvccnoCvcvCvcc", "CvccCvcvnoCvcc", "CvccCvcvCvccno" };
+        return templates[seedByte % 21];
+    }
+    case MPSiteTypeGeneratedMedium: {
+        const char *templates[] = { "CvcnoCvc", "CvcCvcno" };
+        return templates[seedByte % 2];
+    }
+    case MPSiteTypeGeneratedBasic: {
+        const char *templates[] = { "aaanaaan", "aannaaan", "aaannaaa" };
+        return templates[seedByte % 3];
+    }
+    case MPSiteTypeGeneratedShort: {
+        return "Cvcn";
+    }
+    case MPSiteTypeGeneratedPIN: {
+        return "nnnn";
+    }
+    case MPSiteTypeGeneratedName: {
+        return "cvccvcvcv";
+    }
+    case MPSiteTypeGeneratedPhrase: {
+        const char *templates[] = { "cvcc cvc cvccvcv cvc", "cvc cvccvcvcv cvcv", "cv cvccv cvc cvcvccv" };
+        return templates[seedByte % 3];
+    }
+    default: {
+        fprintf(stderr, "Unknown generated type: %d", type);
+        abort();
+    }
+    }
 }
 
 const MPSiteVariant VariantWithName(const char *variantName) {
-	if (strlen(variantName) > BUFFER_LENGTH) {
-		fprintf(stderr, "Too long string supplied\n");
-		return MPSiteVariantPassword;
-	}	
-	char lowerVariantName[BUFFER_LENGTH];
+    if (strlen(variantName) > BUFFER_LENGTH) {
+        fprintf(stderr, "Too long string supplied\n");
+        return MPSiteVariantPassword;
+    }	
+    char lowerVariantName[BUFFER_LENGTH];
     strcpy(lowerVariantName, variantName);
     for (char *vN = lowerVariantName; *vN; ++vN)
         *vN = tolower(*vN);
@@ -139,74 +139,74 @@ const char *ScopeForVariant(MPSiteVariant variant) {
 
 
 const char CharacterFromClass(char characterClass, uint8_t seedByte) {
-	const char *classCharacters;
-	switch (characterClass) {
-	case 'V': {
-		classCharacters = "AEIOU";
-		break;
-	}
-	case 'C': {
-		classCharacters = "BCDFGHJKLMNPQRSTVWXYZ";
-		break;
-	}
-	case 'v': {
-		classCharacters = "aeiou";
-		break;
-	}
-	case 'c': {
-		classCharacters = "bcdfghjklmnpqrstvwxyz";
-		break;
-	}
-	case 'A': {
-		classCharacters = "AEIOUBCDFGHJKLMNPQRSTVWXYZ";
-		break;
-	}
-	case 'a': {
-		classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz";
-		break;
-	}
-	case 'n': {
-		classCharacters = "0123456789";
-		break;
-	}
-	case 'o': {
-		classCharacters = "@&%?,=[]_:-+*$#!'^~;()/.";
-		break;
-	}
-	case 'x': {
-		classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz0123456789!@#$%^&*()";
-		break;
-	}
-	case ' ': {
-		classCharacters = " ";
-		break;
-	}
-	default: {
-		fprintf(stderr, "Unknown character class: %c", characterClass);
-		abort();
-	}
-	}
+    const char *classCharacters;
+    switch (characterClass) {
+    case 'V': {
+        classCharacters = "AEIOU";
+        break;
+    }
+    case 'C': {
+        classCharacters = "BCDFGHJKLMNPQRSTVWXYZ";
+        break;
+    }
+    case 'v': {
+        classCharacters = "aeiou";
+        break;
+    }
+    case 'c': {
+        classCharacters = "bcdfghjklmnpqrstvwxyz";
+        break;
+    }
+    case 'A': {
+        classCharacters = "AEIOUBCDFGHJKLMNPQRSTVWXYZ";
+        break;
+    }
+    case 'a': {
+        classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz";
+        break;
+    }
+    case 'n': {
+        classCharacters = "0123456789";
+        break;
+    }
+    case 'o': {
+        classCharacters = "@&%?,=[]_:-+*$#!'^~;()/.";
+        break;
+    }
+    case 'x': {
+        classCharacters = "AEIOUaeiouBCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz0123456789!@#$%^&*()";
+        break;
+    }
+    case ' ': {
+        classCharacters = " ";
+        break;
+    }
+    default: {
+        fprintf(stderr, "Unknown character class: %c", characterClass);
+        abort();
+    }
+    }
 
-	return classCharacters[seedByte % strlen(classCharacters)];
+    return classCharacters[seedByte % strlen(classCharacters)];
 }
 
 const char *IDForBuf(const void *buf, size_t length) {
-	uint8_t hash[32];
-	SHA256_Buf(buf, length, hash);
+    uint8_t hash[32];
+    SHA256_Buf(buf, length, hash);
 
-	char *id = (char *)calloc(65, sizeof(char));
-	for (int kH = 0; kH < 32; kH++)
-		sprintf(&(id[kH * 2]), "%02X", hash[kH]);
+    char *id = (char *)calloc(65, sizeof(char));
+    for (int kH = 0; kH < 32; kH++)
+        sprintf(&(id[kH * 2]), "%02X", hash[kH]);
 
-	return id;
+    return id;
 }
 
 const char *Hex(const void *buf, size_t length) {
-	char *id = (char *)calloc(length * 2 + 1, sizeof(char));
-	for (int kH = 0; kH < length; kH++)
-		sprintf(&(id[kH * 2]), "%02x", ((const uint8_t*)buf)[kH]);
+    char *id = (char *)calloc(length * 2 + 1, sizeof(char));
+    for (int kH = 0; kH < length; kH++)
+        sprintf(&(id[kH * 2]), "%02x", ((const uint8_t*)buf)[kH]);
 
-	return id;
+    return id;
 }
 
 #ifdef COLOR
@@ -214,58 +214,58 @@ int putvari;
 char *putvarc = NULL;
 bool istermsetup = false;
 static void initputvar() {
-	if (putvarc)
-		free(putvarc);
-	putvarc = (char *)calloc(256, sizeof(char));
-	putvari = 0;
+    if (putvarc)
+        free(putvarc);
+    putvarc = (char *)calloc(256, sizeof(char));
+    putvari = 0;
 
-	if (!istermsetup)
-		istermsetup = (OK == setupterm(NULL, STDERR_FILENO, NULL));
+    if (!istermsetup)
+        istermsetup = (OK == setupterm(NULL, STDERR_FILENO, NULL));
 }
 static int putvar(int c) {
-	putvarc[putvari++] = c;
-	return 0;
+    putvarc[putvari++] = c;
+    return 0;
 }
 #endif
 
 const char *Identicon(const char *userName, const char *masterPassword) {
-	const char *leftArm[] = { "╔", "╚", "╰", "═" };
-	const char *rightArm[] = { "╗", "╝", "╯", "═" };
-	const char *body[] = { "█", "░", "▒", "▓", "☺", "☻" };
-	const char *accessory[] = { "◈", "◎", "◐", "◑", "◒", "◓", "☀", "☁", "☂", "☃", "☄", "★", "☆", "☎", "☏", "⎈", "⌂", "☘", "☢", "☣", "☕", "⌚", "⌛", "⏰", "⚡", "⛄", "⛅", "☔", "♔", "♕", "♖", "♗", "♘", "♙", "♚", "♛", "♜", "♝", "♞", "♟", "♨", "♩", "♪", "♫", "⚐", "⚑", "⚔", "⚖", "⚙", "⚠", "⌘", "⏎", "✄", "✆", "✈", "✉", "✌" };
+    const char *leftArm[] = { "╔", "╚", "╰", "═" };
+    const char *rightArm[] = { "╗", "╝", "╯", "═" };
+    const char *body[] = { "█", "░", "▒", "▓", "☺", "☻" };
+    const char *accessory[] = { "◈", "◎", "◐", "◑", "◒", "◓", "☀", "☁", "☂", "☃", "☄", "★", "☆", "☎", "☏", "⎈", "⌂", "☘", "☢", "☣", "☕", "⌚", "⌛", "⏰", "⚡", "⛄", "⛅", "☔", "♔", "♕", "♖", "♗", "♘", "♙", "♚", "♛", "♜", "♝", "♞", "♟", "♨", "♩", "♪", "♫", "⚐", "⚑", "⚔", "⚖", "⚙", "⚠", "⌘", "⏎", "✄", "✆", "✈", "✉", "✌" };
 
-	uint8_t identiconSeed[32];
-	HMAC_SHA256_Buf(masterPassword, strlen(masterPassword), userName, strlen(userName), identiconSeed);
+    uint8_t identiconSeed[32];
+    HMAC_SHA256_Buf(masterPassword, strlen(masterPassword), userName, strlen(userName), identiconSeed);
 
-	char *colorString, *resetString;
+    char *colorString, *resetString;
 #ifdef COLOR
-	uint8_t colorIdentifier = identiconSeed[4] % 7 + 1;
+    uint8_t colorIdentifier = identiconSeed[4] % 7 + 1;
     if (isatty(STDERR_FILENO)) {
-		initputvar();
-		tputs(tparm(tgetstr("AF", NULL), colorIdentifier), 1, putvar);
-		colorString = calloc(strlen(putvarc) + 1, sizeof(char));
-		strcpy(colorString, putvarc);
-		tputs(tgetstr("me", NULL), 1, putvar);
-		resetString = calloc(strlen(putvarc) + 1, sizeof(char));
-		strcpy(resetString, putvarc);
-	}
-	else
+        initputvar();
+        tputs(tparm(tgetstr("AF", NULL), colorIdentifier), 1, putvar);
+        colorString = calloc(strlen(putvarc) + 1, sizeof(char));
+        strcpy(colorString, putvarc);
+        tputs(tgetstr("me", NULL), 1, putvar);
+        resetString = calloc(strlen(putvarc) + 1, sizeof(char));
+        strcpy(resetString, putvarc);
+    }
+    else
 #endif
-	{
-		colorString = (char*)calloc(1, sizeof(char));
-		resetString = (char*)calloc(1, sizeof(char));
-	}
+    {
+        colorString = (char*)calloc(1, sizeof(char));
+        resetString = (char*)calloc(1, sizeof(char));
+    }
 
-	char *identicon = (char *)calloc(256, sizeof(char));
-	sprintf(identicon, "%s%s%s%s%s%s",
-		colorString,
-		leftArm[identiconSeed[0] % (sizeof(leftArm) / sizeof(leftArm[0]))],
-		body[identiconSeed[1] % (sizeof(body) / sizeof(body[0]))],
-		rightArm[identiconSeed[2] % (sizeof(rightArm) / sizeof(rightArm[0]))],
-		accessory[identiconSeed[3] % (sizeof(accessory) / sizeof(accessory[0]))],
-		resetString);
+    char *identicon = (char *)calloc(256, sizeof(char));
+    sprintf(identicon, "%s%s%s%s%s%s",
+        colorString,
+        leftArm[identiconSeed[0] % (sizeof(leftArm) / sizeof(leftArm[0]))],
+        body[identiconSeed[1] % (sizeof(body) / sizeof(body[0]))],
+        rightArm[identiconSeed[2] % (sizeof(rightArm) / sizeof(rightArm[0]))],
+        accessory[identiconSeed[3] % (sizeof(accessory) / sizeof(accessory[0]))],
+        resetString);
 
-	free(colorString);
-	free(resetString);
-	return identicon;
+    free(colorString);
+    free(resetString);
+    return identicon;
 }
