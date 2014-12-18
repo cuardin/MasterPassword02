@@ -20,6 +20,7 @@
 #define HMAC_SHA256_Buf libcperciva_HMAC_SHA256_Buf
 #define HMAC_SHA256_CTX libcperciva_HMAC_SHA256_CTX
 
+
 /* Context structure for SHA256 operations. */
 typedef struct {
 	uint32_t state[8];

@@ -34,12 +34,12 @@ TestData readXMLDoc() {
 
 	TestData data;
 	XMLNode * pRoot = doc.FirstChild();
-	if (pRoot == nullptr) return data;
+	if (pRoot == 0) return data;
 
 	XMLElement * pListElement = pRoot->FirstChildElement("case");
 	TestData testData;
 
-	while ( pListElement != nullptr ) {
+	while ( pListElement != 0 ) {
 		//We have a test case. Allocate memory for it.
 		TestCase testCase;
 
@@ -55,10 +55,10 @@ TestData readXMLDoc() {
 
 		//Now fill in the data from this node.
 		XMLElement * pNodeListElement = pListElement->FirstChildElement();
-		while (pNodeListElement != nullptr) {
+		while (pNodeListElement != 0) {
 			const char* name = pNodeListElement->Name();
 			const char* value = pNodeListElement->GetText();
-			if (value != nullptr) {
+			if (value != 0) {
 				testCase[name] = value;
 				std::cout << name << ": " << testCase[name] << std::endl;
 			} else {
@@ -79,7 +79,7 @@ TestData readXMLDoc() {
 
 
 //**********************************************************************
-class EncodeTest: public testing::TestWithParam<std::pair<const std::string,TestCase>> {};
+class EncodeTest: public testing::TestWithParam<std::pair<const std::string,TestCase> > {};
 
 TEST_P(EncodeTest, EncodesAsExpected ) {	
 	std::string id = GetParam().first;

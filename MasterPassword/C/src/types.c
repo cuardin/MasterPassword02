@@ -252,8 +252,8 @@ const char *Identicon(const char *userName, const char *masterPassword) {
 	else
 #endif
 	{
-		colorString = calloc(1, sizeof(char));
-		resetString = calloc(1, sizeof(char));
+		colorString = (char*)calloc(1, sizeof(char));
+		resetString = (char*)calloc(1, sizeof(char));
 	}
 
 	char *identicon = (char *)calloc(256, sizeof(char));
