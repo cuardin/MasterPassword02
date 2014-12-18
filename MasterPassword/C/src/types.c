@@ -102,38 +102,38 @@ const MPSiteVariant VariantWithName(const char *variantName) {
     if (strlen(variantName) > BUFFER_LENGTH) {
         fprintf(stderr, "Too long string supplied\n");
         return MPSiteVariantPassword;
-    }	
+    }
     char lowerVariantName[BUFFER_LENGTH];
     strcpy(lowerVariantName, variantName);
     for (char *vN = lowerVariantName; *vN; ++vN)
         *vN = tolower(*vN);
-    
+
     if (0 == strcmp(lowerVariantName, "p") || 0 == strcmp(lowerVariantName, "password"))
         return MPSiteVariantPassword;
     if (0 == strcmp(lowerVariantName, "l") || 0 == strcmp(lowerVariantName, "login"))
         return MPSiteVariantLogin;
     if (0 == strcmp(lowerVariantName, "a") || 0 == strcmp(lowerVariantName, "answer"))
         return MPSiteVariantAnswer;
-    
+
     fprintf(stderr, "Not a variant name: %s", lowerVariantName);
     abort();
 }
 
 const char *ScopeForVariant(MPSiteVariant variant) {
     switch (variant) {
-        case MPSiteVariantPassword: {
-            return "com.lyndir.masterpassword";
-        }
-        case MPSiteVariantLogin: {
-            return "com.lyndir.masterpassword.login";
-        }
-        case MPSiteVariantAnswer: {
-            return "com.lyndir.masterpassword.answer";
-        }
-        default: {
-            fprintf(stderr, "Unknown variant: %d", variant);
-            abort();
-        }
+    case MPSiteVariantPassword: {
+        return "com.lyndir.masterpassword";
+    }
+    case MPSiteVariantLogin: {
+        return "com.lyndir.masterpassword.login";
+    }
+    case MPSiteVariantAnswer: {
+        return "com.lyndir.masterpassword.answer";
+    }
+    default: {
+        fprintf(stderr, "Unknown variant: %d", variant);
+        abort();
+    }
     }
 }
 

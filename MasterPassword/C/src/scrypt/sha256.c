@@ -51,10 +51,10 @@ be32dec_vect(uint32_t *dst, const uint8_t *src, size_t len)
 /* Adjusted round function for rotating state */
 #define RNDr(S, W, i, k)			\
     RND(S[(64 - i) % 8], S[(65 - i) % 8],	\
-        S[(66 - i) % 8], S[(67 - i) % 8],	\
-        S[(68 - i) % 8], S[(69 - i) % 8],	\
-        S[(70 - i) % 8], S[(71 - i) % 8],	\
-        W[i] + k)
+    S[(66 - i) % 8], S[(67 - i) % 8],	\
+    S[(68 - i) % 8], S[(69 - i) % 8],	\
+    S[(70 - i) % 8], S[(71 - i) % 8],	\
+    W[i] + k)
 
 /*
  * SHA256 block compression function.  The 256-bit state is transformed via
@@ -369,7 +369,7 @@ HMAC_SHA256_Final(uint8_t digest[32], HMAC_SHA256_CTX * ctx)
  */
 void
 HMAC_SHA256_Buf(const void * K, size_t Klen, const void * in, size_t len,
-    uint8_t digest[32])
+uint8_t digest[32])
 {
     HMAC_SHA256_CTX ctx;
 
@@ -385,7 +385,7 @@ HMAC_SHA256_Buf(const void * K, size_t Klen, const void * in, size_t len,
  */
 void
 PBKDF2_SHA256(const uint8_t * passwd, size_t passwdlen, const uint8_t * salt,
-    size_t saltlen, uint64_t c, uint8_t * buf, size_t dkLen)
+size_t saltlen, uint64_t c, uint8_t * buf, size_t dkLen)
 {
     HMAC_SHA256_CTX PShctx, hctx;
     size_t i;

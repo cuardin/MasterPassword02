@@ -57,7 +57,7 @@ typedef enum {
     MPSiteTypeGeneratedPIN = 0x5 | MPSiteTypeClassGenerated | 0x0,
     MPSiteTypeGeneratedName = 0xE | MPSiteTypeClassGenerated | 0x0,
     MPSiteTypeGeneratedPhrase = 0xF | MPSiteTypeClassGenerated | 0x0,
-    
+
     MPSiteTypeStoredPersonal = 0x0 | MPSiteTypeClassStored | MPSiteFeatureExportContent,
     MPSiteTypeStoredDevicePrivate = 0x1 | MPSiteTypeClassStored | MPSiteFeatureDevicePrivate,
 } MPSiteType;
