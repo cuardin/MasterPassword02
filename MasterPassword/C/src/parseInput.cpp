@@ -10,23 +10,15 @@ ParsedInput parseInput(const int nargs, char const * const arguments[])
     {
         std::string nextArg = arguments[i];
         if (nextArg.front() == '-' && nextArg.size() == 2) {
-            if (nextArg.at(1) == 'h') {
-                Option opt;
-                opt.opt = nextArg.at(1);
-                opt.value = "";
+            Option opt;
+            opt.opt = nextArg.at(1);
+            if (i < nargs - 1 && arguments[i + 1][0] != '-') {
+                opt.value = arguments[i + 1];
                 rValue.options.push_back(opt);
+                i++;
             }
-            else if (i < nargs - 1) {
-                Option opt;
-                opt.opt = nextArg.at(1);
-                if (arguments[i + 1][0] != '-') {
-                    opt.value = arguments[i + 1];
-                    rValue.options.push_back(opt);
-                    i++;
-                }
-                else {
-                    opt.value = "";
-                }                
+            else {
+                opt.value = "";
             }
         }
         else {
