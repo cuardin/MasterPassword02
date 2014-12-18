@@ -19,9 +19,14 @@ ParsedInput parseInput(const int nargs, char const * const arguments[])
             else if (i < nargs - 1) {
                 Option opt;
                 opt.opt = nextArg.at(1);
-                opt.value = arguments[i + 1];
-                rValue.options.push_back(opt);
-                i++;
+                if (arguments[i + 1][0] != '-') {
+                    opt.value = arguments[i + 1];
+                    rValue.options.push_back(opt);
+                    i++;
+                }
+                else {
+                    opt.value = "";
+                }                
             }
         }
         else {

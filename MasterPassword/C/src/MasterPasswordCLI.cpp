@@ -184,22 +184,7 @@ int main(int argc, char *const argv[]) {
             break;
         case 'C':
             siteContextString = o.value;
-            break;
-            /*case '?':
-                switch (optopt) {
-                case 'u':
-                fprintf(stderr, "Missing full name to option: -%c\n", optopt);
-                break;
-                case 't':
-                fprintf(stderr, "Missing type name to option: -%c\n", optopt);
-                break;
-                case 'c':
-                fprintf(stderr, "Missing counter value to option: -%c\n", optopt);
-                break;
-                default:
-                fprintf(stderr, "Unknown option: -%c\n", optopt);
-                }
-                return 1;*/
+            break;        
         default:
             std::cerr << "Unknown option found: " << o.opt << std::endl;
             return 1;
